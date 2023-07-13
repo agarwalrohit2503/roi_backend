@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             defaultValue: '0'
         },
-        category_id:{
-            type: DataTypes.INTEGER,
-            defaultValue: '0'
-        },     
+        // category_id:{
+        //     type: DataTypes.INTEGER,
+        //     defaultValue: '0'
+        // },     
         name: {
             type: DataTypes.TEXT,
            // allowNull: false
@@ -34,22 +34,19 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
            // allowNull: false
           },
-        photo: {
-            type: DataTypes.TEXT
-            // allowNull defaults to true
-        },
+       
         number: {
-            type: DataTypes.FLOAT
+            type: DataTypes.INTEGER
             // allowNull defaults to true
         },
         dob: {
-            type: DataTypes.DATE
+            type: DataTypes.TEXT
             // allowNull defaults to true
         },
         country: { type: DataTypes.TEXT },
-        address: { type: DataTypes.TEXT },
-        pan_card:{ type: DataTypes.FLOAT},
-        gst_number:{ type: DataTypes.FLOAT},
+        // address: { type: DataTypes.TEXT },
+        pan_card:{ type: DataTypes.INTEGER},
+        gst_number:{ type: DataTypes.INTEGER},
         bio: {type: DataTypes.TEXT ,},
  
         account_delete: { type: DataTypes.INTEGER, defaultValue: '0' },

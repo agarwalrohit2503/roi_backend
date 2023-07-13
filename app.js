@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require("body-parser");
 var cors = require('cors');
 const path = require('path');
-const {db,sequelize} = require('../Roi-Backend/utils/conn');
+// const {db,sequelize} = require('../roi-Backend/utils/conn');
 const { influencerRoutes } = require('./routes/influencer_users.routes');
 
 const dotenv = require('dotenv').config(
