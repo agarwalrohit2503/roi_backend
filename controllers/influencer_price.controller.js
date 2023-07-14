@@ -5,23 +5,20 @@ var jwt = require('jsonwebtoken');
 
 
 
-async function updateprofile(req, res){
+async function updatedInfluencerPrice(req, res){
   influencer_id = req.body.influencer_id;
 
-  Name = req.body.name;
-  email= req.body.email;
-  gender= req.body.gender;
-  number= req.body.number;
-  dob= req.body.dob;
-  country= req.body.country;
-  pan_card= req.body.pan_card;
-  gst_number= req.body.gst_number;
-  bio= req.body.bio;
-  city_id= req.body.city_id;
-  state_id= req.body.state_id;
+  post_cost  = req.body.post_cost;
+  reels_cost  = req.body.reels_cost;
+  video_cost = req.body.video_cost;
+  story_cost = req.body.story_cost;
 
   const sqlQuery = `
-  UPDATE ${tableNames.influencer_user} SET city_id= '${city_id}', state_id= '${state_id}', name= '${Name}', email= '${email}', gender='${gender}', number= '${number}', dob= '${dob}', country= '${country}', pan_card='${pan_card}', gst_number= '${gst_number}', bio= '${bio}' WHERE influencer_id =${influencer_id}`;
+  UPDATE ${tableNames.influencer_price} SET 
+  post_cost= '${post_cost}', 
+  reels_cost= '${reels_cost}', 
+  video_cost= '${video_cost}', 
+  story_cost= '${story_cost}' WHERE influencer_id =${influencer_id}`;
 
   var result = await sequelize.query(sqlQuery, { type: sequelize.QueryTypes.UPDATE},)
 if (result.length != 0) {
@@ -45,16 +42,16 @@ if (result.length != 0) {
 
 async function add_influencer_price(req, res){
   influencer_id = req.body.influencer_id;
-  address  = req.body.address;
-  city_id  = req.body.city_id;
-  state_id = req.body.state_id;
-  pin = req.body.pin;
-  country= req.body.country;
+  post_cost  = req.body.post_cost;
+  reels_cost  = req.body.reels_cost;
+  video_cost = req.body.video_cost;
+  story_cost = req.body.story_cost;
+
   const sqlQuery = `
-  INSERT INTO ${tableNames.influencer_address} 
-  ( influencer_id, address, country,city_id, state_id, pin )
+  INSERT INTO ${tableNames.influencer_price} 
+  ( influencer_id, post_cost, reels_cost,video_cost, story_cost )
    VALUES 
-   ('${influencer_id}','${address}','${country}','${city_id}','${state_id}','${pin}')
+   ('${influencer_id}','${post_cost}','${reels_cost}','${video_cost}','${story_cost}')
   `;
 
   var result = await sequelize.query(sqlQuery, { type: sequelize.QueryTypes.INSERT},)
@@ -78,6 +75,6 @@ if (result.length != 0) {
 }
 
 module.exports = {
-  updateprofile,
+    updatedInfluencerPrice,
   add_influencer_price
 }
