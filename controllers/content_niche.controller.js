@@ -5,7 +5,7 @@ var jwt = require('jsonwebtoken');
 
 
 
-async function updatedInfluencerPrice(req, res){
+async function updateContentNiche(req, res){
   influencer_id = req.body.influencer_id;
 
   post_cost  = req.body.post_cost;
@@ -114,8 +114,30 @@ async function AddContentNiche(req, res){
   });
   }
 }
+async function GetContentNiche(req,  res){
+    selectQuery = `SELECT * FROM ${tableNames.content_niche}`;
+    result=await sequelize.query(selectQuery, { type: sequelize.QueryTypes.SELECT})
 
+
+    if (result.length != 0) {
+        res.status(200).send(
+            { 
+            "status":200, 
+            "message":"Content Niche data", 
+            "data":result
+            }
+            );
+        }else{
+            res.status(404).send(
+            { 
+                "status":404, 
+                "message":"INTERNAL ERROR", 
+            }
+          );
+    }
+}
 module.exports = {
-    updatedInfluencerPrice,
-    AddContentNiche
+   // updateContentNiche,
+    AddContentNiche,
+    GetContentNiche
 }
