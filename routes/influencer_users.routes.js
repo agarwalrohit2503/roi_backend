@@ -17,15 +17,15 @@ function influencerRoutes(app) {
         login(req, res);
     });
 
-    app.get("/get-influencer-profile",(req, res)=> {
+    app.get("/get-influencer-profile",authJWT,(req, res)=> {
         getProfile(req, res);
     });
 
-    app.patch("/update-profile",(req, res)=> {
+    app.patch("/update-profile", authJWT,(req, res)=> {
         updateprofile(req, res);
     });
     
-    app.patch("/add-address",(req, res)=> {
+    app.patch("/add-address",authJWT,(req, res)=> {
         add_address(req, res);
     });
 
