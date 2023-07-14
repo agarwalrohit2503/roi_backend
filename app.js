@@ -3,8 +3,12 @@ const bodyParser = require("body-parser");
 var cors = require('cors');
 const path = require('path');
 // const {db,sequelize} = require('../roi-Backend/utils/conn');
-const { influencerRoutes } = require('./routes/influencer_users.routes');
 
+
+const { influencerRoutes } = require('./routes/influencer_users.routes');
+const {otpRoutes}  = require('./routes/otp.routes');
+const {influencerPriceRoutes} = require('./routes/influencer_price.routes');
+const {contentNicheRoutes}=require('./routes/content_niche.routes');
 const dotenv = require('dotenv').config(
   { path: path.resolve(process.cwd(), '.env'), }
 );
@@ -34,4 +38,7 @@ app.get("/", (req, res) => res.send("Welcome to ROI-Project backend APIs"));
 
 
 influencerRoutes(app);
+influencerPriceRoutes(app);
+contentNicheRoutes(app);
+otpRoutes(app);
 module.exports = app;
