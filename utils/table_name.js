@@ -18,7 +18,9 @@ influencer_youtube:'influencer_youtube',
 influencer_content_niche:'influencer_content_niche',
 content_niche:'content_niche',
 state:'state',
-city:'city'
+city:'city',
+campaign:'campaign',
+campaign_applied:'campaign_applied',
 }
 
 module.exports =  Object.freeze(tableNames)

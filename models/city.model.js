@@ -6,6 +6,11 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true
         },
+        
+        state_id: {
+            type: DataTypes.INTEGER,
+            defaultValue: '0'
+        },
         city_name: {
             type: DataTypes.TEXT,
           //  defaultValue: '0'
