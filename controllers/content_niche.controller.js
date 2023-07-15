@@ -38,7 +38,6 @@ if (result.length != 0) {
       );
 }
 }
-
 async function AddContentNiche(req, res){
     influencer_id = req.body.influencer_id;
   content_niche_id  = req.body.content_niche_id;
