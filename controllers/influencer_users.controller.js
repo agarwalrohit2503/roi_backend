@@ -183,13 +183,6 @@ inf_file.file_name
   LEFT JOIN ${tableNames.city} as city ON i.city_id  = city.city_id 
   where  i.influencer_id =  ${influencer_id}
   `;
-  
-  // `
-  // SELECT i.*,inf_price.*
-  // FROM ${tableNames.influencer_user} as i 
-  // LEFT JOIN ${tableNames.influencer_price} as inf_price ON i.influencer_id  = inf_price.influencer_id 
-  // where  i.influencer_id =  ${influencer_id}
-  // `;
   var result = await sequelize.query(sqlQuery, { type: sequelize.QueryTypes.SELECT,},)
   if(result.length != 0){  
     res.status(200).send(
