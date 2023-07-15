@@ -113,8 +113,8 @@ async function AddContentNiche(req, res){
   });
   }
 }
-async function GetContentNiche(req,  res){
-    selectQuery = `SELECT * FROM ${tableNames.content_niche}`;
+async function getState(req,  res){
+    selectQuery = `SELECT * FROM ${tableNames.state}`;
     result=await sequelize.query(selectQuery, { type: sequelize.QueryTypes.SELECT})
 
 
@@ -122,7 +122,7 @@ async function GetContentNiche(req,  res){
         res.status(200).send(
             { 
             "status":200, 
-            "message":"Content Niche data", 
+            "message":"Data found", 
             "data":result
             }
             );
@@ -138,5 +138,5 @@ async function GetContentNiche(req,  res){
 module.exports = {
    // updateContentNiche,
     AddContentNiche,
-    GetContentNiche
+    getState
 }
