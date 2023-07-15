@@ -10,6 +10,7 @@ const {otpRoutes}  = require('./routes/otp.routes');
 const {influencerPriceRoutes} = require('./routes/influencer_price.routes');
 const {contentNicheRoutes}=require('./routes/content_niche.routes');
 const  {stateRoutes} = require('./routes/state.routes'); 
+const {CampaignsRoutes} = require('./routes/campaigns.routes');
 const dotenv = require('dotenv').config(
   { path: path.resolve(process.cwd(), '.env'), }
 );
@@ -43,4 +44,5 @@ influencerPriceRoutes(app);
 contentNicheRoutes(app);
 otpRoutes(app);
 stateRoutes(app);
+CampaignsRoutes(app);
 module.exports = app;
