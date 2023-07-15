@@ -1,5 +1,4 @@
 const {
-    login,
     getProfile,
     updateprofile,
     add_address
@@ -8,14 +7,6 @@ const {
 const {authJWT} = require("../utils/tokenchecker");
 
 function influencerRoutes(app) {
-
-    // app.get("/test",(req,res)=> {
-    //     console.log("okk");
-    // })
-
-    app.post("/login", (req, res)=> {
-        login(req, res);
-    });
 
     app.get("/get-influencer-profile",authJWT,(req, res)=> {
         getProfile(req, res);
