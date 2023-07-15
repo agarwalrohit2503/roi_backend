@@ -3,8 +3,8 @@ const {db, sequelize} = require('../utils/conn');
 tableNames = {
 
 influencer_users : db.influencer_users,
-
-
+brands : db.brands,
+otp : db.otp,
 
 //row sql tables names
  otps : 'otp',
@@ -21,6 +21,11 @@ state:'state',
 city:'city',
 campaign:'campaign',
 campaign_applied:'campaign_applied',
+brand:'brand',
+brand_type:'brand_type',
+brand_industry:'brand_industry',
+industry:'industry',
+brands_file:'brands_file',
 }
 
 module.exports =  Object.freeze(tableNames)
