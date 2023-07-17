@@ -4,7 +4,6 @@ const {db,sequelize} = require('../utils/conn');
 var jwt = require('jsonwebtoken');
 
 
-
 async function updateContentNiche(req, res){
   influencer_id = req.body.influencer_id;
 
@@ -39,7 +38,6 @@ if (result.length != 0) {
       );
 }
 }
-
 async function AddContentNiche(req, res){
     influencer_id = req.body.influencer_id;
   content_niche_id  = req.body.content_niche_id;

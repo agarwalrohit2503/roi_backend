@@ -34,8 +34,8 @@ module.exports = (sequelize, DataTypes) => {
            // allowNull: false
           },
        
-        number: {
-            type: DataTypes.INTEGER
+          number: {
+            type: DataTypes.TEXT
             // allowNull defaults to true
         },
         gst_number:{ type: DataTypes.TEXT},
