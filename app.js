@@ -6,12 +6,13 @@ const path = require('path');
 
 
 const { influencerRoutes } = require('./routes/influencer_users.routes');
-const {otpRoutes}  = require('./routes/otp.routes');
-const {influencerPriceRoutes} = require('./routes/influencer_price.routes');
-const {contentNicheRoutes}=require('./routes/content_niche.routes');
+const { otpRoutes } = require('./routes/otp.routes');
+const { influencerPriceRoutes } = require('./routes/influencers/influencer_price.routes');
+const { contentNicheRoutes } = require('./routes/content_niche.routes');
 const dotenv = require('dotenv').config(
   { path: path.resolve(process.cwd(), '.env'), }
 );
+// /api/v1 ==> Routes Folder
 
 let port = process.env.PORT || 8000;
 const app = express();
@@ -28,10 +29,10 @@ app.use(express.json(
 
 
 app.listen(port, () => {
-    console.log(`server is running at ${port}`);
-  });
+  console.log(`server is running at ${port}`);
+});
 
-  
+
 app.get("/", (req, res) => res.send("Welcome to ROI-Project backend APIs"));
 
 
