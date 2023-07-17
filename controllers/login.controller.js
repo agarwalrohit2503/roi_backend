@@ -88,9 +88,9 @@ async function influencerLogin(req,res) {
  
  }else{
    //try {
-     var data = SqlQuery.toJSON();
    
-     if (data['account_delete'] == 1) {
+   var data = SqlQuery.toJSON(); 
+   if (data['account_delete'] == 1) {
        res.status(404).send(
          {
            "status": 404,

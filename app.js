@@ -13,6 +13,7 @@ const  {stateRoutes} = require('./routes/state.routes');
 const {CampaignsRoutes} = require('./routes/campaigns.routes');
 const {loginRoutes} = require('./routes/login.routes');
 const {brandRoutes} =  require('./routes/brand_user.routes');
+const {wishlistRoutes} =require('./routes/favourite_influencer.routes');
 const dotenv = require('dotenv').config(
   { path: path.resolve(process.cwd(), '.env'), }
 );
@@ -50,4 +51,5 @@ stateRoutes(app);
 CampaignsRoutes(app);
 loginRoutes(app);
 brandRoutes(app);
+wishlistRoutes(app);
 module.exports = app;
