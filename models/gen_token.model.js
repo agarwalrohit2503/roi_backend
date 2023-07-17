@@ -1,10 +1,14 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const otp = sequelize.define("otp", {
-        otp_id: {
+    const gen_token = sequelize.define("gen_token", {
+        gen_token_id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
+        },
+        gen_token: {
+            type: DataTypes.TEXT,
+           // defaultValue: '0'
         },
         influencer_id: {
             type: DataTypes.INTEGER,
@@ -14,24 +18,15 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             defaultValue: '0'
         },
-        otp_code:{
+       
+        delete_flag: {
             type: DataTypes.INTEGER,
             defaultValue: '0'
         },
-        verification_code:{
-            type: DataTypes.INTEGER,
-           /// defaultValue: '0'
-        },
-        number:{
-            type: DataTypes.TEXT,
-        },
-        otp_flag:{
-            type: DataTypes.INTEGER,
-            defaultValue: '0'
-        },     
+       
     },{
  createdAt: true,
  updatedAt: false
     })
-    return otp
+    return gen_token
 }

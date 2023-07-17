@@ -5,6 +5,7 @@ tableNames = {
 influencer_users : db.influencer_users,
 brands : db.brands,
 otp : db.otp,
+gen_token:db.gen_token,
 
 //row sql tables names
  otps : 'otp',
@@ -27,6 +28,7 @@ brand_industry:'brand_industry',
 industry:'industry',
 brands_file:'brands_file',
 favourite_influencer:'favourite_influencer',
+genToken:'gen_token',
 }
 
 module.exports =  Object.freeze(tableNames)

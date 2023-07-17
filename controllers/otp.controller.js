@@ -2,7 +2,7 @@ const tableNames = require("../utils/table_name");
 const {db,sequelize} = require('../utils/conn');
 async function otpverify(req,res) {
   
-  const otp      = req.body.otp;
+  const otp             = req.body.otp;
   const influencer_id   = req.body.influencer_id;
   const brand_id   = req.body.brand_id;
 
