@@ -52,6 +52,7 @@ db.campaign_payment_type = require('../models/campaign_payment_type.model')(sequ
 db.campaign_status = require('../models/campaign_status.model')(sequelize, DataTypes)
 db.campaign_applied = require('../models/campaign_applied.model')(sequelize, DataTypes)
 db.campaign = require('../models/campaign.model')(sequelize, DataTypes)
+db.favourite_influencer = require('../models/favourite_influencer.model')(sequelize, DataTypes)
 db.sequelize.sync({ force: false })
 .then(() => {
    // console.log('yes re-sync done!')

@@ -65,14 +65,12 @@ async function addCampaigns(req, res){
 
 Name = req.body.Name;
 
-test=["1,2,3"];
+    test=["1,2,3"];
     sqlQuery = `INSERT INTO  ${tableNames.campaign}
     (brand_id) 
     VALUES ('${test}')`;
 
     result=await sequelize.query(sqlQuery, { type: sequelize.QueryTypes.INSERT})
-
-
     if (result.length != 0) {
         res.status(200).send(
             { 

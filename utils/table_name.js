@@ -26,6 +26,7 @@ brand_type:'brand_type',
 brand_industry:'brand_industry',
 industry:'industry',
 brands_file:'brands_file',
+favourite_influencer:'favourite_influencer',
 }
 
 module.exports =  Object.freeze(tableNames)
