@@ -12,7 +12,8 @@ const {authJWT} = require("../../../utils/tokenchecker");
     router.post("/influencer-login", (req, res)=> {
         influencerLogin(req, res);
     });
-    router.post("/otp-verify",(req, res ) => {
+
+    router.post("/otp-verify", (req, res ) => {
         otpverify(req, res);
     });
 

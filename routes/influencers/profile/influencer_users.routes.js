@@ -12,7 +12,7 @@ function influencerRoutes(app) {
         getProfile(req, res);
     });
 
-    app.patch("/update-profile", authJWT,(req, res)=> {
+    app.patch("/update-profile/:influencer_id", authJWT,(req, res)=> {
         updateprofile(req, res);
     });
     

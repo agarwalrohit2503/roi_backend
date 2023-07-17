@@ -356,10 +356,13 @@ if (result.length != 0) {
       const  inf_id =  data['influencer_id'];
 
                const privatekey =  process.env.privateKey;
-         let params = {    
+              
+         let params = {           
+           influencer_id:inf_id,
            number: user['number'],
          }
-         const token = await jwt.sign(params, privatekey, { expiresIn: '365d' })
+         const token = await jwt.sign(params, privatekey, { expiresIn: '10d' })
+      
 
         let tokeninfo = {
           influencer_id:inf_id,

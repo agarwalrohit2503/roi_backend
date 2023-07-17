@@ -1,13 +1,13 @@
 
-const tableNames = require("../utils/table_name");
-const {db,sequelize} = require('../utils/conn');
+const tableNames = require("../../../utils/table_name");
+const {db,sequelize} = require('../../../utils/conn');
 var jwt = require('jsonwebtoken');
 
 
 
 async function getProfile(req,res){
 
-  influencer_id= req.query.influencer_id;
+  influencer_id= req.params.influencer_id;
  
   //console.log(uuid);
 
