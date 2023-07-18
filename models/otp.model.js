@@ -24,6 +24,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         number:{
             type: DataTypes.TEXT,
+            defaultValue: null
+        },
+        email:{
+            type: DataTypes.TEXT,
+            defaultValue: null
         },
         otp_flag:{
             type: DataTypes.INTEGER,

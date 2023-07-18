@@ -87,7 +87,7 @@ const UserOtp = await tableNames.otp.create(
     verification_code:verificationCode,
     otp_code: otpnum,
     influencer_id: 0,
-    number:mobile_number,
+    type:mobile_number,
   })
 
 if (UserOtp === 0) {
@@ -135,7 +135,7 @@ if (UserOtp === 0) {
            verification_code:verificationCode,
            otp_code: otpnum,
            influencer_id: data['influencer_id'],
-           number:mobile_number,
+           type:mobile_number,
          })
  
        if (UserOtp === 0) {
@@ -366,7 +366,7 @@ if (result.length != 0) {
 
         let tokeninfo = {
           influencer_id:inf_id,
-          number:number,
+          //number:number,
           gen_token:token,
         } 
        const sqlquery = await tableNames.gen_token.create(tokeninfo)

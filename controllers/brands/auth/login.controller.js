@@ -7,9 +7,9 @@ async function brandLogin(req,res) {
    
   
 //     const name = req.body.name;
-//     const email = req.body.email;
+     const email = req.body.email;
 //     const gender = req.body.gender;
-    const mobile_number = req.body.mobile_number ; 
+   
 //     const city_id = req.body.city_id;
 //     const state_id = req.body.state_id;
 //     const dob = req.body.dob;
@@ -17,13 +17,121 @@ async function brandLogin(req,res) {
 //     const pan_card = req.body.pan_card;
 //     const gst_number = req.body.gst_number;
 //     const bio = req.body.bio;
- 
+
+
+if(email != '' ){
+  console.log("okk");
+   
  let SqlQuery = await  tableNames.brands.findOne(
-   { where: { number: mobile_number, } }
+   { 
+    where: { 
+      email: email, 
+    } 
+  }
    );
   
     if (!SqlQuery) {
+
+const otpnum = Math.floor(1000 + Math.random() * 9000);
+
+const verificationCode = Math.floor(1000 + Math.random() * 900000);
+const UserOtp = await tableNames.otp.create(
+  {
+    verification_code:verificationCode,
+    otp_code: otpnum,
+    brand_id: 0,
+    email:email,
+  })
+
+if (UserOtp === 0) {
+  res.status(404).send(
+    {
+      "status": 404,
+      "message": "Otp not send",
+    }
+  );
+} else {
  
+  res.status(200).send({
+    "status": 200,
+    "message": "successfully login",
+    "user_details": [{
+        "verification_code":UserOtp['verification_code'],
+    }]
+  })
+}
+
+ 
+ }else{
+   //try {
+   
+   var data = SqlQuery.toJSON(); 
+   if (data['account_delete'] == 1) {
+       res.status(404).send(
+         {
+           "status": 404,
+           "message": "you account has been deactivated",
+         }
+       );
+     } else {
+    
+       
+       const otpnum = Math.floor(1000 + Math.random() * 9000);
+       const verificationCode = Math.floor(1000 + Math.random() * 900000);
+       const UserOtp = await tableNames.otp.create(
+         {
+           verification_code:verificationCode,
+           otp_code: otpnum,
+           brand_id: data['brands_id'],
+           email:email,
+         })
+ 
+       if (UserOtp === 0) {
+         res.status(404).send(
+           {
+             "status": 404,
+             "message": "Otp not send",
+           }
+         );
+       } else {
+        
+         res.status(200).send({
+           "status": 200,
+          // "isuserfound": true,
+          
+           "message": "successfully login",
+           "user_details": [{
+              //  "profile_status": data['profile_status'],
+               "verification_code":UserOtp['verification_code'],
+           }]
+         })
+       }
+     }
+ 
+//    } catch (error) {
+//      res.status(500).send({
+//        "status": 500,
+//        "message": "server internal error",
+       
+//      })
+//    }
+   }
+ 
+}else{
+console.log("bad");
+const mobile_number = req.body.mobile_number ; 
+
+console.log(mobile_number);
+ 
+ let SqlQuery = await  tableNames.brands.findOne(
+   { 
+    where: { 
+      number: mobile_number, 
+    } 
+  }
+   );
+  
+    if (!SqlQuery) {
 
 const otpnum = Math.floor(1000 + Math.random() * 9000);
 
@@ -109,6 +217,110 @@ if (UserOtp === 0) {
 //      })
 //    }
    }
+ 
+}
+
+
+
+
+
+
+
+ 
+//  let SqlQuery = await  tableNames.brands.findOne(
+//    { 
+//     where: { 
+//       number: mobile_number, 
+//     } 
+//   }
+//    );
+  
+//     if (!SqlQuery) {
+
+// const otpnum = Math.floor(1000 + Math.random() * 9000);
+
+// const verificationCode = Math.floor(1000 + Math.random() * 900000);
+// const UserOtp = await tableNames.otp.create(
+//   {
+//     verification_code:verificationCode,
+//     otp_code: otpnum,
+//     brand_id: 0,
+//     number:mobile_number,
+//   })
+
+// if (UserOtp === 0) {
+//   res.status(404).send(
+//     {
+//       "status": 404,
+//       "message": "Otp not send",
+//     }
+//   );
+// } else {
+ 
+//   res.status(200).send({
+//     "status": 200,
+//     "message": "successfully login",
+//     "user_details": [{
+//         "verification_code":UserOtp['verification_code'],
+//     }]
+//   })
+// }
+
+ 
+//  }else{
+//    //try {
+   
+//    var data = SqlQuery.toJSON(); 
+//    if (data['account_delete'] == 1) {
+//        res.status(404).send(
+//          {
+//            "status": 404,
+//            "message": "you account has been deactivated",
+//          }
+//        );
+//      } else {
+    
+       
+//        const otpnum = Math.floor(1000 + Math.random() * 9000);
+//        const verificationCode = Math.floor(1000 + Math.random() * 900000);
+//        const UserOtp = await tableNames.otp.create(
+//          {
+//            verification_code:verificationCode,
+//            otp_code: otpnum,
+//            brand_id: data['brands_id'],
+//            number:mobile_number,
+//          })
+ 
+//        if (UserOtp === 0) {
+//          res.status(404).send(
+//            {
+//              "status": 404,
+//              "message": "Otp not send",
+//            }
+//          );
+//        } else {
+        
+//          res.status(200).send({
+//            "status": 200,
+//           // "isuserfound": true,
+          
+//            "message": "successfully login",
+//            "user_details": [{
+//               //  "profile_status": data['profile_status'],
+//                "verification_code":UserOtp['verification_code'],
+//            }]
+//          })
+//        }
+//      }
+ 
+// //    } catch (error) {
+// //      res.status(500).send({
+// //        "status": 500,
+// //        "message": "server internal error",
+       
+// //      })
+// //    }
+//    }
  
 }
 
@@ -281,6 +493,7 @@ if (result.length != 0) {
    const otpId = result[0]['otp_id'];
   const brand_id = result[0]['brand_id'];
   const number           = result[0]['number'];
+  const email           = result[0]['email'];
 
   if(brand_id == 0){
 
@@ -288,6 +501,7 @@ if (result.length != 0) {
      let userinfo = {
     
          number:number,
+         email:email
          // secret_key: secretKeygen
        } 
        const user = await tableNames.brands.create(userinfo) 
@@ -300,7 +514,8 @@ if (result.length != 0) {
               
          let params = {           
           brands_id:brands_id,
-           number: user['number'],
+           number: user['number'] ,
+           email: user['email'] ,
            brandlog:true
          }
          const token = await jwt.sign(params, privatekey, { expiresIn: '10d' })
