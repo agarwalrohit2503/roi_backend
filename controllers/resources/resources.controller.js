@@ -1,6 +1,6 @@
 
-const tableNames = require("../utils/table_name");
-const {db,sequelize} = require('../utils/conn');
+const tableNames = require("../../utils/table_name");
+const {db,sequelize} = require('../../utils/conn');
 var jwt = require('jsonwebtoken');
 
 
@@ -47,14 +47,37 @@ async function getCity(req,  res){
             res.status(404).send(
             { 
                 "status":404, 
+                "message":"No cities found", 
+            }
+          );
+    }
+}
+
+async function GetContentNiche(req,  res){
+    selectQuery = `SELECT * FROM ${tableNames.content_niche}`;
+    result=await sequelize.query(selectQuery, { type: sequelize.QueryTypes.SELECT})
+
+
+    if (result.length != 0) {
+        res.status(200).send(
+            { 
+            "status":200, 
+            "message":"Content Niche data", 
+            "data":result
+            }
+            );
+        }else{
+            res.status(404).send(
+            { 
+                "status":404, 
                 "message":"INTERNAL ERROR", 
             }
           );
     }
 }
 module.exports = {
-   // updateContentNiche,
-  //  AddContentNiche,
+  
     getCity,
-    getState
+    getState,
+    GetContentNiche
 }

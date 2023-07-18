@@ -1,15 +1,17 @@
 const {
-    getProfile,
+   // getProfile,
     // updateprofile,
     // add_address
-} = require('../controllers/brand_user.controller');
 
-const {authJWT} = require("../utils/tokenchecker");
+    wishlist
+} = require('../controllers/favourite_influencer.controller');
 
-function brandRoutes(app) {
+const {authJWT} = require("../../../utils/tokenchecker");
 
-    app.get("/get-brand-profile",authJWT,(req, res)=> {
-        getProfile(req, res);
+function wishlistRoutes(app) {
+
+    app.post("/add-wishlist",authJWT,(req, res)=> {
+        wishlist(req, res);
     });
 
     // app.patch("/update-profile", authJWT,(req, res)=> {
@@ -24,5 +26,5 @@ function brandRoutes(app) {
 
 
 module.exports = {
-    brandRoutes,
+    wishlistRoutes,
 };

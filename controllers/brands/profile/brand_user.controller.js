@@ -1,13 +1,13 @@
 
-const tableNames = require("../utils/table_name");
-const {db,sequelize} = require('../utils/conn');
+const tableNames = require("../../../utils/table_name");
+const {db,sequelize} = require('../../../utils/conn');
 var jwt = require('jsonwebtoken');
 
 
 
 async function getProfile(req,res){
 
-    brands_id = req.query.brand_id;
+    brands_id = req.params.brand_id;
  
   //console.log(uuid);
 

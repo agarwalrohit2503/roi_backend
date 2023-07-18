@@ -2,15 +2,15 @@
 const express = require("express");
 const router = express.Router();
 const {
-    influencerLogin,
+    brandLogin,
     otpverify
    // brandLogin
-} = require('../../../controllers/influencer/auth/login.controller');
+} = require('../../../controllers/brands/auth/login.controller');
 
 const {authJWT} = require("../../../utils/tokenchecker");
 
-    router.post("/influencer-login", (req, res)=> {
-        influencerLogin(req, res);
+    router.post("/brand-login", (req, res)=> {
+        brandLogin(req, res);
     });
 
     router.post("/otp-verify", (req, res ) => {

@@ -5,35 +5,39 @@ const {
     add_influencer_price
 } = require('../../../controllers/influencer/profile/influencer_price.controller');
 const {
-    GetContentNiche,
-    AddContentNiche
+    AddContentNiche,
+    
 } = require('../../../controllers/influencer/profile/content_niche.controller');
-
+const {
+    getProfile,
+    updateprofile,
+} = require('../../../controllers/influencer/profile/influencer_users.controller');
 const {authJWT} = require("../../../utils/tokenchecker");
 
-//function contentNicheRoutes(app) {
 
-router.get("/get-content-niche",authJWT,(req, res)=> {
-        GetContentNiche(req, res);
-    });
     
-    router.post("/add-content-niche",authJWT,(req, res)=> {
-        AddContentNiche(req, res);
-       console.log("pk");
-    });
 
-    router.patch("/update-influencer-price", authJWT, (req, res) => {
+    
+    router.post("/add-content-niche/:influencer_id",(req, res)=> {
+        AddContentNiche(req, res);  
+    });
+     router.patch("/update-influencer-price/:influencer_id", (req, res) => {
         updatedInfluencerPrice(req, res);
     });
-
-    router.post("/add-influencer-price", authJWT, (req, res) => {
-       // add_influencer_price(req, res);
-       console.log("pk");
+    router.post("/add-influencer-price", (req, res) => {
+       add_influencer_price(req, res);
+       
     });
 
-//}
-module.exports =  router;
+    router.get("/get-influencer-profile/:influencer_id",(req, res)=> {
+        getProfile(req, res);
+    });
 
-// module.exports = {
-//     contentNicheRoutes,
-// };
+    router.patch("/update-influencer-profile/:influencer_id",(req, res)=> {
+        updateprofile(req, res);
+    });
+    
+   
+
+
+module.exports =  router;

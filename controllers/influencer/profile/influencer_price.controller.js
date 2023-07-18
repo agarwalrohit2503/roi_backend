@@ -6,8 +6,8 @@ var jwt = require('jsonwebtoken');
 
 
 async function updatedInfluencerPrice(req, res){
-  influencer_id = req.body.influencer_id;
 
+  influencer_id = req.params.influencer_id;
   post_cost  = req.body.post_cost;
   reels_cost  = req.body.reels_cost;
   video_cost = req.body.video_cost;
@@ -26,7 +26,7 @@ if (result.length != 0) {
   res.status(200).send(
     { 
       "status":200, 
-      "message":"profile updated", 
+      "message":"price updated", 
     }
     );
 }else{
@@ -34,7 +34,7 @@ if (result.length != 0) {
     res.status(404).send(
       { 
         "status":404, 
-        "message":"profile not updated", 
+        "message":"price not updated", 
       }
       );
 }
@@ -60,7 +60,7 @@ if (result.length != 0) {
   res.status(200).send(
     { 
       "status":200, 
-      "message":"profile updated", 
+      "message":"your price added", 
     }
     );
 }else{
@@ -68,7 +68,7 @@ if (result.length != 0) {
     res.status(404).send(
       { 
         "status":404, 
-        "message":"profile not updated", 
+        "message":"pls try again price not added", 
       }
       );
 }

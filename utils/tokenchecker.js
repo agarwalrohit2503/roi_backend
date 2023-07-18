@@ -18,10 +18,9 @@ async function authJWT  (req, res, next){
                 res.status(200).send({message:"invalid token"})
             }
                 data = decoded;
-                console.log(data);
-               console.log(data.influencer_id);
+            
                 let Sqlquery = await tableNames.influencer_users.findOne({ where: { influencer_id: data.influencer_id,} });
-                console.log(Sqlquery);
+              
                  if(!Sqlquery)
                 { res.status(403).send({message:"Influencer not found"})}
                

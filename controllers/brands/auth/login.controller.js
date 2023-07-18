@@ -1,9 +1,9 @@
-const tableNames = require("../utils/table_name");
-const {db,sequelize} = require('../utils/conn');
+const tableNames = require("../../../utils/table_name");
+const {db,sequelize} = require('../../../utils/conn');
 var jwt = require('jsonwebtoken');
 
 
-async function influencerLogin(req,res) {
+async function brandLogin(req,res) {
    
   
 //     const name = req.body.name;
@@ -18,66 +18,12 @@ async function influencerLogin(req,res) {
 //     const gst_number = req.body.gst_number;
 //     const bio = req.body.bio;
  
- let SqlQuery = await  tableNames.influencer_users.findOne(
+ let SqlQuery = await  tableNames.brands.findOne(
    { where: { number: mobile_number, } }
    );
   
     if (!SqlQuery) {
  
-//      const secretKeygen = Math.floor(10000 + Math.random() * 90000);
-//      let userinfo = {
-//          city_id:city_id,
-//          state_id:state_id, 
-//          name:name,
-//          email:email,
-//          gender:gender,  
-//          number:number,
-//          dob:dob,
-//          country:country, 
-//           pan_card:pan_card,
-//           gst_number:gst_number,
-//           bio:bio,
-//           secret_key: secretKeygen
-//        } 
-//        const user = await tableNames.influencer_users.create(userinfo) 
-//        if (user) {
-//          console.log(user);
-//          const privatekey =  process.env.privateKey; //'harshguptatesttestharshharshguptatesttestharsh'; //process.env.privateKey;
-//          let params = {    
-//            number: user['number'],
-//          }
-//          const token = await jwt.sign(params, privatekey, { expiresIn: '365d' })
-//          console.log(token);
-//          const otpCreated = Math.floor(1000 + Math.random() * 9000);
-//          const otpInserted = await tableNames.otp.create(
-//            {
-//              otp_code: otpCreated,
-//              influencer_id	: user['influencer_id']
-//            }
-//          )
-//          if (otpInserted === 0) {
-//            res.status(404).send(
-//              {
-//                "status": 404,
-//                "message": "Otp not send",
-//              }
-//            );
-//          }
-//          else {
-//            res.status(200).send({
-//              "status": 200,
-//              "isuserfound": false,
-//              "message": "successfully register",
-//              "user_details": [{
-//                "influencer_id": user['influencer_id'],
-//                "profile_status": user['profile_status'],
-//                "token": token,
-//                "secret_key": secretKeygen,
-//              }]
-//            })
-//          } 
-//      }
-
 
 const otpnum = Math.floor(1000 + Math.random() * 9000);
 
@@ -86,7 +32,7 @@ const UserOtp = await tableNames.otp.create(
   {
     verification_code:verificationCode,
     otp_code: otpnum,
-    influencer_id: 0,
+    brand_id: 0,
     number:mobile_number,
   })
 
@@ -121,20 +67,15 @@ if (UserOtp === 0) {
          }
        );
      } else {
-      //  const privatekey = process.env.privateKey;
-      //  let params = {
-      //    number: data['number'],
-      //  }
-      // const token = await jwt.sign(params, privatekey, { expiresIn: '365d' })
+    
        
        const otpnum = Math.floor(1000 + Math.random() * 9000);
-
        const verificationCode = Math.floor(1000 + Math.random() * 900000);
        const UserOtp = await tableNames.otp.create(
          {
            verification_code:verificationCode,
            otp_code: otpnum,
-           influencer_id: data['influencer_id'],
+           brand_id: data['brands_id'],
            number:mobile_number,
          })
  
@@ -153,7 +94,7 @@ if (UserOtp === 0) {
           
            "message": "successfully login",
            "user_details": [{
-               "profile_status": data['profile_status'],
+              //  "profile_status": data['profile_status'],
                "verification_code":UserOtp['verification_code'],
            }]
          })
@@ -338,34 +279,34 @@ if (result.length != 0) {
     );
   }else{
    const otpId = result[0]['otp_id'];
-  const influenceChecker = result[0]['influencer_id'];
+  const brand_id = result[0]['brand_id'];
   const number           = result[0]['number'];
 
-  if(influenceChecker == 0){
+  if(brand_id == 0){
 
-   const secretKeygen = Math.floor(10000 + Math.random() * 90000);
+  // const secretKeygen = Math.floor(10000 + Math.random() * 90000);
      let userinfo = {
     
          number:number,
-          secret_key: secretKeygen
+         // secret_key: secretKeygen
        } 
-       const user = await tableNames.influencer_users.create(userinfo) 
+       const user = await tableNames.brands.create(userinfo) 
        if (user) {
         var data = user.toJSON(); 
   
-      const  inf_id =  data['influencer_id'];
+      const  brands_id =  data['brands_id'];
 
                const privatekey =  process.env.privateKey;
               
          let params = {           
-           influencer_id:inf_id,
+          brands_id:brands_id,
            number: user['number'],
          }
          const token = await jwt.sign(params, privatekey, { expiresIn: '10d' })
       
 
         let tokeninfo = {
-          influencer_id:inf_id,
+          brand_id:brands_id,
           number:number,
           gen_token:token,
         } 
@@ -380,7 +321,7 @@ if (result.length != 0) {
         var tokensql = sqlquery.toJSON(); 
         console.log(tokensql['gen_token']);
 
-       const sqlQuery1 = `SELECT * FROM ${tableNames.influencer_user} WHERE influencer_id = ${inf_id} `;
+       const sqlQuery1 = `SELECT * FROM ${tableNames.brand} WHERE brands_id = ${brands_id} `;
       
        
      
@@ -403,7 +344,7 @@ if (result.length != 0) {
             "message":"Otp verified successfully",       
             "data":[
               { 
-                "influencer_id":  data['influencer_id'],
+                "brands_id":  data['brands_id'],
           "secret_key":  data['secret_key'],
           "token":tokensql['gen_token'],
              }]      
@@ -427,16 +368,16 @@ if (result.length != 0) {
 
   
 
-    const sqlQuery1 = `SELECT * FROM ${tableNames.influencer_user} WHERE influencer_id = ${influenceChecker}`;
+    const sqlQuery1 = `SELECT * FROM ${tableNames.brand} WHERE brands_id = ${brand_id}`;
     var result1 = await sequelize.query(sqlQuery1, { type: sequelize.QueryTypes.SELECT,})
    
-    const sqlQuery3 = `SELECT * FROM ${tableNames.genToken} WHERE influencer_id = ${influenceChecker}`;
+    const sqlQuery3 = `SELECT * FROM ${tableNames.genToken} WHERE brands_id = ${brand_id}`;
     var result3 = await sequelize.query(sqlQuery3, { type: sequelize.QueryTypes.SELECT,})
 
     if(!result1){
       res.status(400).send({
         "status": 400,
-        "message": "Influencer not found",
+        "message": "brand not found",
       });
     }else{
 
@@ -449,7 +390,7 @@ if (result.length != 0) {
             "message":"Otp verified successfully",       
             "data":[
               { 
-               "influencer_id":  result1[0]['influencer_id'],
+               "brands_id":  result1[0]['brands_id'],
                "secret_key":  result1[0]['secret_key'],
                "token":result3[0]['gen_token'],
              }]      
@@ -493,7 +434,7 @@ if (result.length != 0) {
 }
 }
  module.exports = {
-    influencerLogin,
+  brandLogin,
     //brandLogin,
     otpverify
   }
