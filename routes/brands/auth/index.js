@@ -7,7 +7,6 @@ const {
    // brandLogin
 } = require('../../../controllers/brands/auth/login.controller');
 
-const {authJWT} = require("../../../utils/tokenchecker");
 
     router.post("/brand-login", (req, res)=> {
         brandLogin(req, res);

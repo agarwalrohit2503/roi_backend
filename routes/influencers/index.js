@@ -2,7 +2,7 @@
 // /address -> 
 
 const  Router       = require('router');
-const {authJWT} = require("../../utils/tokenchecker");
+const {authJWT} = require("../../middlewares/verify_token");
 const router = Router();
 const auth = require('./auth');
 const profile = require('./profile');

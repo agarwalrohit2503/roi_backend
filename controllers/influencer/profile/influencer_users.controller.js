@@ -74,9 +74,12 @@ async function updateprofile(req, res){
   bio= req.body.bio;
   city_id= req.body.city_id;
   state_id= req.body.state_id;
+  
+  profile_status= req.body.profile_status;
+
 
   const sqlQuery = `
-  UPDATE ${tableNames.influencer_user} SET city_id= '${city_id}', state_id= '${state_id}', name= '${Name}', email= '${email}', gender='${gender}', dob= '${dob}', country= '${country}', pan_card='${pan_card}', gst_number= '${gst_number}', bio= '${bio}' WHERE influencer_id =${influencer_id}`;
+  UPDATE ${tableNames.influencer_user} SET city_id= '${city_id}', state_id= '${state_id}', name= '${Name}', email= '${email}', gender='${gender}', dob= '${dob}', country= '${country}', pan_card='${pan_card}', gst_number= '${gst_number}', bio= '${bio}', profile_status=1 WHERE influencer_id =${influencer_id}`;
 
   var result = await sequelize.query(sqlQuery, { type: sequelize.QueryTypes.UPDATE},)
 if (result.length != 0) {
