@@ -18,16 +18,23 @@ async function authJWT  (req, res, next){
                 res.status(200).send({message:"invalid token"})
             }
                 data = decoded;
-            
-                let Sqlquery = await tableNames.influencer_users.findOne({ where: { influencer_id: data.influencer_id,} });
-              
+                console.log(data.brandlog);
+
+                if(data.brandlog == true){
+                    let Sqlquery = await tableNames.brands.findOne({ where: { brands_id: data.brands_id,} });     
                  if(!Sqlquery)
-                { res.status(403).send({message:"Influencer not found"})}
+                    { res.status(403).send({message:"brand  not found"})}
+                }else{
+                    let Sqlquery = await tableNames.influencer_users.findOne({ where: { influencer_id: data.influencer_id,} });     
+                    if(!Sqlquery)
+                       { res.status(403).send({message:"Influencer not found"})}
+                }
+                
                
-            res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Headers", "X-Requested-With");
-            res.header("Access-Control-Allow-Methods", "PUT, GET,POST");
-            next();  
+                    res.header("Access-Control-Allow-Origin", "*");
+                    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+                    res.header("Access-Control-Allow-Methods", "PUT, GET,POST");
+                    next();  
         })
     //    let Sqlquery = await tableNames.gen_token.findOne({ where: { gen_token: token,} });
     //   console.log(Sqlquery);

@@ -296,11 +296,12 @@ if (result.length != 0) {
   
       const  brands_id =  data['brands_id'];
 
-               const privatekey =  process.env.privateKey;
+        const privatekey =  process.env.privateKey;
               
          let params = {           
           brands_id:brands_id,
            number: user['number'],
+           brandlog:true
          }
          const token = await jwt.sign(params, privatekey, { expiresIn: '10d' })
       
@@ -318,13 +319,11 @@ if (result.length != 0) {
         });
        }else{
 
-        var tokensql = sqlquery.toJSON(); 
-        console.log(tokensql['gen_token']);
+      var tokensql = sqlquery.toJSON(); 
+      console.log(tokensql['gen_token']);
 
-       const sqlQuery1 = `SELECT * FROM ${tableNames.brand} WHERE brands_id = ${brands_id} `;
+      const sqlQuery1 = `SELECT * FROM ${tableNames.brand} WHERE brands_id = ${brands_id} `;
       
-       
-     
       var result1 = await sequelize.query(sqlQuery1, { type: sequelize.QueryTypes.SELECT,})
       if(!result1){
         res.status(400).send({
@@ -335,8 +334,8 @@ if (result.length != 0) {
 
       
 
-        const updateQuery= `UPDATE otp SET  otp_flag = 1 WHERE otp_id = ${otpId}`;
-  var result = await sequelize.query(updateQuery, { type: sequelize.QueryTypes.UPDATE,},)
+      const updateQuery= `UPDATE otp SET  otp_flag = 1 WHERE otp_id = ${otpId}`;
+      var result = await sequelize.query(updateQuery, { type: sequelize.QueryTypes.UPDATE,},)
       if(result.length != 0){  
         res.status(200).send(
           { 
