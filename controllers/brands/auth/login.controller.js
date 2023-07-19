@@ -118,7 +118,7 @@ if (UserOtp === 0) {
    }
  
 }else{
-console.log("bad");
+// console.log("bad");
 const mobile_number = req.body.mobile_number ; 
 
 console.log(mobile_number);
@@ -605,7 +605,7 @@ if (result.length != 0) {
             "data":[
               { 
                "brands_id":  result1[0]['brands_id'],
-               "secret_key":  result1[0]['secret_key'],
+              // "secret_key":  result1[0]['secret_key'],
                "token":result3[0]['gen_token'],
              }]      
           });

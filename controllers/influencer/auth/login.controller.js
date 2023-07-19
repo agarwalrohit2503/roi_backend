@@ -23,60 +23,6 @@ async function influencerLogin(req,res) {
    );
   
     if (!SqlQuery) {
- 
-//      const secretKeygen = Math.floor(10000 + Math.random() * 90000);
-//      let userinfo = {
-//          city_id:city_id,
-//          state_id:state_id, 
-//          name:name,
-//          email:email,
-//          gender:gender,  
-//          number:number,
-//          dob:dob,
-//          country:country, 
-//           pan_card:pan_card,
-//           gst_number:gst_number,
-//           bio:bio,
-//           secret_key: secretKeygen
-//        } 
-//        const user = await tableNames.influencer_users.create(userinfo) 
-//        if (user) {
-//          console.log(user);
-//          const privatekey =  process.env.privateKey; //'harshguptatesttestharshharshguptatesttestharsh'; //process.env.privateKey;
-//          let params = {    
-//            number: user['number'],
-//          }
-//          const token = await jwt.sign(params, privatekey, { expiresIn: '365d' })
-//          console.log(token);
-//          const otpCreated = Math.floor(1000 + Math.random() * 9000);
-//          const otpInserted = await tableNames.otp.create(
-//            {
-//              otp_code: otpCreated,
-//              influencer_id	: user['influencer_id']
-//            }
-//          )
-//          if (otpInserted === 0) {
-//            res.status(404).send(
-//              {
-//                "status": 404,
-//                "message": "Otp not send",
-//              }
-//            );
-//          }
-//          else {
-//            res.status(200).send({
-//              "status": 200,
-//              "isuserfound": false,
-//              "message": "successfully register",
-//              "user_details": [{
-//                "influencer_id": user['influencer_id'],
-//                "profile_status": user['profile_status'],
-//                "token": token,
-//                "secret_key": secretKeygen,
-//              }]
-//            })
-//          } 
-//      }
 
 
 const otpnum = Math.floor(1000 + Math.random() * 9000);
@@ -87,7 +33,7 @@ const UserOtp = await tableNames.otp.create(
     verification_code:verificationCode,
     otp_code: otpnum,
     influencer_id: 0,
-    type:mobile_number,
+    number:mobile_number,
   })
 
 if (UserOtp === 0) {
@@ -135,7 +81,7 @@ if (UserOtp === 0) {
            verification_code:verificationCode,
            otp_code: otpnum,
            influencer_id: data['influencer_id'],
-           type:mobile_number,
+           number:mobile_number,
          })
  
        if (UserOtp === 0) {
@@ -153,7 +99,7 @@ if (UserOtp === 0) {
           
            "message": "successfully login",
            "user_details": [{
-               "profile_status": data['profile_status'],
+               //"profile_status": data['profile_status'],
                "verification_code":UserOtp['verification_code'],
            }]
          })
