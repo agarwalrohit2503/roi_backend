@@ -10,11 +10,11 @@ const {
 } = require('../../../controllers/influencer/campaigns/campaigns.controller.js');
 
 
-router.get("/campaigns",(req, res) => {
+router.get("/get",(req, res) => {
     getCampaigns(req, res);
 });
 
-router.get("/campaign-details/:campaign_id" ,(req, res) => {
+router.get("/details/:campaign_id" ,(req, res) => {
     getCampaignDetails(req, res);
 });
 
@@ -22,7 +22,7 @@ router.post("/add-campaigns",(req,res) =>{
     addCampaigns(req,res);
 });
 
-router.get("/guest-api" ,(req, res) => {
+router.get("/demo" ,(req, res) => {
     guestApi(req, res);
 });
 

@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
           //  defaultValue: '0'
         },
+        niche_image: {
+            type: DataTypes.TEXT,
+          //  defaultValue: '0'
+        },
         delete_flag: {
             type: DataTypes.INTEGER,
             defaultValue: '0'

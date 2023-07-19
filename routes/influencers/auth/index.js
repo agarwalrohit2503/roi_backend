@@ -8,7 +8,7 @@ const {
 } = require('../../../controllers/influencer/auth/login.controller');
 
 
-    router.post("/influencer-login", (req, res)=> {
+    router.post("/login", (req, res)=> {
         influencerLogin(req, res);
     });
 

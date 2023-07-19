@@ -102,8 +102,7 @@ FROM ${tableNames.campaign} as c
  LEFT JOIN ${tableNames.brand} as b ON c.brand_id = b.brands_id 
 
     `;
-  //  f.campaign_status_name
-  //  LEFT JOIN ${tableNames.campaign_status} as f ON c.campaign_status_id =f.campaign_status_id
+
   result = await sequelize.query(selectQuery, {
     type: sequelize.QueryTypes.SELECT,
   });
@@ -124,29 +123,47 @@ FROM ${tableNames.campaign} as c
 
 async function applied(req, res) {
   influencer_id = req.params.influencer_id;
+
+
   selectQuery = `
-     
-      
-  
-    SELECT 
-    c.campaign_name,
-      c.campaign_id,
-      c.campaign_about ,
-      c.language,
-      c.campaign_start_dt,
-      c.campaign_end_dt,
-      c.campaign_image,
-      c.campaign_budget,
-      b.brand_logo,
-      b.name,
-      f.campaign_status_name
-      
-      
-      FROM ${tableNames.campaign_applied}  as camapplied
-      LEFT JOIN ${tableNames.campaign} as c ON camapplied.campaign_id = c.campaign_id
-       LEFT JOIN ${tableNames.campaign_status} as f ON camapplied.campaign_status_id = f.campaign_status_id
-       LEFT JOIN ${tableNames.brand} as b ON c.brand_id = b.brands_id WHERE  camapplied.influencer_id = ${influencer_id} and c.campaign_delete = 0 and f.campaign_status_id IN(1)
-      `;
+      SELECT
+      camapplied.influencer_id,
+      camapplied.campaign_applied_id,
+      c.campaign_name,
+        c.campaign_id,
+        c.campaign_about ,
+        c.language,
+        c.campaign_start_dt,
+        c.campaign_end_dt,
+        c.campaign_image,
+        c.campaign_budget,
+        b.brand_logo,
+        b.name,
+        f.campaign_status_name
+
+        FROM ${tableNames.campaign_applied}  as camapplied
+        LEFT JOIN ${
+          tableNames.campaign
+        } as c ON camapplied.campaign_id = c.campaign_id
+         LEFT JOIN ${
+           tableNames.campaign_status
+         } as f ON camapplied.campaign_status_id = f.campaign_status_id
+         LEFT JOIN ${tableNames.brand} as b ON c.brand_id = b.brands_id
+         WHERE
+         camapplied.influencer_id = ${influencer_id}
+         and
+         c.campaign_delete = 0
+
+         ${
+           req.query.status_id
+             ? ` and f.campaign_status_id IN(${req.query.status_id.split(
+                 ","
+               )}) `
+             : ""
+         }
+         ${req.query.limit ? `limit  ${req.query.limit} ` : ""}
+         ${req.query.offset ? `offset ${req.query.offset} ` : ""}
+        `;
 
   result = await sequelize.query(selectQuery, {
     type: sequelize.QueryTypes.SELECT,
