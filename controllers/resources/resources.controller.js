@@ -45,7 +45,7 @@ async function getCity(req, res) {
   }
 }
 
-async function GetContentNiche(req, res) {
+async function getContentNiche(req, res) {
   selectQuery = `SELECT * FROM ${tableNames.content_niche}`;
   result = await sequelize.query(selectQuery, {
     type: sequelize.QueryTypes.SELECT,
@@ -87,6 +87,6 @@ async function getBusinessList(req, res) {
 module.exports = {
   getCity,
   getState,
-  GetContentNiche,
+  getContentNiche,
   getBusinessList,
 };

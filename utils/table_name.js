@@ -8,7 +8,7 @@ tableNames = {
 
   //row sql tables names
   otps: "otp",
-  influencer_user: "influencer_user",
+  influencer_user: "influencers",
   influencer_price: "influencer_price",
   influencer_address: "influencer_address",
   influencer_file: "influencer_file",
@@ -22,7 +22,7 @@ tableNames = {
   campaign: "campaign",
   campaign_status: "campaign_status",
   campaign_applied: "campaign_applied",
-  campaign_content_niche:"campaign_content_niche",
+  campaign_content_niche: "campaign_content_niche",
   brand: "brand",
   brand_type: "brand_type",
   brand_industry: "brand_industry",
