@@ -11,24 +11,37 @@ async function getCampaigns(req, res) {
     c.language,
     c.campaign_budget,
     c.createdAt
-     FROM ${tableNames.campaign} as c 
-     ${req.query.limit ? `limit ${req.query.limit} ` : ""}
-     ${req.query.offset ? `offset ${req.query.offset} ` : ""}`;
-  result = await sequelize.query(selectQuery, {
-    type: sequelize.QueryTypes.SELECT,
-  });
-  if (result.length != 0) {
-    res.status(200).send({
-      status: 200,
-      message: "Data found",
-      data: result,
+     FROM ${tableNames.campaign} as c WHERE c.campaign_delete = 0
+     ${
+       req.query.search_term
+         ? ` and c.campaign_name LIKE '%${req.query.search_term}%'`
+         : ""
+     }
+     ${
+      req.query.limit 
+      ? `limit ${req.query.limit} ` 
+      : ""
+    }
+    ${
+      req.query.offset 
+      ? `offset ${req.query.offset} ` 
+      : ""
+    }`;
+    result = await sequelize.query(selectQuery, {
+      type: sequelize.QueryTypes.SELECT,
     });
-  } else {
-    res.status(404).send({
-      status: 404,
-      message: "INTERNAL ERROR",
-    });
-  }
+    if (result.length != 0) {
+      res.status(200).send({
+        status: 200,
+        message: "Data Found",
+        data: result,
+      });
+    } else {
+      res.status(404).send({
+        status: 404,
+        message: "Not Found",
+      });
+    }
 }
 
 async function getCampaignDetails(req, res) {
@@ -123,7 +136,6 @@ FROM ${tableNames.campaign} as c
 
 async function applied(req, res) {
   influencer_id = req.params.influencer_id;
-
 
   selectQuery = `
       SELECT

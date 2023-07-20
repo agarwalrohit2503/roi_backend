@@ -23,15 +23,14 @@ async function authJWT(req, res, next) {
           });
           if (!Sqltoken) {
             res.status(403).send({ message: "token failed" });
-          } 
-        else {
+          } else {
             let Sqlquery = await tableNames.brands.findOne({
               where: { brands_id: data.brands_id },
             });
             if (!Sqlquery) {
               res.status(403).send({ message: "brand  not found" });
             }
-         }
+          }
         } else {
           let Sqltoken = await tableNames.gen_token.findOne({
             where: { gen_token: token, influencer_id: data.influencer_id },
