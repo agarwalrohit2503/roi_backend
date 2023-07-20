@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
           //  defaultValue: '0'
         },
+        location: {
+            type: DataTypes.TEXT,
+          //  defaultValue: '0'
+        },
         campaign_about: {
             type: DataTypes.TEXT,
           //  defaultValue: '0'

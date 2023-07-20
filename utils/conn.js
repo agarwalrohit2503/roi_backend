@@ -54,6 +54,7 @@ db.campaign_applied = require('../models/campaign_applied.model')(sequelize, Dat
 db.campaign = require('../models/campaign.model')(sequelize, DataTypes)
 db.favourite_influencer = require('../models/favourite_influencer.model')(sequelize, DataTypes)
 db.gen_token = require('../models/gen_token.model')(sequelize, DataTypes)
+db.campaignContentNiche = require('../models/campaign_content_niche.model')(sequelize, DataTypes)
 db.sequelize.sync({ force: false })
 .then(() => {
    // console.log('yes re-sync done!')
