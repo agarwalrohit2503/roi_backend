@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const influencer_users = sequelize.define(
-    "influencer_user",
+    "influencer",
     {
       influencer_id: {
         type: DataTypes.INTEGER,

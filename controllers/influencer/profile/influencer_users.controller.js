@@ -1,14 +1,10 @@
-
 const tableNames = require("../../../utils/table_name");
-const {db,sequelize} = require('../../../utils/conn');
-var jwt = require('jsonwebtoken');
+const { db, sequelize } = require("../../../utils/conn");
+var jwt = require("jsonwebtoken");
 
+async function getProfile(req, res) {
+  influencer_id = req.params.influencer_id;
 
-
-async function getProfile(req,res){
-
-  influencer_id= req.params.influencer_id;
- 
   //console.log(uuid);
 
   const sqlQuery = `
@@ -43,68 +39,60 @@ inf_file.file_name
   LEFT JOIN ${tableNames.city} as city ON i.city_id  = city.city_id 
   where  i.influencer_id =  ${influencer_id}
   `;
-  var result = await sequelize.query(sqlQuery, { type: sequelize.QueryTypes.SELECT,},)
-  if(result.length != 0){  
-    res.status(200).send(
-      { 
-        "status":200,
-        "message":"Your profile",           
-        "data":result  
-      });
-  }else{ 
-    res.status(404).send(
-      { 
-        "status":404,
-        "message":"Influencer not found",             
-      });
+  var result = await sequelize.query(sqlQuery, {
+    type: sequelize.QueryTypes.SELECT,
+  });
+  if (result.length != 0) {
+    res.status(200).send({
+      status: 200,
+      message: "Your profile",
+      data: result,
+    });
+  } else {
+    res.status(404).send({
+      status: 404,
+      message: "Influencer not found",
+    });
   }
-} 
+}
 
-async function updateprofile(req, res){
+async function updateprofile(req, res) {
   influencer_id = req.params.influencer_id;
 
   Name = req.body.name;
-  email= req.body.email;
-  gender= req.body.gender;
- // number= req.body.number;
-  dob= req.body.dob;
-  country= req.body.country;
-  pan_card= req.body.pan_card;
-  gst_number= req.body.gst_number;
-  bio= req.body.bio;
-  city_id= req.body.city_id;
-  state_id= req.body.state_id;
-  
-  profile_status= req.body.profile_status;
+  email = req.body.email;
+  gender = req.body.gender;
+  // number= req.body.number;
+  dob = req.body.dob;
+  country = req.body.country;
+  pan_card = req.body.pan_card;
+  gst_number = req.body.gst_number;
+  bio = req.body.bio;
+  city_id = req.body.city_id;
+  state_id = req.body.state_id;
 
+  profile_status = req.body.profile_status;
 
   const sqlQuery = `
   UPDATE ${tableNames.influencer_user} SET city_id= '${city_id}', state_id= '${state_id}', name= '${Name}', email= '${email}', gender='${gender}', dob= '${dob}', country= '${country}', pan_card='${pan_card}', gst_number= '${gst_number}', bio= '${bio}', profile_status=1 WHERE influencer_id =${influencer_id}`;
 
-  var result = await sequelize.query(sqlQuery, { type: sequelize.QueryTypes.UPDATE},)
-if (result.length != 0) {
- 
-  res.status(200).send(
-    { 
-      "status":200, 
-      "message":"profile updated", 
-    }
-    );
-}else{
- 
-    res.status(404).send(
-      { 
-        "status":404, 
-        "message":"profile not updated", 
-      }
-      );
+  var result = await sequelize.query(sqlQuery, {
+    type: sequelize.QueryTypes.UPDATE,
+  });
+  if (result.length != 0) {
+    res.status(200).send({
+      status: 200,
+      message: "profile updated",
+    });
+  } else {
+    res.status(404).send({
+      status: 404,
+      message: "profile not updated",
+    });
+  }
 }
-}
-
-
 
 module.exports = {
   getProfile,
   updateprofile,
- 
-}
+};

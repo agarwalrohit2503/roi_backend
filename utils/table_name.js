@@ -8,7 +8,7 @@ tableNames = {
 
   //row sql tables names
   otps: "otp",
-  influencer_user: "influencers",
+  influencer_user: "influencer",
   influencer_price: "influencer_price",
   influencer_address: "influencer_address",
   influencer_file: "influencer_file",
@@ -21,7 +21,8 @@ tableNames = {
   city: "city",
   campaign: "campaign",
   campaign_status: "campaign_status",
-  campaign_applied: "campaign_applied",
+  campaign_application_status: "campaign_application_status", //!create model
+  campaign_applied: "campaign_applications",
   campaign_content_niche: "campaign_content_niche",
   brand: "brand",
   brand_type: "brand_type",
