@@ -1,3 +1,4 @@
+const tableNames = require("../utils/table_name");
 module.exports = (sequelize, DataTypes) => {
   const brand_type = sequelize.define(
     "brand_type",

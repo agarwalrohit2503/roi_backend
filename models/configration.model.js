@@ -1,5 +1,5 @@
+const tableNames = require("../utils/table_name");
 module.exports = (sequelize, DataTypes) => {
-
     const configuration = sequelize.define("configuration", {
         configuration_id: {
             type: DataTypes.INTEGER,
@@ -12,12 +12,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         config_value: {
             type: DataTypes.FLOAT,
-            defaultValue: '0'
+            defaultValue: 0
         },
        
         config_flag: {
             type: DataTypes.TINYINT,
-            defaultValue: '0'
+            defaultValue: 0
         },
        
     },{

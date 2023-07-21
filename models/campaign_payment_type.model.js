@@ -1,3 +1,4 @@
+const tableNames = require("../utils/table_name");
 module.exports = (sequelize, DataTypes) => {
   const campaign_payment_type = sequelize.define(
     "campaign_payment_type",

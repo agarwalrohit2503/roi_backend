@@ -1,3 +1,4 @@
+const tableNames = require("../utils/table_name");
 module.exports = (sequelize, DataTypes) => {
   const favourite_influencer = sequelize.define(
     "favourite_influencer",

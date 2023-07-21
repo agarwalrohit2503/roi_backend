@@ -1,3 +1,5 @@
+const tableNames = require("../utils/table_name");
+
 module.exports = (sequelize, DataTypes) => {
 
     const campaign_applied = sequelize.define("campaign_applied", {

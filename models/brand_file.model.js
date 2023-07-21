@@ -1,6 +1,7 @@
+const tableNames = require("../utils/table_name");
 module.exports = (sequelize, DataTypes) => {
   const brands_file = sequelize.define(
-    "brands_file",
+   "brands_file",
     {
       brands_file_id: {
         type: DataTypes.INTEGER,

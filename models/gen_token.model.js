@@ -1,3 +1,4 @@
+const tableNames = require("../utils/table_name");
 module.exports = (sequelize, DataTypes) => {
   const gen_token = sequelize.define(
     "gen_token",
@@ -9,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       gen_token: {
         type: DataTypes.CHAR,
-        // defaultValue: '0'
+        
       },
       influencer_id: {
         type: DataTypes.INTEGER,
