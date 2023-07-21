@@ -219,6 +219,14 @@ db.influencer_address.belongsTo(db.influencer, {
   targetKey: "influencer_id", // primary table
 });
 
+db.influencer_address.belongsTo(db.City, {
+  foreignKey: "city_id", // foreign table
+  targetKey: "city_id", // primary table
+});
+db.influencer_address.belongsTo(db.state, {
+  foreignKey: "state_id", // foreign table
+  targetKey: "state_id", // primary table
+});
 db.influencer_content_niche.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
@@ -254,6 +262,15 @@ db.influencer_youtube.belongsTo(db.influencer, {
   targetKey: "influencer_id", // primary table
 });
 
+db.campaignContentNiche.belongsTo(db.content_niche, {
+  foreignKey: "content_niche_id", // foreign table
+  targetKey: "content_niche_id", // primary table
+});
+
+db.campaignContentNiche.belongsTo(db.campaign, {
+  foreignKey: "campaign_id", // foreign table
+  targetKey: "campaign_id", // primary table
+});
 
 db.sequelize.sync({ force: false }).then(() => {
   // console.log('yes re-sync done!')
