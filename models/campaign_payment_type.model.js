@@ -9,12 +9,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       payment_type: {
         type: DataTypes.STRING,
-        defaultValue: "0",
+        defaultValue: 0,
       },
 
       campaign_delete: {
-        type: DataTypes.INTEGER,
-        defaultValue: "0",
+        type: DataTypes.TINYINT,
+        defaultValue: 0,
       },
     },
     {

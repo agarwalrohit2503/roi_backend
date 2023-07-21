@@ -8,32 +8,32 @@ module.exports = (sequelize, DataTypes) => {
         },
         influencer_id: {
             type: DataTypes.INTEGER,
-          //  defaultValue: '0'
+            defaultValue: 0
         },
         address: {
-            type: DataTypes.TEXT,
-          //  defaultValue: '0'
+            type: DataTypes.STRING,
+            defaultValue: 0
         },
         country: {
-            type: DataTypes.TEXT,
-          //  defaultValue: '0'
+            type: DataTypes.STRING,
+            defaultValue: 0
         },
-        city: {
+        city_id: {
             type: DataTypes.INTEGER,
-           // defaultValue: '0'
+           defaultValue: 0
         },
-        state: {
+        state_id: {
             type: DataTypes.INTEGER,
-          //  defaultValue: '0'
+            defaultValue: 0
         },
         pin: {
-            type: DataTypes.TEXT,
-          //  defaultValue: '0'
+            type: DataTypes.STRING,
+            allowNull: false,
         },
        
         delete_flag: {
-            type: DataTypes.INTEGER,
-            defaultValue: '0'
+            type: DataTypes.TINYINT,
+            defaultValue: 0
         },
        
     },{

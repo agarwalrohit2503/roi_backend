@@ -8,31 +8,31 @@ module.exports = (sequelize, DataTypes) => {
         },
         influencer_id: {
             type: DataTypes.INTEGER,
-            defaultValue: '0'
+            defaultValue: 0
         },
         brand_id: {
             type: DataTypes.INTEGER,
-            defaultValue: '0'
+            defaultValue: 0
         },
         otp_code:{
-            type: DataTypes.INTEGER,
-            defaultValue: '0'
+            type: DataTypes.BIGINT,
+            defaultValue: 0
         },
         verification_code:{
-            type: DataTypes.INTEGER,
-           /// defaultValue: '0'
+            type: DataTypes.CHAR,
+            defaultValue: 0
         },
         number:{
-            type: DataTypes.TEXT,
-            defaultValue: null
+            type: DataTypes.BIGINT,
+            allowNull: false,
         },
         email:{
-            type: DataTypes.TEXT,
-            defaultValue: null
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         otp_flag:{
-            type: DataTypes.INTEGER,
-            defaultValue: '0'
+            type: DataTypes.TINYINT,
+            defaultValue: 0
         },     
     },{
  createdAt: true,

@@ -9,51 +9,48 @@ module.exports = (sequelize, DataTypes) => {
       },
       city_id: {
         type: DataTypes.INTEGER,
-        defaultValue: "0",
+        defaultValue: 0,
       },
       state_id: {
         type: DataTypes.INTEGER,
-        defaultValue: "0",
+        defaultValue: 0,
       },
       brand_type_id: {
         type: DataTypes.INTEGER,
-        defaultValue: "0",
+        defaultValue: 0,
       },
       brand_logo: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       name: {
-        type: DataTypes.TEXT,
-
-        // allowNull: false
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       email: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         unique: true,
-        // allowNull: false
+        allowNull: false,
       },
 
       number: {
-        type: DataTypes.TEXT,
+        type: DataTypes.BIGINT,
         unique: true,
-        // allowNull defaults to true
+        allowNull: false,
       },
       gst_number: { type: DataTypes.TEXT },
       website: {
-        type: DataTypes.TEXT,
-        // allowNull defaults to true
+        type: DataTypes.STRING,
+        allowNull: false,
       },
-      pan_card: { type: DataTypes.TEXT },
-      address: { type: DataTypes.TEXT },
-      overview: { type: DataTypes.TEXT },
-      profile_status: { type: DataTypes.INTEGER, defaultValue: "0" },
-      account_delete: { type: DataTypes.INTEGER, defaultValue: "0" },
+      pan_card: { type: DataTypes.TEXT, allowNull: false },
+      address: { type: DataTypes.STRING, allowNull: false },
+      overview: { type: DataTypes.TEXT, allowNull: false },
+      profile_status: { type: DataTypes.TINYINT, defaultValue: 0 },
+      account_delete: { type: DataTypes.TINYINT, defaultValue: 0 },
     },
     {
-      // I don't want createdAt
       createdAt: true,
-
-      // I want updatedAt to actually be called updateTimestamp
       updatedAt: false,
     }
   );

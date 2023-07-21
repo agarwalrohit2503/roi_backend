@@ -7,16 +7,16 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true
         },
         config_name: {
-            type: DataTypes.TEXT,
-           // defaultValue: '0'
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         config_value: {
             type: DataTypes.FLOAT,
-          //  defaultValue: '0'
+            defaultValue: '0'
         },
        
         config_flag: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.TINYINT,
             defaultValue: '0'
         },
        

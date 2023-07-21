@@ -9,12 +9,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       brand_id: {
         type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
       file_type: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       file_link: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       file_name: {
         type: DataTypes.STRING,

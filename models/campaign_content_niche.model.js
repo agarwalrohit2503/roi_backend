@@ -8,15 +8,15 @@ module.exports = (sequelize, DataTypes) => {
         },
         campaign_id: {
             type: DataTypes.INTEGER,
-            defaultValue: '0'
+            defaultValue: 0
         },
         content_niche_id: {
             type: DataTypes.INTEGER,
-            defaultValue: '0'
+            defaultValue: 0
         },
         delete_flag: {
-            type: DataTypes.INTEGER,
-            defaultValue: '0'
+            type: DataTypes.TINYINT,
+            defaultValue: 0
         },
        
     },{

@@ -9,51 +9,51 @@ module.exports = (sequelize, DataTypes) => {
       },
       brand_id: {
         type: DataTypes.INTEGER,
-        defaultValue: "0",
+        defaultValue: 0,
       },
       campaign_status_id: {
         type: DataTypes.INTEGER,
-        defaultValue: "0",
+        defaultValue: 0,
       },
       campaign_name: {
-        type: DataTypes.TEXT,
-        //  defaultValue: '0'
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       location: {
-        type: DataTypes.TEXT,
-        //  defaultValue: '0'
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       campaign_about: {
         type: DataTypes.TEXT,
-        //  defaultValue: '0'
+        allowNull: false,
       },
       language: {
-        type: DataTypes.TEXT,
-        //  defaultValue: '0'
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       campaign_start_dt: {
         type: DataTypes.DATE,
-        //  defaultValue: '0'
+        allowNull: false,
       },
       campaign_end_dt: {
         type: DataTypes.DATE,
-        //  defaultValue: '0'
+        allowNull: false,
       },
       payment_type: {
         type: DataTypes.INTEGER,
-        defaultValue: "0",
+        defaultValue: 0,
       },
       campaign_budget: {
         type: DataTypes.FLOAT,
-        defaultValue: "0",
+        defaultValue: 0,
       },
-      image: {
+      image_link: {
         type: DataTypes.STRING,
-        defaultValue: "0",
+        allowNull: false,
       },
       campaign_delete: {
-        type: DataTypes.INTEGER,
-        defaultValue: "0",
+        type: DataTypes.TINYINT,
+        defaultValue: 0,
       },
     },
     {

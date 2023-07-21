@@ -26,14 +26,14 @@ const db = {};
 //db.Sequelize = Sequelize
 db.sequelize = sequelize;
 
-db.influencer_users = require("../models/influencer_users.model")(
+db.influencer = require("../models/influencer_users.model")(
   sequelize,
   DataTypes
 );
 db.otp = require("../models/otp.model")(sequelize, DataTypes);
 db.City = require("../models/city.model")(sequelize, DataTypes);
 
-// db.City.belongsTo(db.influencer_users, { foreignKey: "id_city_influencer" });
+// db.City.belongsTo(db.influencer, { foreignKey: "id_city_influencer" });
 
 db.state = require("../models/state.model")(sequelize, DataTypes);
 db.influencer_price = require("../models/influencer_price.model")(
@@ -106,12 +106,12 @@ db.campaignContentNiche = require("../models/campaign_content_niche.model")(
 );
 
 ///relationships table start
-db.influencer_users.belongsTo(db.City, {
+db.influencer.belongsTo(db.City, {
   foreignKey: "city_id", // foreign table
   targetKey: "city_id", // primary table
 });
 
-db.influencer_users.belongsTo(db.state, {
+db.influencer.belongsTo(db.state, {
   foreignKey: "state_id", // foreign table
   targetKey: "state_id", // primary table
 });
@@ -155,7 +155,7 @@ db.otp.belongsTo(db.brands, {
   targetKey: "brands_id", // primary table
 });
 
-db.otp.belongsTo(db.influencer_users, {
+db.otp.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
@@ -165,7 +165,7 @@ db.favourite_influencer.belongsTo(db.brands, {
   targetKey: "brands_id", // primary table
 });
 
-db.favourite_influencer.belongsTo(db.influencer_users, {
+db.favourite_influencer.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
@@ -185,7 +185,7 @@ db.campaign_applied.belongsTo(db.campaign, {
   targetKey: "campaign_id", // primary table
 });
 
-db.campaign_applied.belongsTo(db.influencer_users, {
+db.campaign_applied.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
@@ -205,7 +205,7 @@ db.campaign.belongsTo(db.campaign_status, {
   targetKey: "campaign_status_id", // primary table
 });
 
-db.gen_token.belongsTo(db.influencer_users, {
+db.gen_token.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
@@ -214,12 +214,12 @@ db.gen_token.belongsTo(db.brands, {
   targetKey: "brands_id", // primary table
 });
 
-db.influencer_address.belongsTo(db.influencer_users, {
+db.influencer_address.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
 
-db.influencer_content_niche.belongsTo(db.influencer_users, {
+db.influencer_content_niche.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
@@ -229,27 +229,27 @@ db.influencer_content_niche.belongsTo(db.content_niche, {
   targetKey: "content_niche_id", // primary table
 });
 
-db.influencer_facebook.belongsTo(db.influencer_users, {
+db.influencer_facebook.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
 
-db.influencer_file.belongsTo(db.influencer_users, {
+db.influencer_file.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
 
-db.influencer_instagram.belongsTo(db.influencer_users, {
+db.influencer_instagram.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
 
-db.influencer_price.belongsTo(db.influencer_users, {
+db.influencer_price.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
 
-db.influencer_youtube.belongsTo(db.influencer_users, {
+db.influencer_youtube.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });

@@ -1,14 +1,14 @@
 const { db, sequelize } = require("../utils/conn");
 
 tableNames = {
-  influencer_users: db.influencer_users,
+  influencer: db.influencer,
   brands: db.brands,
   otp: db.otp,
   gen_token: db.gen_token,
 
   //row sql tables names
-  otps: "otp",
-  influencer_user: "influencer",
+  //otps: "otp",
+  Influencer: "influencer",
   influencer_price: "influencer_price",
   influencer_address: "influencer_address",
   influencer_file: "influencer_file",

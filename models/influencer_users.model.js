@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const influencer_users = sequelize.define(
+  const influencer = sequelize.define(
     "influencer",
     {
       influencer_id: {
@@ -17,10 +17,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       gender: {
         type: DataTypes.STRING,
@@ -28,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       number: {
         type: DataTypes.BIGINT,
         allowNull: false,
+        unique: true,
       },
       dob: {
         type: DataTypes.DATE,
@@ -45,5 +48,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return influencer_users;
+  return influencer;
 };
