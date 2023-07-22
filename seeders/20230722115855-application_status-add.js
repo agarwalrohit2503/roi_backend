@@ -12,22 +12,12 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await queryInterface.bulkInsert('brand', [{
-      city_id: 1,
-     state_id: 1 ,
-      brand_type_id: 1,
-      brand_logo:"wwww.google.com",
-      name:"demo",
-      email:"demo@gmail.com",
-      number:"1234567890",
-      gst_number:"12345678",
-      website:"www.youdomain.com",
-      pan_card:"123456789",
-      address:"demoaddress",
-      overview:"your bio",
-      profile_status:0,
-      account_delete	:0,
-     //  isBetaMember: false
+
+     await queryInterface.bulkInsert('application_status', [{
+      application_status_name: 'Accepted',
+      // application_status_name: 'Rejected',
+      // application_status_name: 'OnHold',
+      delete_flag:0,
      }], {});
   },
 

@@ -4,12 +4,11 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
    
-
-     await queryInterface.bulkInsert('state', [{
-      state_name: 'Delhi',
-     
-     //  isBetaMember: false
+    await queryInterface.bulkInsert('industry', [{
+      industry_name	: 'John Doe',
+      delete_flag:0
      }], {});
+   
   },
 
   async down (queryInterface, Sequelize) {

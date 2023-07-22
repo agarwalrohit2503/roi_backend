@@ -5,7 +5,7 @@ const {
   getAddress,
   deleteAddress,
   editAddress
-} = require("../../../controllers/influencer/address/address.controller");
+} = require("../../../../controllers/v1/influencer/address/address.controller");
 
 router.post("/add/:influencer_id", (req, res) => {
   add_address(req, res);

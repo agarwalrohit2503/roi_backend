@@ -1,5 +1,5 @@
-const tableNames = require("../../../utils/table_name");
-const { db, sequelize } = require("../../../utils/conn");
+const tableNames = require("../../../../utils/table_name");
+const { db, sequelize } = require("../../../../utils/conn");
 var jwt = require("jsonwebtoken");
 
 async function add_address(req, res) {

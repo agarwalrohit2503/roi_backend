@@ -3,15 +3,15 @@ const router = express.Router();
 const {
     updatedInfluencerPrice,
     add_influencer_price
-} = require('../../../controllers/influencer/profile/influencer_price.controller');
+} = require('../../../../controllers/v1/influencer/profile/influencer_price.controller');
 const {
     AddContentNiche,
     
-} = require('../../../controllers/influencer/profile/content_niche.controller');
+} = require('../../../../controllers/v1/influencer/profile/content_niche.controller');
 const {
     getProfile,
     updateprofile,
-} = require('../../../controllers/influencer/profile/influencer_users.controller');
+} = require('../../../../controllers/v1/influencer/profile/influencer_users.controller');
 
 
 

@@ -7,7 +7,7 @@ const {
     guestApi,
     applied
     
-} = require('../../../controllers/influencer/campaigns/campaigns.controller.js');
+} = require('../../../../controllers/v1/influencer/campaigns/campaigns.controller');
 
 
 router.get("/get",(req, res) => {

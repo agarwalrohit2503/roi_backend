@@ -5,7 +5,7 @@ const path = require("path");
 // var Router = require('router')
 const routes = require("./routes");
 const v2 = require("./routes/v2")
-
+const v1 = require("./routes/v1")
 // const {db,sequelize} = require('../roi-Backend/utils/conn');
 // const { influencerRoutes } = require('./routes/influencers/auth/index');
 // //const {otpRoutes}  = require('./routes/otp.routes');
@@ -39,8 +39,8 @@ app.listen(port, () => {
 });
 
 
-app.use("/v1", routes);
-app.use("/v2", routes);
+app.use("/v1", v1);
+app.use("/v2", v2);
 
 // influencerRoutes(app);
 // influencerPriceRoutes(app);

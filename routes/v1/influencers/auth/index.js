@@ -5,7 +5,7 @@ const {
     influencerLogin,
     otpverify
 
-} = require('../../../controllers/influencer/auth/login.controller');
+} = require('../../../../controllers/v1/influencer/auth/login.controller');
 
 
     router.post("/login", (req, res)=> {

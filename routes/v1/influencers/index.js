@@ -1,13 +1,12 @@
-// /auth ->
-// /address -> 
+const  Router   = require('router');
+const {authJWT} = require("../../../middlewares/verify_token");
 
-const  Router       = require('router');
-const {authJWT} = require("../../middlewares/verify_token");
 const router = Router();
-const auth = require('./auth');
-const profile = require('./profile');
-const address = require('./address');
-const campaigns = require('./campaigns');
+
+const auth = require('../influencers/auth');
+const profile = require('../influencers/profile');
+const address = require('../influencers/address');
+const campaigns = require('../influencers/campaigns');
 
 
 

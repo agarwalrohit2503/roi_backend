@@ -5,7 +5,7 @@ const {
     brandLogin,
     otpverify
    // brandLogin
-} = require('../../../controllers/brands/auth/login.controller');
+} = require('../../../../controllers/v1/brands/auth/login.controller');
 
 
     router.post("/brand-login", (req, res)=> {
