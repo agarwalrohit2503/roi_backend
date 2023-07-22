@@ -13,9 +13,9 @@ module.exports = {
      * }], {});
     */
     await queryInterface.bulkInsert('brand', [{
-      city_id: 1,
-      state_id: 1 ,
-      brand_type_id:1,
+      //city_id: 1,
+     // state_id: 1 ,
+      brand_type_id: 1,
       brand_logo:"wwww.google.com",
       name:"demo",
       email:"demo@gmail.com",

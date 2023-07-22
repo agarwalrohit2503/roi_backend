@@ -1,23 +1,28 @@
 const tableNames = require("../utils/table_name");
+
 module.exports = (sequelize, DataTypes) => {
-  const favourite_influencer = sequelize.define(
-    "favourite_influencer",
+  const campaign_application = sequelize.define(
+    "campaign_application",
     {
-      favourite_influencer_id: {
+      campaign_applied_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
       influencer_id: {
         type: DataTypes.INTEGER,
-        defaultValue: null
+        defaultValue: 0,
       },
-      brand_id: {
+      campaign_id: {
         type: DataTypes.INTEGER,
-        defaultValue: null
+        defaultValue: 0,
       },
-      favourite_influencer_flag: {
-        type: DataTypes.TINYINT,
+      application_status_id: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      campaign_status_id: {
+        type: DataTypes.INTEGER,
         defaultValue: 0,
       },
 
@@ -31,5 +36,5 @@ module.exports = (sequelize, DataTypes) => {
       updatedAt: false,
     }
   );
-  return favourite_influencer;
+  return campaign_application;
 };

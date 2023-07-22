@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       city_id: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: null
       },
       state_id: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: null
       },
       name: {
         type: DataTypes.STRING,
@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       gender: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       number: {
         type: DataTypes.BIGINT,

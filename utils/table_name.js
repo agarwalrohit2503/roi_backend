@@ -22,7 +22,7 @@ tableNames = {
   campaign: "campaign",
   campaign_status: "campaign_status",
   campaign_application_status: "campaign_application_status", //!create model
-  campaign_applied: "campaign_applications",
+  campaign_application: "campaign_applications",
   campaign_content_niche: "campaign_content_niche",
   brand: "brand",
   brand_type: "brand_type",

@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       influencer_id: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: null
       },
       brand_id: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: null
       },
       delete_flag: {
         type: DataTypes.TINYINT,

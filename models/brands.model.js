@@ -10,15 +10,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       city_id: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: null
       },
       state_id: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: null
       },
       brand_type_id: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: null
       },
       brand_logo: {
         type: DataTypes.STRING,

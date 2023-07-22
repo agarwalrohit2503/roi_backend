@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       brand_id: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: null
       },
       campaign_status_id: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: null
       },
       campaign_name: {
         type: DataTypes.STRING,

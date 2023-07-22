@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         delete_flag: {
             type: DataTypes.TINYINT,
-            defaultValue: '0'
+            defaultValue: 0
         },
        
     },{

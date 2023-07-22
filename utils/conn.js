@@ -20,7 +20,7 @@ try {
 } catch (error) {
   console.error("Unable to connect to the database:", error);
 }
- 
+
 const db = {};
 
 //db.Sequelize = Sequelize
@@ -90,7 +90,7 @@ db.campaign_status = require("../models/campaign_status.model")(
   sequelize,
   DataTypes
 );
-db.campaign_applied = require("../models/campaign_applied.model")(
+db.campaign_application = require("../models/campaign_application.model")(
   sequelize,
   DataTypes
 );
@@ -104,7 +104,10 @@ db.campaignContentNiche = require("../models/campaign_content_niche.model")(
   sequelize,
   DataTypes
 );
-
+db.application_status = require("../models/application_status.model")(
+  sequelize,
+  DataTypes
+);
 ///relationships table start
 db.influencer.belongsTo(db.City, {
   foreignKey: "city_id", // foreign table
@@ -180,19 +183,24 @@ db.campaign.belongsTo(db.brands, {
 //   targetKey: "campaign_status_id", // primary table
 // });
 
-db.campaign_applied.belongsTo(db.campaign, {
+db.campaign_application.belongsTo(db.campaign, {
   foreignKey: "campaign_id", // foreign table
   targetKey: "campaign_id", // primary table
 });
 
-db.campaign_applied.belongsTo(db.influencer, {
+db.campaign_application.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
 
-db.campaign_applied.belongsTo(db.campaign_status, {
-  foreignKey: "campaign_status_id", // foreign table
+db.campaign_application.belongsTo(db.campaign_status, {
+  foreignKey: "application_status_id", // foreign table
   targetKey: "campaign_status_id", // primary table
+});
+
+db.campaign_application.belongsTo(db.application_status, {
+  foreignKey: "application_status_id", // foreign table
+  targetKey: "application_status_id", // primary table
 });
 
 db.campaign.belongsTo(db.campaign_status, {

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       influencer_id: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: null
       },
       post_cost: {
         type: DataTypes.FLOAT,

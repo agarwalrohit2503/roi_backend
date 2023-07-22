@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         brand_id: {
             type: DataTypes.INTEGER,
-            defaultValue: 0
+            defaultValue: null
         },
         industry_id: {
             type: DataTypes.INTEGER,
-            defaultValue: 0
+            defaultValue: null
         },
        
         delete_flag: {

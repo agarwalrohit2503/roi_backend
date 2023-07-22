@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         
         state_id: {
             type: DataTypes.INTEGER,
-            defaultValue: 0
+            defaultValue: null
         },
         city_name: {
             type: DataTypes.STRING,
@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         delete_flag: {
             type: DataTypes.TINYINT,
-            defaultValue: 0
+            defaultValue: null
         },
        
     },{

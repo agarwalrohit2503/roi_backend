@@ -1,20 +1,15 @@
 const tableNames = require("../utils/table_name");
-
 module.exports = (sequelize, DataTypes) => {
 
-    const campaignContentNiche = sequelize.define("campaign_content_niche", {
-        campaign_content_niche_id: {
+    const application_status = sequelize.define("application_status", {
+        application_status_id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        campaign_id: {
-            type: DataTypes.INTEGER,
-            defaultValue: null
-        },
-        content_niche_id: {
-            type: DataTypes.INTEGER,
-            defaultValue: null
+        application_status_name: {
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         delete_flag: {
             type: DataTypes.TINYINT,
@@ -25,5 +20,5 @@ module.exports = (sequelize, DataTypes) => {
  createdAt: true,
  updatedAt: false
     })
-    return campaignContentNiche
+    return application_status
 }

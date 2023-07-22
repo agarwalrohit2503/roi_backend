@@ -17,31 +17,23 @@ async function getCampaigns(req, res) {
          ? ` and c.campaign_name LIKE '%${req.query.search_term}%'`
          : ""
      }
-     ${
-      req.query.limit 
-      ? `limit ${req.query.limit} ` 
-      : ""
-    }
-    ${
-      req.query.offset 
-      ? `offset ${req.query.offset} ` 
-      : ""
-    }`;
-    result = await sequelize.query(selectQuery, {
-      type: sequelize.QueryTypes.SELECT,
+     ${req.query.limit ? `limit ${req.query.limit} ` : ""}
+    ${req.query.offset ? `offset ${req.query.offset} ` : ""}`;
+  result = await sequelize.query(selectQuery, {
+    type: sequelize.QueryTypes.SELECT,
+  });
+  if (result.length != 0) {
+    res.status(200).send({
+      status: 200,
+      message: "Data Found",
+      data: result,
     });
-    if (result.length != 0) {
-      res.status(200).send({
-        status: 200,
-        message: "Data Found",
-        data: result,
-      });
-    } else {
-      res.status(404).send({
-        status: 404,
-        message: "Not Found",
-      });
-    }
+  } else {
+    res.status(404).send({
+      status: 404,
+      message: "Not Found",
+    });
+  }
 }
 
 async function getCampaignDetails(req, res) {
@@ -73,14 +65,18 @@ async function getCampaignDetails(req, res) {
         LEFT JOIN ${tableNames.brand} as b ON c.brand_id = b.brands_id
         
      
-       LEFT JOIN ${tableNames.campaign_content_niche} as ccn ON c.campaign_id = ccn.campaign_id
-       LEFT JOIN  ${tableNames.content_niche} as cn ON ccn.content_niche_id = cn.content_niche_id
-       LEFT JOIN  ${tableNames.campaign_status} as cs ON c.campaign_status_id = cs.campaign_status_id where c.campaign_delete = 0
+       LEFT JOIN ${
+         tableNames.campaign_content_niche
+       } as ccn ON c.campaign_id = ccn.campaign_id
+       LEFT JOIN  ${
+         tableNames.content_niche
+       } as cn ON ccn.content_niche_id = cn.content_niche_id
+       LEFT JOIN  ${
+         tableNames.campaign_status
+       } as cs ON c.campaign_status_id = cs.campaign_status_id where c.campaign_delete = 0
 
 
-  ${
-    campaign_id ?  `and c.campaign_id  = ${campaign_id}` : ""
-  }`;
+  ${campaign_id ? `and c.campaign_id  = ${campaign_id}` : ""}`;
   result = await sequelize.query(selectQuery, {
     type: sequelize.QueryTypes.SELECT,
   });
@@ -185,7 +181,7 @@ async function applied(req, res) {
         b.name,
         f.campaign_status_name
 
-        FROM ${tableNames.campaign_applied}  as camapplied
+        FROM ${tableNames.campaign_application}  as camapplied
         LEFT JOIN ${
           tableNames.campaign
         } as c ON camapplied.campaign_id = c.campaign_id
@@ -206,10 +202,10 @@ async function applied(req, res) {
              : ""
          }
          ${
-          req.query.search_term
-            ? ` and c.campaign_name LIKE '%${req.query.search_term}%'`
-            : ""
-        }
+           req.query.search_term
+             ? ` and c.campaign_name LIKE '%${req.query.search_term}%'`
+             : ""
+         }
          ${req.query.limit ? `limit  ${req.query.limit} ` : ""}
          ${req.query.offset ? `offset ${req.query.offset} ` : ""}
         `;

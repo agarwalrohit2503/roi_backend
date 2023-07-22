@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       brand_id: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: null
       },
       file_type: {
         type: DataTypes.STRING,

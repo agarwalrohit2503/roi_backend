@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         influencer_id: {
             type: DataTypes.INTEGER,
-            defaultValue: 0
+            defaultValue: null
         },
         doc_type: {
             type: DataTypes.STRING,
