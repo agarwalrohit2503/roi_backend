@@ -17,39 +17,46 @@ async function authJWT(req, res, next) {
         data = decoded;
         console.log(data.brandlog);
 
-        if (data.brandlog == true) {
-          let Sqltoken = await tableNames.gen_token.findOne({
-            where: { gen_token: token, brand_id: data.brands_id },
-          });
-          if (!Sqltoken) {
-            res.status(403).send({ message: "token failed" });
-          } else {
-            let Sqlquery = await tableNames.brands.findOne({
-              where: { brands_id: data.brands_id },
+        if (data.brandlog == null) {
+          res.status(200).send({ message: "not authorized" });
+        }
+        {
+          if (data.brandlog == true) {
+            let Sqltoken = await tableNames.gen_token.findOne({
+              where: { gen_token: token, brand_id: data.brands_id },
             });
-            if (!Sqlquery) {
-              res.status(403).send({ message: "brand  not found" });
+            if (!Sqltoken) {
+              res.status(403).send({ message: "token failed" });
+            } else {
+              let Sqlquery = await tableNames.brands.findOne({
+                where: { brands_id: data.brands_id },
+              });
+              if (!Sqlquery) {
+                res.status(403).send({ message: "brand not found" });
+              }
             }
-          }
-        } else {
-          let Sqltoken = await tableNames.gen_token.findOne({
-            where: { gen_token: token, influencer_id: data.influencer_id },
-          });
-          if (!Sqltoken) {
-            res.status(403).send({ message: "token failed" });
           } else {
-            let Sqlquery = await tableNames.influencer_users.findOne({
-              where: { influencer_id: data.influencer_id },
+            let Sqltoken = await tableNames.gen_token.findOne({
+              where: {
+                gen_token: token,
+                influencer_id: data.influencer_id,
+              },
             });
-            if (!Sqlquery) {
-              res.status(403).send({ message: "Influencer not found" });
+            if (!Sqltoken) {
+              res.status(403).send({ message: "token failed" });
+            } else {
+              let Sqlquery = await tableNames.influencer.findOne({
+                where: { influencer_id: data.influencer_id },
+              });
+              if (!Sqlquery) {
+                res.status(403).send({ message: "Influencer not found" });
+              }
             }
           }
         }
-
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "X-Requested-With");
-        res.header("Access-Control-Allow-Methods", "PUT, GET,POST");
+        // res.header("Access-Control-Allow-Origin", "*");
+        // res.header("Access-Control-Allow-Headers", "X-Requested-With");
+        // res.header("Access-Control-Allow-Methods", "PUT, GET,POST");
         next();
       });
       //    let Sqlquery = await tableNames.gen_token.findOne({ where: { gen_token: token,} });

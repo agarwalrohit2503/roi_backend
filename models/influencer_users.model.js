@@ -7,26 +7,18 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      city_id: {
-        type: DataTypes.INTEGER,
-        defaultValue: null
-      },
-      state_id: {
-        type: DataTypes.INTEGER,
-        defaultValue: null
-      },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        defaultValue: null,
       },
       email: {
         type: DataTypes.STRING,
-        allowNull: false,
+        defaultValue: null,
         unique: true,
       },
       gender: {
         type: DataTypes.STRING,
-        allowNull: false,
+        defaultValue: null,
       },
       number: {
         type: DataTypes.BIGINT,
@@ -36,10 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       dob: {
         type: DataTypes.DATE,
       },
-      country: { type: DataTypes.STRING },
-      pan_card: { type: DataTypes.STRING },
-      gst_number: { type: DataTypes.STRING },
-      bio: { type: DataTypes.TEXT },
+      country: { type: DataTypes.STRING, defaultValue: null },
+      pan_card: { type: DataTypes.STRING, defaultValue: null },
+      gst_number: { type: DataTypes.STRING, defaultValue: null },
+      bio: { type: DataTypes.TEXT, defaultValue: null },
       account_delete: { type: DataTypes.TINYINT, defaultValue: 0 },
       profile_status: { type: DataTypes.TINYINT, defaultValue: 0 },
     },
@@ -48,6 +40,11 @@ module.exports = (sequelize, DataTypes) => {
       updatedAt: false,
     }
   );
-
+  // influencer.associate = (models) => {
+  //   // associations can be defined here
+  //   influencer.belongsTo(models.influencer_content_niche, {
+  //     foreignKey: "influencer_id",
+  //   });
+  // };
   return influencer;
 };

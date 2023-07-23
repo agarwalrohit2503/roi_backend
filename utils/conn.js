@@ -109,15 +109,15 @@ db.application_status = require("../models/application_status.model")(
   DataTypes
 );
 ///relationships table start
-db.influencer.belongsTo(db.City, {
-  foreignKey: "city_id", // foreign table
-  targetKey: "city_id", // primary table
-});
+// db.influencer.belongsTo(db.City, {
+//   foreignKey: "city_id", // foreign table
+//   targetKey: "city_id", // primary table
+// });
 
-db.influencer.belongsTo(db.state, {
-  foreignKey: "state_id", // foreign table
-  targetKey: "state_id", // primary table
-});
+// db.influencer.belongsTo(db.state, {
+//   foreignKey: "state_id", // foreign table
+//   targetKey: "state_id", // primary table
+// });
 
 db.brands.belongsTo(db.City, {
   foreignKey: "city_id", // foreign table
@@ -226,24 +226,26 @@ db.influencer_address.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
-
-db.influencer_address.belongsTo(db.City, {
-  foreignKey: "city_id", // foreign table
-  targetKey: "city_id", // primary table
-});
-db.influencer_address.belongsTo(db.state, {
-  foreignKey: "state_id", // foreign table
-  targetKey: "state_id", // primary table
-});
+/////////////////////////////////////////////////////////////test stop  code////////////////////
+// db.influencer_address.belongsTo(db.City, {
+//   foreignKey: "city_id", // foreign table
+//   targetKey: "city_id", // primary table
+// });
+// db.influencer_address.belongsTo(db.state, {
+//   foreignKey: "state_id", // foreign table
+//   targetKey: "state_id", // primary table
+// });
+//stoped byharsh
 db.influencer_content_niche.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
 
-db.influencer_content_niche.belongsTo(db.content_niche, {
-  foreignKey: "content_niche_id", // foreign table
-  targetKey: "content_niche_id", // primary table
-});
+// db.influencer_content_niche.belongsTo(db.content_niche, {
+//   foreignKey: "content_niche_id", // foreign table
+//   targetKey: "content_niche_id", // primary table
+// });
+/////////////////////////////////////////////////////////////test stop  code////////////////////
 
 db.influencer_facebook.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
@@ -283,5 +285,48 @@ db.campaignContentNiche.belongsTo(db.campaign, {
 db.sequelize.sync({ force: false }).then(() => {
   // console.log('yes re-sync done!')
 });
+
+///////////////////////////////////////////////////table join query//////////////////////
+//working code for city to influencer city fetch
+// db.City.hasOne(db.influencer, {
+//   foreignKey: "city_id",
+// });
+
+
+
+db.influencer.hasMany(db.influencer_address, {
+  foreignKey: "influencer_id",
+  as: "address",
+});
+
+db.influencer_address.hasOne(db.state, {
+  foreignKey: "state_id",
+  as: "influencer_state",
+});
+
+db.influencer_address.hasOne(db.City, {
+  foreignKey: "city_id",
+  as: "influencer_city",
+});
+
+db.influencer.hasMany(db.influencer_content_niche, {
+  foreignKey: "influencer_id",
+  as: "inf_content",
+});
+
+
+
+db.influencer_content_niche.hasMany(db.content_niche, {
+  foreignKey: "content_niche_id",
+ as: "content_nich",
+});
+
+// db.influencer_address.belongsTo(
+//   db.influencer,
+//   {
+//     foreignKey: "influencer_id",
+//   },
+
+// );
 
 module.exports = { db, sequelize };

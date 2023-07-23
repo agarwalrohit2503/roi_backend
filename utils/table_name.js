@@ -5,9 +5,13 @@ tableNames = {
   brands: db.brands,
   otp: db.otp,
   gen_token: db.gen_token,
-
+  City: db.City,
+  influencerAddress: db.influencer_address,
+  State: db.state,
+  influencerContentNiche: db.influencer_content_niche,
+  contentNiche:db.content_niche,
   //row sql tables names
-  //otps: "otp",
+  // otps: "otp",
   Influencer: "influencer",
   influencer_price: "influencer_price",
   influencer_address: "influencer_address",
