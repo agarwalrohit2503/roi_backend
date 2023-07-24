@@ -3,42 +3,45 @@ const { db, sequelize } = require("../../../../utils/conn");
 var jwt = require("jsonwebtoken");
 
 async function addAddress(req, res) {
-  influencer_id = req.params.influencer_id;
-  address = req.body.address;
-  city_id = req.body.city_id;
-  state_id = req.body.state_id;
-  pin = req.body.pin;
-  country = req.body.country;
+  
+const  influencer_id = req.params.influencer_id;
+const  address       = req.body.address;
+const  city_id       = req.body.city_id;
+const  state_id      = req.body.state_id;
+const  pin           = req.body.pin;
+const  country       = req.body.country;
 
 
-//   let tokeninfo = {
-//     influencer_id: inf_id,
-//     number: user_number,
-//     gen_token: token,
-//   };
-//   const sqlquery = await tableNames.gen_token.create(tokeninfo);
+try {
 
-  let addressInfo = {
-    influencer_id:influencer_id,
-    address: address,
-    city_id: city_id,
-    state_id: state_id,
-    pin: pin,
-    country: country,
-  };
-
-  const updateQuery = await tableNames.influencerAddress.create(addressInfo);
-  if (updateQuery != '') {
+    let addressInfo = {
+        influencer_id:influencer_id,
+        address: address,
+        city_id: city_id,
+        state_id: state_id,
+        pin: pin,
+        country: country,
+      };
+    
+      const updateQuery = await tableNames.influencerAddress.create(addressInfo);
+      if (updateQuery != '') {
+        res.status(200).send({
+          status: 200,
+          message: "address updated",
+        });
+      } else {
+        res.status(404).send({
+          status: 404,
+          message: "address not updated",
+        });
+      }
+    
+} catch (error) {
     res.status(200).send({
-      status: 200,
-      message: "address updated",
-    });
-  } else {
-    res.status(404).send({
-      status: 404,
-      message: "address not updated",
-    });
-  }
+        status: 200,
+        message: "Server Internal Error",
+      });
+}
 }
 
 async function addAddress1(req, res) {
