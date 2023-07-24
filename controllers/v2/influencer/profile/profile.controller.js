@@ -248,103 +248,150 @@ async function addContentNiche(req, res) {
   influencer_id = req.params.influencer_id;
   content_niche_id = req.body.content_niche_id;
 
-  findQuery = await tableNames.influencerContentNiche.findAll({
-    where: {
-      influencer_id: influencer_id,
-    },
-  });
-  console.log(findQuery);
-  if (findQuery == "") {
-    console.log("no data");
-  } else {
-    //  /console.log("data");
 
-    const deleteQuery = await tableNames.influencerContentNiche.destroy({
-      where: {
-        influencer_id: influencer_id,
-      },
+   try {
+
+    findQuery = await tableNames.influencerContentNiche.findAll({
+      where: { influencer_id: influencer_id },
     });
-
-    if (deleteQuery == 0) {
-      res.status(200).send({
-        status: 200,
-        message: "Content niche not deleted",
-      });
-    } else {
-    }
-
-    console.log(deleteQuery);
-  }
-}
-
-async function AddContentNiche1(req, res) {
-  influencer_id = req.params.influencer_id;
-  content_niche_id = req.body.content_niche_id;
-
-  sqlquery = `SELECT * FROM ${tableNames.influencer_content_niche}  WHERE influencer_id= '${influencer_id}'`;
-  result = await sequelize.query(sqlquery, {
-    type: sequelize.QueryTypes.SELECT,
-  });
-
-  if (result.length != 0) {
-    sqldelete = `DELETE FROM ${tableNames.influencer_content_niche} WHERE  influencer_id= ${influencer_id}`;
-    result = await sequelize.query(sqldelete, {
-      type: sequelize.QueryTypes.DELETE,
-    });
-    if (!result) {
-      content_niche_id.map(async (result) => {
-        const sqlQuery = `
-    INSERT INTO ${tableNames.influencer_content_niche} 
-    ( influencer_id, content_niche_id )
-    VALUES
-    ('${influencer_id}','${result}')`;
-
-        var result = await sequelize.query(sqlQuery, {
-          type: sequelize.QueryTypes.INSERT,
+    if (findQuery == "") {
+      const data = content_niche_id.map(async (result) => {
+        await tableNames.influencerContentNiche.create({
+          influencer_id: influencer_id,
+          content_niche_id: result,
         });
-        if (result.length != 0) {
-          res.status(200).send({
-            status: 200,
-            message: "Your Content Niche added",
-          });
-        } else {
-          res.status(404).send({
-            status: 404,
-            message: "INTERNAL ERROR",
-          });
-        }
       });
-    } else {
-      res.status(404).send({
-        status: 404,
-        message: "Your preview content niche not deleted",
-      });
-    }
-  } else {
-    content_niche_id.map(async (result) => {
-      const sqlQuery = `
-    INSERT INTO ${tableNames.influencer_content_niche} 
-    ( influencer_id, content_niche_id )
-    VALUES
-    ('${influencer_id}','${result}')`;
-
-      var result = await sequelize.query(sqlQuery, {
-        type: sequelize.QueryTypes.INSERT,
-      });
-      if (result.length != 0) {
-        res.status(200).send({
-          status: 200,
-          message: "Your Content Niche added",
+  
+      if (!data) {
+        res.status(400).send({
+          status: 400,
+          message: "Influencer content niche not updated",
         });
       } else {
-        res.status(404).send({
-          status: 404,
-          message: "INTERNAL ERROR",
+     
+        res.status(200).send({
+          status: 200,
+          message: "Influencer content niche updated",
         });
+      
       }
+    } else {
+      const deleteQuery = await tableNames.influencerContentNiche.destroy({
+        where: { influencer_id: influencer_id },
+      });
+      if (deleteQuery == 0) {
+        res.status(200).send({
+          status: 200,
+          message: "Content niche not deleted",
+        });
+      } else {
+      const data = content_niche_id.map(async (result) => {
+        await tableNames.influencerContentNiche.create({
+          influencer_id: influencer_id,
+          content_niche_id: result,
+        });
+      });
+  
+      if (!data) {
+        res.status(400).send({
+          status: 400,
+          message: "Influencer content niche not update",
+        });
+      } else {
+     
+        res.status(200).send({
+          status: 200,
+          message: "Influencer content niche updated",
+        });
+      
+      }
+      }
+    }
+    
+
+
+
+
+   } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: "Internal error",
     });
-  }
+   }
+
+
+
+
 }
+
+// async function AddContentNiche1(req, res) {
+//   influencer_id = req.params.influencer_id;
+//   content_niche_id = req.body.content_niche_id;
+
+//   sqlquery = `SELECT * FROM ${tableNames.influencer_content_niche}  WHERE influencer_id= '${influencer_id}'`;
+//   result = await sequelize.query(sqlquery, {
+//     type: sequelize.QueryTypes.SELECT,
+//   });
+
+//   if (result.length != 0) {
+//     sqldelete = `DELETE FROM ${tableNames.influencer_content_niche} WHERE  influencer_id= ${influencer_id}`;
+//     result = await sequelize.query(sqldelete, {
+//       type: sequelize.QueryTypes.DELETE,
+//     });
+//     if (!result) {
+//       content_niche_id.map(async (result) => {
+//         const sqlQuery = `
+//     INSERT INTO ${tableNames.influencer_content_niche} 
+//     ( influencer_id, content_niche_id )
+//     VALUES
+//     ('${influencer_id}','${result}')`;
+
+//         var result = await sequelize.query(sqlQuery, {
+//           type: sequelize.QueryTypes.INSERT,
+//         });
+//         if (result.length != 0) {
+//           res.status(200).send({
+//             status: 200,
+//             message: "Your Content Niche added",
+//           });
+//         } else {
+//           res.status(404).send({
+//             status: 404,
+//             message: "INTERNAL ERROR",
+//           });
+//         }
+//       });
+//     } else {
+//       res.status(404).send({
+//         status: 404,
+//         message: "Your preview content niche not deleted",
+//       });
+//     }
+//   } else {
+//     content_niche_id.map(async (result) => {
+//       const sqlQuery = `
+//     INSERT INTO ${tableNames.influencer_content_niche} 
+//     ( influencer_id, content_niche_id )
+//     VALUES
+//     ('${influencer_id}','${result}')`;
+
+//       var result = await sequelize.query(sqlQuery, {
+//         type: sequelize.QueryTypes.INSERT,
+//       });
+//       if (result.length != 0) {
+//         res.status(200).send({
+//           status: 200,
+//           message: "Your Content Niche added",
+//         });
+//       } else {
+//         res.status(404).send({
+//           status: 404,
+//           message: "INTERNAL ERROR",
+//         });
+//       }
+//     });
+//   }
+// }
 
 // if (influencer_address_id > 0) {
 //   const sqlquery = await tableNames.influencerAddress.update(

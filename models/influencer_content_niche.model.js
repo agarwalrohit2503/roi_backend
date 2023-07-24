@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: null
       },
 
-      delete_flag: {
-        type: DataTypes.TINYINT,
-        defaultValue: 0,
-      },
+      // delete_flag: {
+      //   type: DataTypes.TINYINT,
+      //   defaultValue: 0,
+      // },
     },
     {
       createdAt: true,
