@@ -11,6 +11,11 @@ tableNames = {
   influencerContentNiche: db.influencer_content_niche,
   contentNiche:db.content_niche,
   influencerPrice: db.influencer_price,
+
+  //resource start
+  contentNiche :db.content_niche,
+
+  //resource end
   
   //row sql tables names
   // otps: "otp",
