@@ -248,33 +248,32 @@ async function addContentNiche(req, res) {
   influencer_id = req.params.influencer_id;
   content_niche_id = req.body.content_niche_id;
 
-  findQuery = tableNames.influencerContentNiche.findAll({
+  findQuery = await tableNames.influencerContentNiche.findAll({
     where: {
       influencer_id: influencer_id,
     },
   });
-  if (findQuery == null) {
-   // console.log("no data");
+  console.log(findQuery);
+  if (findQuery == "") {
+    console.log("no data");
   } else {
-  //  /console.log("data");
+    //  /console.log("data");
 
     const deleteQuery = await tableNames.influencerContentNiche.destroy({
       where: {
-        influencer_id: influencer_id
-      }
+        influencer_id: influencer_id,
+      },
     });
 
-    if(deleteQuery == 0){
+    if (deleteQuery == 0) {
       res.status(200).send({
         status: 200,
         message: "Content niche not deleted",
       });
-    }else{
-
+    } else {
     }
-    
-  console.log(deleteQuery);
 
+    console.log(deleteQuery);
   }
 }
 
