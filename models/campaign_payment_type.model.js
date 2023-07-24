@@ -8,9 +8,9 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      payment_type: {
+      name: {
         type: DataTypes.STRING,
-        defaultValue: 0,
+        allowNull: false,
       },
 
       campaign_delete: {
