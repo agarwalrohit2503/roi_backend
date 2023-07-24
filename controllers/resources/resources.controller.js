@@ -51,14 +51,18 @@ async function getState(req, res) {
 async function getCity(req, res) {
   state_id = req.query.state_id;
 
-  findQuery = await tableNames.city.findAll({
-    artributes:['city_id','state_id','city_name'],
-    where:{delete_flag:0}
+  let where = {
+    delete_flag: 0,
+    state_id: state_id
+  };
+  let paranoid = { paranoid: true }
+  findQuery = await tableNames.City.findAll({
+    attributes: ["city_id", "state_id", "city_name"],
+    where,
+    paranoid
+    
   });
-
-
-
-
+console.log(findQuery);
   // selectQuery = `SELECT * FROM ${tableNames.city}  ${
   //   state_id ? `WHERE state_id = ${state_id}` : ""
   // }`;
@@ -66,11 +70,11 @@ async function getCity(req, res) {
   //   type: sequelize.QueryTypes.SELECT,
   // });
 
-  if (findQuery != '') {
+  if (findQuery != "") {
     res.status(200).send({
       status: 200,
       message: "Data found",
-      data: result,
+      data: findQuery,
     });
   } else {
     res.status(404).send({
@@ -128,16 +132,18 @@ async function getContentNiche(req, res) {
 // }
 
 async function getBusinessList(req, res) {
-  const sqlQuery = `SELECT i.*  FROM ${tableNames.industry} as i WHERE i.delete_flag = 0 `;
-  result = await sequelize.query(sqlQuery, {
-    type: sequelize.QueryTypes.SELECT,
-  });
 
-  if (result.length != 0) {
+  fondQuery = await tableNames.Industry.findAll({
+    attributes:['industry_id','industry_name'],
+    where:{
+      delete_flag:0
+    }
+  })
+  if (fondQuery != '') {
     res.status(200).send({
       status: 200,
       message: "Industry",
-      data: result,
+      data: fondQuery,
     });
   } else {
     res.status(404).send({

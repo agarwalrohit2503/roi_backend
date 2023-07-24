@@ -282,6 +282,11 @@ db.campaignContentNiche.belongsTo(db.campaign, {
   targetKey: "campaign_id", // primary table
 });
 
+db.City.belongsTo(db.state, {
+  foreignKey: "state_id", // foreign table
+  targetKey: "state_id", // primary table
+});
+
 db.sequelize.sync({ force: false }).then(() => {
   // console.log('yes re-sync done!')
 });
@@ -291,8 +296,6 @@ db.sequelize.sync({ force: false }).then(() => {
 // db.City.hasOne(db.influencer, {
 //   foreignKey: "city_id",
 // });
-
-
 
 db.influencer.hasMany(db.influencer_address, {
   foreignKey: "influencer_id",
@@ -314,11 +317,9 @@ db.influencer.hasMany(db.influencer_content_niche, {
   as: "inf_content",
 });
 
-
-
 db.influencer_content_niche.hasMany(db.content_niche, {
   foreignKey: "content_niche_id",
- as: "content_nich",
+  as: "content_nich",
 });
 
 // db.influencer_address.belongsTo(

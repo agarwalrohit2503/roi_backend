@@ -13,7 +13,7 @@ tableNames = {
   influencerPrice: db.influencer_price,
 
   //resource start
-  contentNiche :db.content_niche,
+  Industry :db.industry,
 
   //resource end
   
