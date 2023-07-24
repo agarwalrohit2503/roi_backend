@@ -1,6 +1,5 @@
 const tableNames = require("../../../../utils/table_name");
-const { db, sequelize } = require("../../../../utils/conn");
-var jwt = require("jsonwebtoken");
+
 
 async function addAddress(req, res) {
   
@@ -12,7 +11,7 @@ const  pin           = req.body.pin;
 const  country       = req.body.country;
 
 
-try {
+ try {
 
     let addressInfo = {
         influencer_id:influencer_id,
@@ -39,45 +38,69 @@ try {
 } catch (error) {
     res.status(200).send({
         status: 200,
-        message: "Server Internal Error",
+        message: "Server Internal Error", //city_id & state_id is required
       });
 }
 }
 
-async function addAddress1(req, res) {
-  var requiredFields = ["city_id", "state_id"];
-  // return Object.keys(req.body).every((key) => requiredFields.includes(key));
+// async function addAddress1(req, res) {
+//   var requiredFields = ["city_id", "state_id"];
+//   // return Object.keys(req.body).every((key) => requiredFields.includes(key));
 
-  influencer_id = req.params.influencer_id;
-  address = req.body.address;
-  city_id = req.body.city_id;
-  state_id = req.body.state_id;
-  pin = req.body.pin;
-  country = req.body.country;
-  const sqlQuery = `
-    INSERT INTO ${tableNames.influencer_address} 
-    ( influencer_id, address, country,city_id, state_id, pin )
-     VALUES 
-     ('${influencer_id}','${address}','${country}','${city_id}','${state_id}','${pin}')
-    `;
+//   influencer_id = req.params.influencer_id;
+//   address = req.body.address;
+//   city_id = req.body.city_id;
+//   state_id = req.body.state_id;
+//   pin = req.body.pin;
+//   country = req.body.country;
+//   const sqlQuery = `
+//     INSERT INTO ${tableNames.influencer_address} 
+//     ( influencer_id, address, country,city_id, state_id, pin )
+//      VALUES 
+//      ('${influencer_id}','${address}','${country}','${city_id}','${state_id}','${pin}')
+//     `;
 
-  var result = await sequelize.query(sqlQuery, {
-    type: sequelize.QueryTypes.INSERT,
-  });
-  if (result.length != 0) {
-    res.status(200).send({
-      status: 200,
-      message: "address updated",
-    });
-  } else {
-    res.status(404).send({
-      status: 404,
-      message: "address not updated",
-    });
-  }
-}
+//   var result = await sequelize.query(sqlQuery, {
+//     type: sequelize.QueryTypes.INSERT,
+//   });
+//   if (result.length != 0) {
+//     res.status(200).send({
+//       status: 200,
+//       message: "address updated",
+//     });
+//   } else {
+//     res.status(404).send({
+//       status: 404,
+//       message: "address not updated",
+//     });
+//   }
+// }
+
 
 async function getAddress(req, res) {
+    const influencer_id = req.params.influencer_id;
+
+    findQuery = await tableNames.influencerAddress.findAll({
+        where:{
+            influencer_id:influencer_id
+        }
+    })
+  
+    if (findQuery != '') {
+      res.status(200).send({
+        status: 200,
+        message: "Influencer address",
+        data: findQuery,
+      });
+    } else {
+      res.status(404).send({
+        status: 404,
+        message: "address not found",
+      });
+    }
+  }
+
+async function getAddress1(req, res) {
   const influencer_id = req.params.influencer_id;
   selectQuery = `SELECT * FROM ${tableNames.influencer_address} where influencer_id =${influencer_id} and 	delete_flag = 0`;
   result = await sequelize.query(selectQuery, {
