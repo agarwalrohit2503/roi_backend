@@ -1,6 +1,4 @@
 const tableNames = require("../../utils/table_name");
-const { db, sequelize } = require("../../utils/conn");
-var jwt = require("jsonwebtoken");
 
 async function getState(req, res) {
   try {
