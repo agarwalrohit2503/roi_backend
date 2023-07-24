@@ -287,9 +287,32 @@ db.City.belongsTo(db.state, {
   targetKey: "state_id", // primary table
 });
 
+db.campaign_payment_type.belongsTo(db.campaign, {
+  foreignKey: "campaign_payment_type_id", // foreign table
+  targetKey: "campaign_pay_type", // primary table
+});
+
+
+
+
+
 db.sequelize.sync({ force: false }).then(() => {
   // console.log('yes re-sync done!')
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ///////////////////////////////////////////////////table join query//////////////////////
 //working code for city to influencer city fetch
