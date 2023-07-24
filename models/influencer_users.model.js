@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       dob: {
         type: DataTypes.DATE,
       },
-      country: { type: DataTypes.STRING, defaultValue: null },
+    //  country: { type: DataTypes.STRING, defaultValue: null },
       pan_card: { type: DataTypes.STRING, defaultValue: null },
       gst_number: { type: DataTypes.STRING, defaultValue: null },
       bio: { type: DataTypes.TEXT, defaultValue: null },

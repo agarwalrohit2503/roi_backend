@@ -10,6 +10,8 @@ tableNames = {
   State: db.state,
   influencerContentNiche: db.influencer_content_niche,
   contentNiche:db.content_niche,
+  influencerPrice: db.influencer_price,
+  
   //row sql tables names
   // otps: "otp",
   Influencer: "influencer",

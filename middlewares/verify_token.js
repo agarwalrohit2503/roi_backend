@@ -15,7 +15,7 @@ async function authJWT(req, res, next) {
           res.status(200).send({ message: "invalid token" });
         }
         data = decoded;
-        console.log(data.brandlog);
+        //console.log(data.brandlog);
 
         if (data.brandlog == null) {
           res.status(200).send({ message: "not authorized" });

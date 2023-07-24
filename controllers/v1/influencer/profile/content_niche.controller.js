@@ -82,7 +82,7 @@ async function AddContentNiche(req, res){
         res.status(404).send(
             { 
                 "status":404, 
-                "message":"Your previews content niche not deleted", 
+                "message":"Your preview content niche not deleted", 
             }
           );
     }
