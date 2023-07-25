@@ -7,6 +7,7 @@ module.exports = {
 
      await queryInterface.bulkInsert('state', [{
       state_name: 'Delhi',
+      delete_flag: 0,
      
      //  isBetaMember: false
      }], {});
