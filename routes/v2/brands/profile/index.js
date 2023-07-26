@@ -10,7 +10,7 @@ router.get("/details/:brand_id",(req, res)=> {
     getProfile(req, res);
 });
 
-router.patch("/update-brand-profile/:brand_id",(req, res)=> {
+router.patch("/update-details/:brand_id",(req, res)=> {
     updateBrandprofile(req, res);
 });
 

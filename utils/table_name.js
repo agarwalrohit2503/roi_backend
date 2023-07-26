@@ -16,7 +16,8 @@ tableNames = {
   campaignContentNiche: db.campaignContentNiche,
 
   campaignApplication: db.campaign_application,
-
+  brandIndustry: db.brand_industry,
+  brandType: db.brand_type,
   //resource start
   Industry: db.industry,
 

@@ -26,12 +26,12 @@ async function getProfile(req, res) {
           {
             attributes: ["state_id", "state_name"],
             model: tableNames.State,
-            as: "influencer_state",
+           // as: "influencer_state",
           },
           {
             attributes: ["city_id", "city_name"],
             model: tableNames.City,
-            as: "influencer_city",
+           // as: "influencer_city",
           },
 
           // {

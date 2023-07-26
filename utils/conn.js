@@ -239,6 +239,16 @@ db.influencer_address.belongsTo(db.influencer, {
   targetKey: "influencer_id", // primary table
 });
 
+db.influencer_address.belongsTo(db.City, {
+  foreignKey: "city_id", // foreign table
+  targetKey: "city_id", // primary table
+});
+
+db.influencer_address.belongsTo(db.state, {
+  foreignKey: "state_id", // foreign table
+  targetKey: "state_id", // primary table
+});
+
 db.influencer_content_niche.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
@@ -311,14 +321,14 @@ db.influencer.hasMany(db.influencer_address, {
   as: "address",
 });
 
-db.influencer_address.hasOne(db.state, {
+db.influencer_address.hasMany(db.state, {
   foreignKey: "state_id",
-  as: "influencer_state",
+  // as: "influencer_state",
 });
 
-db.influencer_address.hasOne(db.City, {
+db.influencer_address.hasMany(db.City, {
   foreignKey: "city_id",
-  as: "influencer_city",
+  // as: "influencer_city",
 });
 
 db.influencer.hasMany(db.influencer_content_niche, {
@@ -355,4 +365,33 @@ db.campaignContentNiche.hasMany(db.content_niche, {
 //   foreignKey: "campaign_status_id",
 //   //as: "harshsh_payment_status_id",
 // });
+
+//////////////// BRANDS RELATION SECTION START /////////////////////////////////////
+
+db.brands.hasMany(db.state, {
+  foreignKey: "state_id",
+  // as: "influencer_state",
+});
+
+db.brands.hasMany(db.City, {
+  foreignKey: "city_id",
+  // as: "influencer_city",
+});
+
+db.brands.hasMany(db.brand_industry, {
+  foreignKey: "brand_id",
+  // as: "influencer_city",
+});
+
+db.brand_industry.hasMany(db.industry, {
+  foreignKey: "industry_id",
+  // as: "influencer_city",
+});
+
+db.brands.hasMany(db.brand_type, {
+  foreignKey: "brand_type_id",
+  // as: "influencer_city",
+});
+
+//////////////// BRANDS RELATION SECTION END /////////////////////////////////////
 module.exports = { db, sequelize, operatorsAliases };
