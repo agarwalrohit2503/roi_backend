@@ -23,8 +23,8 @@ async function authJWT(req, res, next) {
         {
           console.log(data.brandlog);
           if (data.brandlog == true) {
-            let Sqltoken = await tableNames.gen_token.findOne({
-              where: { gen_token: token, brand_id: data.brands_id },
+            let Sqltoken = await tableNames.access_tokens.findOne({
+              where: { access_tokens: token, brand_id: data.brands_id },
             });
             if (!Sqltoken) {
               res.status(403).send({ message: "token failed" });
@@ -37,9 +37,9 @@ async function authJWT(req, res, next) {
               }
             }
           } else {
-            let Sqltoken = await tableNames.gen_token.findOne({
+            let Sqltoken = await tableNames.access_tokens.findOne({
               where: {
-                gen_token: token,
+                access_tokens: token,
                 influencer_id: data.influencer_id,
               },
             });
@@ -60,7 +60,7 @@ async function authJWT(req, res, next) {
         // res.header("Access-Control-Allow-Methods", "PUT, GET,POST");
         next();
       });
-      //    let Sqlquery = await tableNames.gen_token.findOne({ where: { gen_token: token,} });
+      //    let Sqlquery = await tableNames.access_tokens.findOne({ where: { access_tokens: token,} });
       //   console.log(Sqlquery);
       //    if(Sqlquery != null)
       //    {

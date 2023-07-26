@@ -192,18 +192,19 @@ async function otpverify(req, res) {
           });
           let tokeninfo = {
             brand_id: brand_id,
-            gen_token: token,
+            access_tokens: token,
           };
-          const sqlquery = await tableNames.gen_token.create(tokeninfo);
+          const sqlquery = await tableNames.access_tokens.create(tokeninfo);
           if (!sqlquery) {
             res.status(400).send({
               status: 400,
               message: "token not generated",
             });
           } else {
-           console.log(otpquery["otp_id"]);
-           const updateQuery = await tableNames.otp.update({otp_flag: 1 },
-              {where: { otp_id: otpquery["otp_id"]}}
+            console.log(otpquery["otp_id"]);
+            const updateQuery = await tableNames.otp.update(
+              { otp_flag: 1 },
+              { where: { otp_id: otpquery["otp_id"] } }
             );
             if (!updateQuery) {
               res.status(400).send({
@@ -214,10 +215,9 @@ async function otpverify(req, res) {
               res.status(200).send({
                 status: 200,
                 message: "Otp verified successfully",
-                token: sqlquery["gen_token"],
+                token: sqlquery["access_tokens"],
               });
             }
-           
           }
         }
       } else {
@@ -239,48 +239,50 @@ async function otpverify(req, res) {
             message: "Brand not found",
           });
         } else {
-
           const brands_id = findQuery["brands_id"];
-          const number = findQuery["number"];  
-          const email = findQuery["email"];  
+          const number = findQuery["number"];
+          const email = findQuery["email"];
           const privatekey = process.env.privateKey;
-                  let params = {
-                    brands_id :   brands_id,
-                    number    :   number,
-                    email     :   email,
-                    brandlog  :   true,
-                  };
-                  const token = await jwt.sign(params, privatekey, {
-                    expiresIn: "10d",
-                  });
-                  let tokeninfo = {
-                    brand_id: brands_id,
-                    gen_token: token,
-                  };
-                  const sqlquery = await tableNames.gen_token.create(tokeninfo);
-                  if (!sqlquery) {
-                    res.status(400).send({
-                      status: 400,
-                      message: "token not generated",
-                    });
-                  } else {
-                   // console.log(otpquery["otp_id"]);
-                    const updateQuery = await tableNames.otp.update({otp_flag: 1 },
-                       {where: { otp_id: otpquery["otp_id"]}}
-                     );
-                     if (!updateQuery) {
-                       res.status(400).send({
-                         status: 400,
-                         message: "Otp not verified",
-                       });
-                     } else {
-                       res.status(200).send({
-                         status: 200,
-                         message: "Otp verified successfully",
-                         token: sqlquery["gen_token"],
-                       });
-                     }}
-      }}
+          let params = {
+            brands_id: brands_id,
+            number: number,
+            email: email,
+            brandlog: true,
+          };
+          const token = await jwt.sign(params, privatekey, {
+            expiresIn: "10d",
+          });
+          let tokeninfo = {
+            brand_id: brands_id,
+            access_tokens: token,
+          };
+          const sqlquery = await tableNames.access_tokens.create(tokeninfo);
+          if (!sqlquery) {
+            res.status(400).send({
+              status: 400,
+              message: "token not generated",
+            });
+          } else {
+            // console.log(otpquery["otp_id"]);
+            const updateQuery = await tableNames.otp.update(
+              { otp_flag: 1 },
+              { where: { otp_id: otpquery["otp_id"] } }
+            );
+            if (!updateQuery) {
+              res.status(400).send({
+                status: 400,
+                message: "Otp not verified",
+              });
+            } else {
+              res.status(200).send({
+                status: 200,
+                message: "Otp verified successfully",
+                token: sqlquery["access_tokens"],
+              });
+            }
+          }
+        }
+      }
     }
   }
 
@@ -332,9 +334,9 @@ async function otpverify(req, res) {
   //         let tokeninfo = {
   //           brand_id: inf_id,
   //           number: user_number,
-  //           gen_token: token,
+  //           access_tokens: token,
   //         };
-  //         const sqlquery = await tableNames.gen_token.create(tokeninfo);
+  //         const sqlquery = await tableNames.access_tokens.create(tokeninfo);
   //         if (!sqlquery) {
   //           res.status(400).send({
   //             status: 400,
@@ -362,7 +364,7 @@ async function otpverify(req, res) {
   //               status: 200,
   //               message: "Otp verified successfully",
 
-  //               token: sqlquery["gen_token"],
+  //               token: sqlquery["access_tokens"],
   //             });
   //           }
   //         }
@@ -396,9 +398,9 @@ async function otpverify(req, res) {
   //         let tokeninfo = {
   //           brand_id: brands_id,
   //           number: number,
-  //           gen_token: token,
+  //           access_tokens: token,
   //         };
-  //         const sqlquery = await tableNames.gen_token.create(tokeninfo);
+  //         const sqlquery = await tableNames.access_tokens.create(tokeninfo);
   //         if (!sqlquery) {
   //           res.status(400).send({
   //             status: 400,
@@ -425,7 +427,7 @@ async function otpverify(req, res) {
   //               status: 200,
   //               message: "Otp verified successfully",
   //               // brands_id: brands_id,
-  //               token: sqlquery["gen_token"],
+  //               token: sqlquery["access_tokens"],
   //             });
   //           }
   //         }

@@ -330,9 +330,9 @@ async function otpverify(req, res) {
           let tokeninfo = {
             brand_id: brands_id,
             number: number,
-            gen_token: token,
+            access_tokens: token,
           };
-          const sqlquery = await tableNames.gen_token.create(tokeninfo);
+          const sqlquery = await tableNames.access_tokens.create(tokeninfo);
           if (!sqlquery) {
             res.status(400).send({
               status: 400,
@@ -340,7 +340,7 @@ async function otpverify(req, res) {
             });
           } else {
             var tokensql = sqlquery.toJSON();
-            console.log(tokensql["gen_token"]);
+            console.log(tokensql["access_tokens"]);
 
             const sqlQuery1 = `SELECT * FROM ${tableNames.brand} WHERE brands_id = ${brands_id} `;
 
@@ -365,7 +365,7 @@ async function otpverify(req, res) {
                     {
                       brands_id: data["brands_id"],
                       secret_key: data["secret_key"],
-                      token: tokensql["gen_token"],
+                      token: tokensql["access_tokens"],
                     },
                   ],
                 });
@@ -412,7 +412,7 @@ async function otpverify(req, res) {
                   {
                     brands_id: result1[0]["brands_id"],
                     // "secret_key":  result1[0]['secret_key'],
-                    token: result3[0]["gen_token"],
+                    token: result3[0]["access_tokens"],
                   },
                 ],
               });

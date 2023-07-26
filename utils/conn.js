@@ -108,7 +108,10 @@ db.favourite_influencer = require("../models/favourite_influencer.model")(
   sequelize,
   DataTypes
 );
-db.gen_token = require("../models/gen_token.model")(sequelize, DataTypes);
+db.access_tokens = require("../models/access_tokens.model")(
+  sequelize,
+  DataTypes
+);
 db.campaignContentNiche = require("../models/campaign_content_niche.model")(
   sequelize,
   DataTypes
@@ -222,11 +225,11 @@ db.campaign.belongsTo(db.campaign_status, {
   targetKey: "campaign_status_id", // primary table
 });
 
-db.gen_token.belongsTo(db.influencer, {
+db.access_tokens.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
-db.gen_token.belongsTo(db.brands, {
+db.access_tokens.belongsTo(db.brands, {
   foreignKey: "brand_id", // foreign table
   targetKey: "brands_id", // primary table
 });

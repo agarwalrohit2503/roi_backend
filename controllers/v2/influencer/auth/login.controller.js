@@ -13,7 +13,7 @@ async function influencerLogin(req, res) {
   });
 
   if (!SqlQuery) {
-   // const otpnum = Math.floor(1000 + Math.random() * 9000);
+    // const otpnum = Math.floor(1000 + Math.random() * 9000);
 
     // const verificationCode = Math.floor(1000 + Math.random() * 900000);
     const UserOtp = await tableNames.otp.create({
@@ -40,9 +40,9 @@ async function influencerLogin(req, res) {
 
     var data = SqlQuery.toJSON();
 
-   // console.log(data);
-   // console.log(mobile_number);
-   // console.log(data["influencer_id"]);
+    // console.log(data);
+    // console.log(mobile_number);
+    // console.log(data["influencer_id"]);
     if (data["account_delete"] == 1) {
       res.status(404).send({
         status: 404,
@@ -80,9 +80,6 @@ async function influencerLogin(req, res) {
       }
     }
   }
-
-
-  
 }
 async function otpverify(req, res) {
   const otp = req.body.otp;
@@ -134,7 +131,7 @@ async function otpverify(req, res) {
           let params = {
             influencer_id: inf_id,
             number: user_number,
-            brandlog:false
+            brandlog: false,
           };
           const token = await jwt.sign(params, privatekey, {
             expiresIn: "10d",
@@ -142,9 +139,9 @@ async function otpverify(req, res) {
           let tokeninfo = {
             influencer_id: inf_id,
             number: user_number,
-            gen_token: token,
+            access_tokens: token,
           };
-          const sqlquery = await tableNames.gen_token.create(tokeninfo);
+          const sqlquery = await tableNames.access_tokens.create(tokeninfo);
           if (!sqlquery) {
             res.status(400).send({
               status: 400,
@@ -174,7 +171,7 @@ async function otpverify(req, res) {
                 // data: [
                 //   {
                 influencer_id: inf_id,
-                token: sqlquery["gen_token"],
+                token: sqlquery["access_tokens"],
                 //   },
                 // ],
               });
@@ -196,16 +193,14 @@ async function otpverify(req, res) {
             message: "user not found",
           });
         } else {
-
-       const   influencer_id = influencerQuery['influencer_id'];
-       const   number = influencerQuery['number'];
-
+          const influencer_id = influencerQuery["influencer_id"];
+          const number = influencerQuery["number"];
 
           const privatekey = process.env.privateKey;
           let params = {
             influencer_id: influencer_id,
             number: number,
-            brandlog:false
+            brandlog: false,
           };
           const token = await jwt.sign(params, privatekey, {
             expiresIn: "10d",
@@ -213,17 +208,15 @@ async function otpverify(req, res) {
           let tokeninfo = {
             influencer_id: influencer_id,
             number: number,
-            gen_token: token,
-           
+            access_tokens: token,
           };
-          const sqlquery = await tableNames.gen_token.create(tokeninfo);
+          const sqlquery = await tableNames.access_tokens.create(tokeninfo);
           if (!sqlquery) {
             res.status(400).send({
               status: 400,
               message: "token not generated",
             });
           } else {
-
             const updateQuery = await tableNames.otp.update(
               {
                 otp_flag: 1,
@@ -242,26 +235,14 @@ async function otpverify(req, res) {
             } else {
               res.status(200).send({
                 status: 200,
-                message: "Otp verified successfully",  
+                message: "Otp verified successfully",
                 influencer_id: influencer_id,
-                token: sqlquery["gen_token"],       
+                token: sqlquery["access_tokens"],
               });
             }
           }
 
-
-
-
-
-
-
-
-
-
-
-
-
-          // let tokenquery = await tableNames.gen_token.findOne({
+          // let tokenquery = await tableNames.access_tokens.findOne({
           //   where: {
           //     influencer_id : influencer_id ,
           //     verification_code: verification_code,
@@ -271,16 +252,10 @@ async function otpverify(req, res) {
           //   status: 200,
           //   message: influencerQuery,
           // });
-      
-      
-
         }
-
-       
       }
     }
   }
-
 }
 module.exports = {
   influencerLogin,

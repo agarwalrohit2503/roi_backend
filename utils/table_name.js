@@ -1,28 +1,27 @@
-
 const { db, sequelize } = require("../utils/conn");
 
 tableNames = {
   influencer: db.influencer,
   brands: db.brands,
   otp: db.otp,
-  gen_token: db.gen_token,
+  access_tokens: db.access_tokens,
   City: db.City,
   influencerAddress: db.influencer_address,
   State: db.state,
   influencerContentNiche: db.influencer_content_niche,
-  contentNiche:db.content_niche,
+  contentNiche: db.content_niche,
   influencerPrice: db.influencer_price,
-  campaignPaymentType : db.campaign_payment_type,
+  campaignPaymentType: db.campaign_payment_type,
   Campaign: db.campaign,
   campaignContentNiche: db.campaignContentNiche,
 
-  campaignApplication:db.campaign_application,
+  campaignApplication: db.campaign_application,
 
   //resource start
-  Industry :db.industry,
+  Industry: db.industry,
 
   //resource end
-  
+
   //row sql tables names
   // otps: "otp",
   Influencer: "influencer",
@@ -47,7 +46,7 @@ tableNames = {
   industry: "industry",
   brands_file: "brands_file",
   favourite_influencer: "favourite_influencer",
-  genToken: "gen_token",
+  genToken: "access_tokens",
 };
 
 module.exports = Object.freeze(tableNames);
