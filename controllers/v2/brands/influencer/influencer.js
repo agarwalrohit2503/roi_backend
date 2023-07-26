@@ -71,6 +71,9 @@ async function getInfluencerList(req, res) {
           // },
           //required: true
         },
+        {
+            model:tableNames.influencerPrice,
+        }
       ],
     offset: Number.parseInt(offset ? offset : 0),
     limit: Number.parseInt(limit ? limit : 20),
@@ -89,6 +92,10 @@ async function getInfluencerList(req, res) {
       message: "influencer not found",
     });
   }
+}
+
+async function getInfluencerDemoList(req, res) {
+    getInfluencerList(req, res);
 }
 
 async function updateBrandprofile(req, res) {
@@ -205,5 +212,6 @@ async function updateBrandprofile(req, res) {
 
 module.exports = {
     getInfluencerList,
+    getInfluencerDemoList,
   updateBrandprofile,
 };

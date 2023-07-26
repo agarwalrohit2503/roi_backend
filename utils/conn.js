@@ -416,16 +416,12 @@ db.campaign_application.hasMany(db.application_status, {
   foreignKey: "	application_status_id",
   // as: "influencer_state",
 });
-
-// db.brands.hasMany(db.state, {
-//   foreignKey: "state_id",
-//   // as: "influencer_state",
-// });
-
-// db.brands.hasMany(db.City, {
-//   foreignKey: "city_id",
-//   // as: "influencer_city",
-// });
-
 //////////////APPLICATION CAMPAIGING RELATION SECTION END///////////////////////////
+
+//////////////////////////brands influends demo start//////////////////
+db.influencer.hasMany(db.influencer_price, {
+  foreignKey: "influencer_id",
+  // as: "influencer_state",
+});
+//////////////////////////brands influends demo end//////////////////
 module.exports = { db, sequelize, operatorsAliases };
