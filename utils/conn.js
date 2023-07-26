@@ -305,6 +305,11 @@ db.campaign_application.belongsTo(db.campaign_status, {
   targetKey: "campaign_status_id", // primary table
 });
 
+db.influencer_content_niche.belongsTo(db.content_niche, {
+  foreignKey: "content_niche_id", // foreign table
+  targetKey: "content_niche_id", // primary table
+});
+
 db.sequelize.sync({ force: false }).then(() => {
   // console.log('yes re-sync done!')
 });
