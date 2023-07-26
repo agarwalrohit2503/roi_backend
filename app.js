@@ -1,11 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const { swaggerServe, swaggerSetup } = require("./config");
 var cors = require("cors");
 const path = require("path");
 // var Router = require('router')
 //const routes = require("./routes");
-const v2 = require("./routes/v2")
-const v1 = require("./routes/v1")
+const v2 = require("./routes/v2");
+const v1 = require("./routes/v1");
 // const {db,sequelize} = require('../roi-Backend/utils/conn');
 // const { influencerRoutes } = require('./routes/influencers/auth/index');
 // //const {otpRoutes}  = require('./routes/otp.routes');
@@ -38,7 +39,7 @@ app.listen(port, () => {
   console.log(`server is running at ${port}`);
 });
 
-
+app.use("/api-docs", swaggerServe, swaggerSetup);
 app.use("/v1", v1);
 app.use("/v2", v2);
 
