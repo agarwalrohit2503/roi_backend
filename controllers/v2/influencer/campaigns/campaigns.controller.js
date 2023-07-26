@@ -160,7 +160,6 @@ async function getCampaignApplications(req, res) {
     attributes: ["campaign_applied_id"],
     include: [
       {
-      
         attributes: [
           "campaign_id",
           "campaign_name",
@@ -172,29 +171,27 @@ async function getCampaignApplications(req, res) {
           "campaign_end_dt",
         ],
         model: tableNames.Campaign,
-        include:[
-         { 
-         attributes: ["brands_id", "brand_logo", "name"],
-          model: tableNames.brands,
-          include:[
-            {
-              attributes: ["state_id", "state_name"],
-              model: tableNames.State,
-           
-            },
-            {
-              attributes: ["city_id", "city_name"],
-              model: tableNames.City,
-           
-            },
-          ]
-        },
-        
-        ]
+        include: [
+          {
+            attributes: ["brands_id", "brand_logo", "name"],
+            model: tableNames.brands,
+            include: [
+              {
+                attributes: ["state_id", "state_name"],
+                model: tableNames.State,
+              },
+              {
+                attributes: ["city_id", "city_name"],
+                model: tableNames.City,
+              },
+            ],
+          },
+        ],
         // as: "brand",
-      },{
-        model:tableNames.applicationStatus,
-      }
+      },
+      {
+        model: tableNames.applicationStatus,
+      },
     ],
     // order: [
     //   ["createdAt", "DESC"],
@@ -203,7 +200,7 @@ async function getCampaignApplications(req, res) {
     //raw: true,
     where: {
       influencer_id: influencer_id,
-      application_status_id:status_id,
+      application_status_id: status_id,
       ...(search_term
         ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
         : {}),
