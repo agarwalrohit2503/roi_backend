@@ -1,5 +1,6 @@
 const tableNames = require("../../../../utils/table_name");
 const { db, sequelize } = require("../../../../utils/conn");
+const { addAddress } = require("../address/address.controller");
 
 async function getProfile(req, res) {
   const influencer_id = req.params.influencer_id;
@@ -26,12 +27,12 @@ async function getProfile(req, res) {
           {
             attributes: ["state_id", "state_name"],
             model: tableNames.State,
-           // as: "influencer_state",
+            // as: "influencer_state",
           },
           {
             attributes: ["city_id", "city_name"],
             model: tableNames.City,
-           // as: "influencer_city",
+            // as: "influencer_city",
           },
 
           // {
@@ -111,26 +112,19 @@ async function updateProfile(req, res) {
   influencer_address_id = req.body.influencer_address_id;
   profile_status = req.body.profile_status;
 
-  Name = req.body.name;
-  email = req.body.email;
-  gender = req.body.gender;
-  mobile_number = req.body.mobile_number;
-  dob = req.body.dob;
-  country = req.body.country;
-  pan_card = req.body.pan_card;
-  gst_number = req.body.gst_number;
-  bio = req.body.bio;
-
-  address = req.body.address;
-  country = req.body.ountry;
-  city_id = req.body.city_id;
-  state_id = req.body.state_id;
-  pin = req.body.pin;
+  var name = req.body.name;
+  var email = req.body.email;
+  var gender = req.body.gender;
+  var mobile_number = req.body.mobile_number;
+  var dob = req.body.dob;
+  var pan_card = req.body.pan_card;
+  var gst_number = req.body.gst_number;
+  var bio = req.body.bio;
 
   try {
     const result = await tableNames.influencer.update(
       {
-        name: Name,
+        name: name,
         email: email,
         gender: gender,
         dob: dob,
@@ -166,7 +160,7 @@ async function updateProfile(req, res) {
   }
 }
 
-async function updatedInfluencerPrice(req, res) {
+async function updateInfluencerPrice(req, res) {
   influencer_id = req.params.influencer_id;
   post_cost = req.body.post_cost;
   reels_cost = req.body.reels_cost;
@@ -233,24 +227,13 @@ async function updatedInfluencerPrice(req, res) {
       message: error,
     });
   }
-
-  // const sqlQuery = `
-  // UPDATE ${tableNames.influencer_price} SET
-  // post_cost= '${post_cost}',
-  // reels_cost= '${reels_cost}',
-  // video_cost= '${video_cost}',
-  // story_cost= '${story_cost}' WHERE influencer_id =${influencer_id}`;
-
-  // var result = await sequelize.query(sqlQuery, { type: sequelize.QueryTypes.UPDATE},)
 }
 
 async function addContentNiche(req, res) {
   influencer_id = req.params.influencer_id;
   content_niche_id = req.body.content_niche_id;
 
-
-   try {
-
+  try {
     findQuery = await tableNames.influencerContentNiche.findAll({
       where: { influencer_id: influencer_id },
     });
@@ -261,19 +244,17 @@ async function addContentNiche(req, res) {
           content_niche_id: result,
         });
       });
-  
+
       if (!data) {
         res.status(400).send({
           status: 400,
           message: "Influencer content niche not updated",
         });
       } else {
-     
         res.status(200).send({
           status: 200,
           message: "Influencer content niche updated",
         });
-      
       }
     } else {
       const deleteQuery = await tableNames.influencerContentNiche.destroy({
@@ -285,145 +266,37 @@ async function addContentNiche(req, res) {
           message: "Content niche not deleted",
         });
       } else {
-      const data = content_niche_id.map(async (result) => {
-        await tableNames.influencerContentNiche.create({
-          influencer_id: influencer_id,
-          content_niche_id: result,
+        const data = content_niche_id.map(async (result) => {
+          await tableNames.influencerContentNiche.create({
+            influencer_id: influencer_id,
+            content_niche_id: result,
+          });
         });
-      });
-  
-      if (!data) {
-        res.status(400).send({
-          status: 400,
-          message: "Influencer content niche not update",
-        });
-      } else {
-     
-        res.status(200).send({
-          status: 200,
-          message: "Influencer content niche updated",
-        });
-      
-      }
+
+        if (!data) {
+          res.status(400).send({
+            status: 400,
+            message: "Influencer content niche not update",
+          });
+        } else {
+          res.status(200).send({
+            status: 200,
+            message: "Influencer content niche updated",
+          });
+        }
       }
     }
-    
-
-
-
-
-   } catch (error) {
+  } catch (error) {
     res.status(500).send({
       status: 500,
       message: "Internal error",
     });
-   }
-
-
-
-
+  }
 }
 
-// async function AddContentNiche1(req, res) {
-//   influencer_id = req.params.influencer_id;
-//   content_niche_id = req.body.content_niche_id;
-
-//   sqlquery = `SELECT * FROM ${tableNames.influencer_content_niche}  WHERE influencer_id= '${influencer_id}'`;
-//   result = await sequelize.query(sqlquery, {
-//     type: sequelize.QueryTypes.SELECT,
-//   });
-
-//   if (result.length != 0) {
-//     sqldelete = `DELETE FROM ${tableNames.influencer_content_niche} WHERE  influencer_id= ${influencer_id}`;
-//     result = await sequelize.query(sqldelete, {
-//       type: sequelize.QueryTypes.DELETE,
-//     });
-//     if (!result) {
-//       content_niche_id.map(async (result) => {
-//         const sqlQuery = `
-//     INSERT INTO ${tableNames.influencer_content_niche} 
-//     ( influencer_id, content_niche_id )
-//     VALUES
-//     ('${influencer_id}','${result}')`;
-
-//         var result = await sequelize.query(sqlQuery, {
-//           type: sequelize.QueryTypes.INSERT,
-//         });
-//         if (result.length != 0) {
-//           res.status(200).send({
-//             status: 200,
-//             message: "Your Content Niche added",
-//           });
-//         } else {
-//           res.status(404).send({
-//             status: 404,
-//             message: "INTERNAL ERROR",
-//           });
-//         }
-//       });
-//     } else {
-//       res.status(404).send({
-//         status: 404,
-//         message: "Your preview content niche not deleted",
-//       });
-//     }
-//   } else {
-//     content_niche_id.map(async (result) => {
-//       const sqlQuery = `
-//     INSERT INTO ${tableNames.influencer_content_niche} 
-//     ( influencer_id, content_niche_id )
-//     VALUES
-//     ('${influencer_id}','${result}')`;
-
-//       var result = await sequelize.query(sqlQuery, {
-//         type: sequelize.QueryTypes.INSERT,
-//       });
-//       if (result.length != 0) {
-//         res.status(200).send({
-//           status: 200,
-//           message: "Your Content Niche added",
-//         });
-//       } else {
-//         res.status(404).send({
-//           status: 404,
-//           message: "INTERNAL ERROR",
-//         });
-//       }
-//     });
-//   }
-// }
-
-// if (influencer_address_id > 0) {
-//   const sqlquery = await tableNames.influencerAddress.update(
-//     {
-//       address: address,
-//       country: country,
-//       city_id: city_id,
-//       state_id: state_id,
-//       pin: pin,
-//     },
-//     {
-//       where: {
-//         influencer_id: influencer_id,
-//         influencer_address_id: influencer_address_id,
-//       },
-//     }
-//   );
-//   if (result[0] != 0) {
-//     res.status(200).send({
-//       status: 200,
-//       message: "Influencer profile & address updated",
-//     });
-//   } else {
-//     res.status(200).send({
-//       status: 200,
-//       message: "Influencer profile address not updates",
-//     });
-//   }
-// }
 module.exports = {
   getProfile,
   updateProfile,
-  updatedInfluencerPrice,
+  updateInfluencerPrice,
   addContentNiche,
 };

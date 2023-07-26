@@ -18,6 +18,9 @@ tableNames = {
   campaignApplication: db.campaign_application,
   brandIndustry: db.brand_industry,
   brandType: db.brand_type,
+
+  applicationStatus : db.application_status,
+
   //resource start
   Industry: db.industry,
 

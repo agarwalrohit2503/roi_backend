@@ -206,7 +206,7 @@ db.campaign_application.belongsTo(db.influencer, {
 });
 
 db.campaign_application.belongsTo(db.campaign_status, {
-  foreignKey: "application_status_id", // foreign table
+  foreignKey: "campaign_status_id", // foreign table
   targetKey: "campaign_status_id", // primary table
 });
 
@@ -394,4 +394,33 @@ db.brands.hasMany(db.brand_type, {
 });
 
 //////////////// BRANDS RELATION SECTION END /////////////////////////////////////
+
+//////////////APPLICATION CAMPAIGING RELATION SECTION START///////////////////////////
+
+db.campaign_application.hasMany(db.campaign, {
+  foreignKey: "campaign_id",
+  // as: "influencer_state",
+});
+
+db.campaign.hasMany(db.brands, {
+  foreignKey: "brands_id",
+  // as: "influencer_state",
+});
+
+db.campaign_application.hasMany(db.application_status, {
+  foreignKey: "	application_status_id",
+  // as: "influencer_state",
+});
+
+// db.brands.hasMany(db.state, {
+//   foreignKey: "state_id",
+//   // as: "influencer_state",
+// });
+
+// db.brands.hasMany(db.City, {
+//   foreignKey: "city_id",
+//   // as: "influencer_city",
+// });
+
+//////////////APPLICATION CAMPAIGING RELATION SECTION END///////////////////////////
 module.exports = { db, sequelize, operatorsAliases };

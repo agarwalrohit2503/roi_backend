@@ -162,7 +162,7 @@ FROM ${tableNames.campaign} as c
   }
 }
 
-async function applied(req, res) {
+async function getCampaignApplications(req, res) {
   influencer_id = req.params.influencer_id;
 
   selectQuery = `
@@ -232,5 +232,5 @@ module.exports = {
   getCampaignDetails,
   getCampaigns,
   guestApi,
-  applied,
+  getCampaignApplications,
 };

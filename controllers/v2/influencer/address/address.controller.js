@@ -18,56 +18,61 @@ async function addAddress(req, res) {
       country: country,
     };
 
-    const updateQuery = await tableNames.influencerAddress.create(addressInfo);
-    if (updateQuery != "") {
+    const insertQuery = await tableNames.influencerAddress.create(addressInfo);
+    if (insertQuery != "") {
       res.status(200).send({
         status: 200,
-        message: "address updated",
+        message: "address inserted",
       });
     } else {
       res.status(404).send({
         status: 404,
-        message: "address not updated",
+        message: "address not inserted",
       });
     }
   } catch (error) {
-    res.status(200).send({
-      status: 200,
-      message: "Server Internal Error", //city_id & state_id is required
+    res.status(400).send({
+      status: 500,
+      message: "Server Internal Error",
     });
   }
 }
 
 async function getAddress(req, res) {
   const influencer_id = req.params.influencer_id;
+  try {
+    findQuery = await tableNames.influencerAddress.findAll({
+      attributes: ["influencer_id", "address", "country", "pin"],
+      where: { influencer_id: influencer_id },
+      include: [
+        {
+          attributes: ["state_name"],
+          model: tableNames.State,
+          as: "influencer_state",
+        },
+        {
+          attributes: ["city_name"],
+          model: tableNames.City,
+          as: "influencer_city",
+        },
+      ],
+    });
 
-  findQuery = await tableNames.influencerAddress.findAll({
-    attributes: ["influencer_id", "address", "country", "pin"],
-    where: { influencer_id: influencer_id },
-    include: [
-      {
-        attributes: ["state_name"],
-        model: tableNames.State,
-        as: "influencer_state",
-      },
-      {
-        attributes: ["city_name"],
-        model: tableNames.City,
-        as: "influencer_city",
-      },
-    ],
-  });
+    // if (findQuery != "") {
 
-  if (findQuery != "") {
+    // } else {
+    //
+    // }
     res.status(200).send({
       status: 200,
       message: "Influencer address",
       data: findQuery,
     });
-  } else {
-    res.status(404).send({
-      status: 404,
-      message: "address not found",
+  } catch (error) {
+    res.status(400).send({
+      status: 400,
+      error: error,
+      message: "Internal Error",
     });
   }
 }
