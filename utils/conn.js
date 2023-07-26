@@ -287,6 +287,11 @@ db.campaign.belongsTo(db.campaign_payment_type, {
   uniqueKey: "campaign_type_fk", // foreign key constraint name
 });
 
+db.campaign_application.belongsTo(db.campaign_status, {
+  foreignKey: "campaign_status_id", // foreign table
+  targetKey: "campaign_status_id", // primary table
+});
+
 db.sequelize.sync({ force: false }).then(() => {
   // console.log('yes re-sync done!')
 });
@@ -342,4 +347,9 @@ db.campaignContentNiche.hasMany(db.content_niche, {
   foreignKey: "content_niche_id",
   //as: "harshsh_payment_status_id",
 });
+
+// db.campaign.hasMany(db.campaign_status, {
+//   foreignKey: "campaign_status_id",
+//   //as: "harshsh_payment_status_id",
+// });
 module.exports = { db, sequelize, operatorsAliases };

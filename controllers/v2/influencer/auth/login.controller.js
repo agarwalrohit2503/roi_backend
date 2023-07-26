@@ -13,12 +13,12 @@ async function influencerLogin(req, res) {
   });
 
   if (!SqlQuery) {
-    const otpnum = Math.floor(1000 + Math.random() * 9000);
+   // const otpnum = Math.floor(1000 + Math.random() * 9000);
 
     // const verificationCode = Math.floor(1000 + Math.random() * 900000);
     const UserOtp = await tableNames.otp.create({
       verification_code: vcode,
-      otp_code: otpnum,
+      otp_code: 1111,
       influencer_id: null,
       number: mobile_number,
     });
@@ -49,12 +49,12 @@ async function influencerLogin(req, res) {
         message: "you account has been deactivated",
       });
     } else {
-      const otpnum = Math.floor(1000 + Math.random() * 9000);
+      // const otpnum = Math.floor(1000 + Math.random() * 9000);
       //  const verificationCode = Math.floor(1000 + Math.random() * 900000);
 
       const UserOtp = await tableNames.otp.create({
         verification_code: vcode,
-        otp_code: otpnum,
+        otp_code: 1111,
         influencer_id: data["influencer_id"],
         number: mobile_number,
       });
@@ -80,6 +80,9 @@ async function influencerLogin(req, res) {
       }
     }
   }
+
+
+  
 }
 async function otpverify(req, res) {
   const otp = req.body.otp;
@@ -111,9 +114,9 @@ async function otpverify(req, res) {
         number = otpquery["number"];
         let userinfo = {
           number: number,
-          city_id: null,
-          state_id: null,
-          email: null,
+          // city_id: null,
+          // state_id: null,
+          // email: null,
         };
         const user = await tableNames.influencer.create(userinfo);
         console.log(user);

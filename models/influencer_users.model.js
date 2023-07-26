@@ -13,22 +13,22 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING,
-        defaultValue: null,
-        unique: true,
+       // defaultValue: null,
+      //  unique: true,
       },
       gender: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
       number: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-        unique: true,
+       type: DataTypes.BIGINT,
+       // allowNull: false,
+     // unique: true,
       },
       dob: {
         type: DataTypes.DATE,
       },
-    //  country: { type: DataTypes.STRING, defaultValue: null },
+
       pan_card: { type: DataTypes.STRING, defaultValue: null },
       gst_number: { type: DataTypes.STRING, defaultValue: null },
       bio: { type: DataTypes.TEXT, defaultValue: null },
@@ -40,11 +40,6 @@ module.exports = (sequelize, DataTypes) => {
       updatedAt: false,
     }
   );
-  // influencer.associate = (models) => {
-  //   // associations can be defined here
-  //   influencer.belongsTo(models.influencer_content_niche, {
-  //     foreignKey: "influencer_id",
-  //   });
-  // };
+
   return influencer;
 };
