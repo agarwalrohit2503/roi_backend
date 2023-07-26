@@ -1,3 +1,4 @@
+const tableNames = require("../utils/table_name");
 module.exports = (sequelize, DataTypes) => {
 
     const brand_industry = sequelize.define("brand_industry", {
@@ -8,16 +9,16 @@ module.exports = (sequelize, DataTypes) => {
         },
         brand_id: {
             type: DataTypes.INTEGER,
-            defaultValue: '0'
+            defaultValue: null
         },
         industry_id: {
             type: DataTypes.INTEGER,
-            defaultValue: '0'
+            defaultValue: null
         },
        
         delete_flag: {
-            type: DataTypes.INTEGER,
-            defaultValue: '0'
+            type: DataTypes.TINYINT,
+            defaultValue: 0
         },
        
     },{

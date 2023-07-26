@@ -1,61 +1,426 @@
-const dbConfig = require('../config/dbConfig');
-const { Sequelize, DataTypes } = require('sequelize');
+const dbConfig = require("../config/dbConfig");
+const { Sequelize, DataTypes } = require("sequelize");
+//const sequelize = require("sequelize");
+// const dbtest = require("./relationships");
+const Op = Sequelize.Op;
 
-const sequelize = new Sequelize(
-  dbConfig.DB, 
-  dbConfig.USER,
-  dbConfig.PASSWORD, {
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
-    dialectOptions: {
-      supportBigNumbers: true
-    }, /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */
-    define: {
-      timestamps: true,
-      freezeTableName: true
-    },
-  logging: true
+const operatorsAliases = {
+  $eq: Op.eq,
+  $or: Op.or,
+  $like: Op.like,
+};
+
+const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect,
+  dialectOptions: {
+    supportBigNumbers: true,
+  } /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
+  define: {
+    timestamps: true,
+    freezeTableName: true,
+  },
+  logging: true,
 });
 
 try {
-   sequelize.authenticate();
-  console.log('Connection has been established successfully.');
+  sequelize.authenticate();
+  console.log("Connection has been established successfully.");
 } catch (error) {
-  console.error('Unable to connect to the database:', error);
+  console.error("Unable to connect to the database:", error);
 }
 
-const db = {}
+const db = {};
 
-//db.Sequelize = Sequelize
-db.sequelize = sequelize
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
 
-db.influencer_users = require('../models/influencer_users.model')(sequelize, DataTypes)
-db.otp = require('../models/otp.model')(sequelize, DataTypes)
-db.City = require('../models/city.model')(sequelize, DataTypes)
-db.state = require('../models/state.model')(sequelize, DataTypes)
-db.influencer_price = require('../models/influencer_price.model')(sequelize, DataTypes)
-db.influencer_address = require('../models/influencer_address.model')(sequelize, DataTypes)
-db.influencer_file = require('../models/influencer_file.model')(sequelize, DataTypes) 
-db.influencer_youtube = require('../models/influencer_youtube.model')(sequelize, DataTypes)
-db.influencer_facebook = require('../models/influencer_facebook.model.js')(sequelize, DataTypes)
-db.influencer_instagram = require('../models/influencer_instagram.model')(sequelize, DataTypes)
-db.favourite_influencer = require('../models/favourite_influencer.model')(sequelize, DataTypes)
-db.content_niche = require('../models/content_niche.model')(sequelize, DataTypes)
-db.influencer_content_niche = require('../models/influencer_content_niche.model')(sequelize, DataTypes)
-db.industry = require('../models/industry.model')(sequelize, DataTypes)
-db.brand_type = require('../models/brand_type.model')(sequelize, DataTypes)
-db.brand_industry = require('../models/brand_industry.model')(sequelize, DataTypes)
-db.brands = require('../models/brands.model')(sequelize, DataTypes)
-db.configuration = require('../models/configration.model')(sequelize, DataTypes)
-db.brands_file = require('../models/brand_file.model')(sequelize, DataTypes) 
-db.campaign_payment_type = require('../models/campaign_payment_type.model')(sequelize, DataTypes) 
-db.campaign_status = require('../models/campaign_status.model')(sequelize, DataTypes)
-db.campaign_applied = require('../models/campaign_applied.model')(sequelize, DataTypes)
-db.campaign = require('../models/campaign.model')(sequelize, DataTypes)
-db.favourite_influencer = require('../models/favourite_influencer.model')(sequelize, DataTypes)
-db.sequelize.sync({ force: false })
-.then(() => {
-   // console.log('yes re-sync done!')
-})
+db.influencer = require("../models/influencer_users.model")(
+  sequelize,
+  DataTypes
+);
+db.otp = require("../models/otp.model")(sequelize, DataTypes);
+db.City = require("../models/city.model")(sequelize, DataTypes);
 
-module.exports = {db,sequelize}
+// db.City.belongsTo(db.influencer, { foreignKey: "id_city_influencer" });
+
+db.state = require("../models/state.model")(sequelize, DataTypes);
+db.influencer_price = require("../models/influencer_price.model")(
+  sequelize,
+  DataTypes
+);
+db.influencer_address = require("../models/influencer_address.model")(
+  sequelize,
+  DataTypes
+);
+db.influencer_file = require("../models/influencer_file.model")(
+  sequelize,
+  DataTypes
+);
+db.influencer_youtube = require("../models/influencer_youtube.model")(
+  sequelize,
+  DataTypes
+);
+db.influencer_facebook = require("../models/influencer_facebook.model.js")(
+  sequelize,
+  DataTypes
+);
+db.influencer_instagram = require("../models/influencer_instagram.model")(
+  sequelize,
+  DataTypes
+);
+db.favourite_influencer = require("../models/favourite_influencer.model")(
+  sequelize,
+  DataTypes
+);
+db.content_niche = require("../models/content_niche.model")(
+  sequelize,
+  DataTypes
+);
+db.influencer_content_niche =
+  require("../models/influencer_content_niche.model")(sequelize, DataTypes);
+db.industry = require("../models/industry.model")(sequelize, DataTypes);
+db.brand_type = require("../models/brand_type.model")(sequelize, DataTypes);
+db.brand_industry = require("../models/brand_industry.model")(
+  sequelize,
+  DataTypes
+);
+db.brands = require("../models/brands.model")(sequelize, DataTypes);
+db.configuration = require("../models/configration.model")(
+  sequelize,
+  DataTypes
+);
+db.brands_file = require("../models/brand_file.model")(sequelize, DataTypes);
+db.campaign_payment_type = require("../models/campaign_payment_type.model")(
+  sequelize,
+  DataTypes
+);
+db.campaign_status = require("../models/campaign_status.model")(
+  sequelize,
+  DataTypes
+);
+db.campaign_application = require("../models/campaign_application.model")(
+  sequelize,
+  DataTypes
+);
+db.campaign = require("../models/campaign.model")(sequelize, DataTypes);
+db.favourite_influencer = require("../models/favourite_influencer.model")(
+  sequelize,
+  DataTypes
+);
+db.access_tokens = require("../models/access_tokens.model")(
+  sequelize,
+  DataTypes
+);
+db.campaignContentNiche = require("../models/campaign_content_niche.model")(
+  sequelize,
+  DataTypes
+);
+db.application_status = require("../models/application_status.model")(
+  sequelize,
+  DataTypes
+);
+///relationships table start
+// db.influencer.belongsTo(db.City, {
+//   foreignKey: "city_id", // foreign table
+//   targetKey: "city_id", // primary table
+// });
+
+// db.influencer.belongsTo(db.state, {
+//   foreignKey: "state_id", // foreign table
+//   targetKey: "state_id", // primary table
+// });
+
+db.brands.belongsTo(db.City, {
+  foreignKey: "city_id", // foreign table
+  targetKey: "city_id", // primary table
+});
+db.City.belongsTo(db.state, {
+  foreignKey: "state_id", // foreign table
+  targetKey: "state_id", // primary table
+});
+
+db.brands.belongsTo(db.state, {
+  foreignKey: "state_id", // foreign table
+  targetKey: "state_id", // primary table
+});
+
+db.brands.belongsTo(db.brand_type, {
+  foreignKey: "brand_type_id", // foreign table
+  targetKey: "brand_type_id", // primary table
+});
+
+db.brand_industry.belongsTo(db.industry, {
+  foreignKey: "industry_id", // foreign table
+  targetKey: "industry_id", // primary table
+});
+
+db.brand_industry.belongsTo(db.brands, {
+  foreignKey: "brand_id", // foreign table
+  targetKey: "brands_id", // primary table
+});
+
+db.brands_file.belongsTo(db.brands, {
+  foreignKey: "brand_id", // foreign table
+  targetKey: "brands_id", // primary table
+});
+
+db.otp.belongsTo(db.brands, {
+  foreignKey: "brand_id", // foreign table
+  targetKey: "brands_id", // primary table
+});
+
+db.otp.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
+db.favourite_influencer.belongsTo(db.brands, {
+  foreignKey: "brand_id", // foreign table
+  targetKey: "brands_id", // primary table
+});
+
+db.favourite_influencer.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
+db.campaign.belongsTo(db.brands, {
+  foreignKey: "brand_id", // foreign table
+  targetKey: "brands_id", // primary table
+});
+
+// db.campaign.belongsTo(db.campaign_status, {
+//   foreignKey: "campaign_status_id	", // foreign table
+//   targetKey: "campaign_status_id", // primary table
+// });
+
+db.campaign_application.belongsTo(db.campaign, {
+  foreignKey: "campaign_id", // foreign table
+  targetKey: "campaign_id", // primary table
+});
+
+db.campaign_application.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
+db.campaign_application.belongsTo(db.campaign_status, {
+  foreignKey: "campaign_status_id", // foreign table
+  targetKey: "campaign_status_id", // primary table
+});
+
+db.campaign_application.belongsTo(db.application_status, {
+  foreignKey: "application_status_id", // foreign table
+  targetKey: "application_status_id", // primary table
+});
+
+db.campaign.belongsTo(db.campaign_status, {
+  foreignKey: "campaign_status_id", // foreign table
+  targetKey: "campaign_status_id", // primary table
+});
+
+db.campaign.belongsTo(db.campaign_status, {
+  foreignKey: "campaign_status_id", // foreign table
+  targetKey: "campaign_status_id", // primary table
+});
+
+db.access_tokens.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+db.access_tokens.belongsTo(db.brands, {
+  foreignKey: "brand_id", // foreign table
+  targetKey: "brands_id", // primary table
+});
+
+db.influencer_address.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
+db.influencer_address.belongsTo(db.City, {
+  foreignKey: "city_id", // foreign table
+  targetKey: "city_id", // primary table
+});
+
+db.influencer_address.belongsTo(db.state, {
+  foreignKey: "state_id", // foreign table
+  targetKey: "state_id", // primary table
+});
+
+db.influencer_content_niche.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
+db.influencer_facebook.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
+db.influencer_file.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
+db.influencer_instagram.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
+db.influencer_price.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
+db.influencer_youtube.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
+db.campaignContentNiche.belongsTo(db.content_niche, {
+  foreignKey: "content_niche_id", // foreign table
+  targetKey: "content_niche_id", // primary table
+});
+
+db.campaignContentNiche.belongsTo(db.campaign, {
+  foreignKey: "campaign_id", // foreign table
+  targetKey: "campaign_id", // primary table
+});
+
+db.City.belongsTo(db.state, {
+  foreignKey: "state_id", // foreign table
+  targetKey: "state_id", // primary table
+});
+
+db.campaign.belongsTo(db.campaign_payment_type, {
+  foreignKey: "payment_status_id", // change column name
+  targetKey: "campaign_payment_type_id", // change the referenced column
+  uniqueKey: "campaign_type_fk", // foreign key constraint name
+});
+
+db.campaign_application.belongsTo(db.campaign_status, {
+  foreignKey: "campaign_status_id", // foreign table
+  targetKey: "campaign_status_id", // primary table
+});
+
+db.sequelize.sync({ force: false }).then(() => {
+  // console.log('yes re-sync done!')
+});
+
+///////////////////////////table join query//////////////////////
+
+//working code for city to influencer city fetch
+// db.City.hasOne(db.influencer, {
+//   foreignKey: "city_id",
+// });
+
+db.influencer.hasMany(db.influencer_address, {
+  foreignKey: "influencer_id",
+  as: "address",
+});
+
+db.influencer_address.hasMany(db.state, {
+  foreignKey: "state_id",
+  // as: "influencer_state",
+});
+
+db.influencer_address.hasMany(db.City, {
+  foreignKey: "city_id",
+  // as: "influencer_city",
+});
+
+db.influencer.hasMany(db.influencer_content_niche, {
+  foreignKey: "influencer_id",
+  as: "inf_content",
+});
+
+db.influencer_content_niche.hasMany(db.content_niche, {
+  foreignKey: "content_niche_id",
+  as: "content_nich",
+});
+
+db.brands.hasMany(db.campaign, {
+  foreignKey: "brand_id",
+  as: "brand_id",
+});
+
+db.campaign.hasMany(db.campaign_payment_type, {
+  foreignKey: "payment_status_id",
+  //as: "harshsh_payment_status_id",
+});
+
+db.campaign.hasMany(db.campaignContentNiche, {
+  foreignKey: "campaign_id",
+  //as: "harshsh_payment_status_id",
+});
+
+db.campaignContentNiche.hasMany(db.content_niche, {
+  foreignKey: "content_niche_id",
+  //as: "harshsh_payment_status_id",
+});
+
+// db.campaign.hasMany(db.campaign_status, {
+//   foreignKey: "campaign_status_id",
+//   //as: "harshsh_payment_status_id",
+// });
+
+//////////////// BRANDS RELATION SECTION START /////////////////////////////////////
+
+db.brands.hasMany(db.state, {
+  foreignKey: "state_id",
+  // as: "influencer_state",
+});
+
+db.brands.hasMany(db.City, {
+  foreignKey: "city_id",
+  // as: "influencer_city",
+});
+
+db.brands.hasMany(db.brand_industry, {
+  foreignKey: "brand_id",
+  // as: "influencer_city",
+});
+
+db.brand_industry.hasMany(db.industry, {
+  foreignKey: "industry_id",
+  // as: "influencer_city",
+});
+
+db.brands.hasMany(db.brand_type, {
+  foreignKey: "brand_type_id",
+  // as: "influencer_city",
+});
+
+//////////////// BRANDS RELATION SECTION END /////////////////////////////////////
+
+//////////////APPLICATION CAMPAIGING RELATION SECTION START///////////////////////////
+
+db.campaign_application.hasMany(db.campaign, {
+  foreignKey: "campaign_id",
+  // as: "influencer_state",
+});
+
+db.campaign.hasMany(db.brands, {
+  foreignKey: "brands_id",
+  // as: "influencer_state",
+});
+
+db.campaign_application.hasMany(db.application_status, {
+  foreignKey: "	application_status_id",
+  // as: "influencer_state",
+});
+
+// db.brands.hasMany(db.state, {
+//   foreignKey: "state_id",
+//   // as: "influencer_state",
+// });
+
+// db.brands.hasMany(db.City, {
+//   foreignKey: "city_id",
+//   // as: "influencer_city",
+// });
+
+//////////////APPLICATION CAMPAIGING RELATION SECTION END///////////////////////////
+module.exports = { db, sequelize, operatorsAliases };

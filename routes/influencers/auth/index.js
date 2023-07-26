@@ -1,2 +1,0 @@
-//login
-//verify_otp

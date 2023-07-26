@@ -1,3 +1,4 @@
+const tableNames = require("../utils/table_name");
 module.exports = (sequelize, DataTypes) => {
 
     const campaign_status = sequelize.define("campaign_status", {
@@ -7,12 +8,12 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true
         },
         campaign_status_name: {
-            type: DataTypes.TEXT,
-          //  defaultValue: '0'
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         delete_flag: {
-            type: DataTypes.INTEGER,
-            defaultValue: '0'
+            type: DataTypes.TINYINT,
+            defaultValue: 0
         },
        
     },{

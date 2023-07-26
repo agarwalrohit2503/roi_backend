@@ -7,12 +7,13 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true
         },
         state_name: {
-            type: DataTypes.TEXT,
+            type: DataTypes.STRING,
+            allowNull: false,
           //  defaultValue: '0'
         },
         delete_flag: {
-            type: DataTypes.INTEGER,
-            defaultValue: '0'
+            type: DataTypes.TINYINT,
+            defaultValue: 0
         },
        
     },{

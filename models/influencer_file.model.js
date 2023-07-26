@@ -8,24 +8,23 @@ module.exports = (sequelize, DataTypes) => {
         },
         influencer_id: {
             type: DataTypes.INTEGER,
-          //  defaultValue: '0'
+            defaultValue: null
         },
-        type: {
-            type: DataTypes.TEXT,
-          //  defaultValue: '0'
+        doc_type: {
+            type: DataTypes.STRING,
+            allowNull: false,
         },
-        link: {
-            type: DataTypes.TEXT,
-          //  defaultValue: '0'
+        image_link: {
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         file_name: {
-            type: DataTypes.TEXT,
-          //  defaultValue: '0'
-        },
-       
+            type: DataTypes.STRING,
+            allowNull: false,
+        },   
         delete_flag: {
             type: DataTypes.INTEGER,
-            defaultValue: '0'
+            defaultValue: 0
         },
        
     },{
