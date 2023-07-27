@@ -28,23 +28,20 @@ async function getInfluencerList(req, res) {
       },
       {
         model: tableNames.influencerAddress,
-        //    as: "address",
+       
         include: [
           {
             attributes: ["state_id", "state_name"],
             model: tableNames.State,
-            // as: "influencer_state",
+          
           },
           {
             attributes: ["city_id", "city_name"],
             model: tableNames.City,
-            // as: "influencer_city",
+         
           },
 
-          // {
-          //   model: tableNames.State, as: "influencer_state"
-          // },
-          //  { model: tableNames.City, as: "influencer_city" },
+    
         ],
         // attributes: {
         //   include: [
