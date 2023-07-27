@@ -412,5 +412,19 @@ db.favourite_influencer.hasMany(db.influencer, {
   foreignKey: "influencer_id",
 });
 
+
+db.influencer.hasMany(db.influencer_facebook, {
+  foreignKey: "influencer_id",
+});
+
+db.influencer.hasMany(db.influencer_youtube, {
+  foreignKey: "influencer_id",
+});
+
+db.influencer.hasMany(db.influencer_instagram, {
+  foreignKey: "influencer_id",
+});
+
+
 //////////////////////////brands influends demo end//////////////////
 module.exports = { db, sequelize, operatorsAliases };

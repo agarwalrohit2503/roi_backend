@@ -39,6 +39,14 @@ tableNames = {
 
   campaignPaymentType: db.campaign_payment_type,
   favouriteInfluencer: db.favourite_influencer,
+
+  influencerFacebook: db.influencer_facebook,
+
+  influencerInstagram: db.influencer_instagram,
+
+  influencerYoutube: db.influencer_youtube,
+
+
   //resource start
   Industry: db.industry,
   //resource end

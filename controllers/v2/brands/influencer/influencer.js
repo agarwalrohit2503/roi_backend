@@ -17,12 +17,12 @@ async function getInfluencerList(req, res) {
       {
         //attributes: ["content_niche_id", "content_niche_name"],
         model: tableNames.influencerContentNiche,
-       // as: "inf_content",
+        // as: "inf_content",
         include: [
           {
             //attributes: ["content_niche_id", "content_niche_name"],
             model: tableNames.contentNiche,
-           // as: "content_nich",
+            // as: "content_nich",
           },
         ],
       },
@@ -111,7 +111,7 @@ async function getInfluencerDetails(req, res) {
         include: [
           {
             model: tableNames.contentNiche,
-           // as: "content_nich",
+            // as: "content_nich",
           },
         ],
       },
@@ -180,8 +180,6 @@ async function markFavourite(req, res) {
       }
     }
   } else {
-    //console.log(data);
-
     if (findQquery["favourite_influencer_flag"] == 1) {
       const updataQuery = await tableNames.favouriteInfluencer.update(
         { favourite_influencer_flag: 0 },
@@ -202,7 +200,7 @@ async function markFavourite(req, res) {
 
       res.status(200).send({
         status: 200,
-        // cartstatus: 1,
+
         message: updataQuery,
       });
     }
@@ -210,26 +208,46 @@ async function markFavourite(req, res) {
 }
 
 async function getFavouriteInfluencers(req, res) {
+  var limit = req.query.limit;
+  var offset = req.query.offset;
+  var search_term = req.query.search_term;
   var brand_id = req.params.brand_id;
 
   const fingQuery = await tableNames.favouriteInfluencer.findAll({
-    attributes: ["favourite_influencer_id"],
+    // attributes: ["favourite_influencer_id"],
     include: [
       {
+        // attributes: [
+        //   "influencer_id",
+        //   "name",
+        //   "email",
+        //   "number",
+        //   "dob",
+        //   "pan_card",
+        //   "gst_number",
+        //   "bio",
+        //   "profile_status",
+        // ],
         model: tableNames.influencer,
+        where: {
+          ...(search_term
+            ? { name: { [operatorsAliases.$like]: `%${search_term}%` } }
+            : {}),
+        },
         include: [
+         
           {
             model: tableNames.influencerPrice,
           },
           {
-            attributes: ["influencer_content_niche_id","content_niche_id"],
+            attributes: ["influencer_content_niche_id", "content_niche_id"],
             model: tableNames.influencerContentNiche,
-          //  as: "inf_content",
+            //  as: "inf_content",
             include: [
               {
                 //attributes: ["content_niche_id", "content_niche_name"],
                 model: tableNames.contentNiche,
-               // as: "content_nich",
+                // as: "content_nich",
               },
             ],
           },
@@ -248,10 +266,24 @@ async function getFavouriteInfluencers(req, res) {
               },
             ],
           },
+          {
+            model: tableNames.influencerFacebook,
+          },
+          {
+            model: tableNames.influencerInstagram,
+          },
+          {
+            model: tableNames.influencerYoutube,
+          },
         ],
       },
     ],
-    where: { brand_id: brand_id, favourite_influencer_flag: 1 },
+    where: {
+      brand_id: brand_id,
+      favourite_influencer_flag: 1,
+    },
+    offset: Number.parseInt(offset ? offset : 0),
+    limit: Number.parseInt(limit ? limit : 20),
   });
 
   res.status(404).send({
