@@ -310,12 +310,9 @@ db.influencer_content_niche.belongsTo(db.content_niche, {
   targetKey: "content_niche_id", // primary table
 });
 
-db.sequelize.sync({ force: false }).then(() => {
- 
-});
+db.sequelize.sync({ force: false }).then(() => {});
 
 ///////////////////////////table join query//////////////////////
-
 
 db.influencer.hasMany(db.influencer_address, {
   foreignKey: "influencer_id",
@@ -324,12 +321,10 @@ db.influencer.hasMany(db.influencer_address, {
 
 db.influencer_address.hasMany(db.state, {
   foreignKey: "state_id",
-  
 });
 
 db.influencer_address.hasMany(db.City, {
   foreignKey: "city_id",
-
 });
 
 db.influencer.hasMany(db.influencer_content_niche, {
@@ -348,27 +343,21 @@ db.brands.hasMany(db.campaign, {
 });
 
 db.campaign.hasMany(db.campaign_payment_type, {
-  foreignKey: "payment_status_id",
-  
+  foreignKey: "campaign_payment_type_id",
 });
 
 db.campaign.hasMany(db.campaignContentNiche, {
   foreignKey: "campaign_id",
- 
 });
 
 db.campaignContentNiche.hasMany(db.content_niche, {
   foreignKey: "content_niche_id",
- 
 });
-
-
 
 //////////////// BRANDS RELATION SECTION START /////////////////////////////////////
 
 db.brands.hasMany(db.state, {
   foreignKey: "state_id",
- 
 });
 
 db.brands.hasMany(db.City, {
@@ -377,17 +366,14 @@ db.brands.hasMany(db.City, {
 
 db.brands.hasMany(db.brand_industry, {
   foreignKey: "brand_id",
- 
 });
 
 db.brand_industry.hasMany(db.industry, {
   foreignKey: "industry_id",
- 
 });
 
 db.brands.hasMany(db.brand_type, {
   foreignKey: "brand_type_id",
- 
 });
 
 //////////////// BRANDS RELATION SECTION END /////////////////////////////////////
@@ -396,27 +382,22 @@ db.brands.hasMany(db.brand_type, {
 
 db.campaign_application.hasMany(db.campaign, {
   foreignKey: "campaign_id",
- 
 });
 
 db.campaign.hasMany(db.brands, {
   foreignKey: "brands_id",
- 
 });
 
 db.campaign_application.hasMany(db.application_status, {
   foreignKey: "application_status_id",
- 
 });
 
 db.campaign.hasMany(db.campaign_status, {
   foreignKey: "campaign_status_id",
- 
 });
 
 db.campaign.hasMany(db.campaign_payment_type, {
   foreignKey: "campaign_payment_type_id",
- 
 });
 //////////////APPLICATION CAMPAIGING RELATION SECTION END///////////////////////////
 

@@ -10,6 +10,7 @@ async function getAllCampaign(req, res) {
   const findQuery = await tableNames.Campaign.findAll({
     where: {
       brand_id: brand_id,
+      campaign_delete: 0,
       ...(search_term
         ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
         : {}),
@@ -34,111 +35,26 @@ async function getAllCampaign(req, res) {
   });
 }
 
-async function getInfluencerDemoList(req, res) {
-  getInfluencerList(req, res);
-}
-
-async function updateBrandprofile(req, res) {
+async function deleteCampaign(req, res) {
   const brand_id = req.params.brand_id;
-  const brand_logo = req.body.brand_logo;
-  const brand_type_id = req.body.brand_type_id;
-  const Name = req.body.name;
-  const email = req.body.email;
-  const number = req.body.number;
-  const pan_card = req.body.pan_card;
-  const gst_number = req.body.gst_number;
-  const website = req.body.website;
-  const address = req.body.address;
-  const overview = req.body.overview;
-  const city_id = req.body.city_id;
-  const state_id = req.body.state_id;
-  const profile_status = 1;
+  const campaign_id = req.body.campaign_id;
 
+  console.log(brand_id);
+  console.log(campaign_id);
   try {
-    const result = await tableNames.brands.update(
-      {
-        brand_logo: brand_logo,
-        brand_type_id: brand_type_id,
-        Name: Name,
-        email: email,
-        number: number,
-        pan_card: pan_card,
-        gst_number: gst_number,
-        website: website,
-        address: address,
-        overview: overview,
-        city_id: city_id,
-        state_id: state_id,
-        profile_status: 1,
-      },
-      {
-        where: {
-          brands_id: brand_id,
-        },
-      }
+    const updateQuery = await tableNames.Campaign.update(
+      { campaign_delete: 1 },
+      { where: { brand_id: brand_id, campaign_id: campaign_id } }
     );
-
-    console.log(result);
-    if (result[0] != "") {
-      industry_ids = req.body.industry_ids;
-
-      findQuery = await tableNames.brandIndustry.findAll({
-        where: { brand_id: brand_id },
+    if (updateQuery[0] != "") {
+      res.status(200).send({
+        status: 200,
+        message: "deleted",
       });
-
-      if (findQuery == "") {
-        const data = industry_ids.map(async (result) => {
-          await tableNames.brandIndustry.create({
-            brand_id: brand_id,
-            industry_id: result,
-          });
-        });
-
-        if (!data) {
-          res.status(400).send({
-            status: 400,
-            message: "Brand industry not updated",
-          });
-        } else {
-          res.status(200).send({
-            status: 200,
-            message: "Brand industry updated",
-          });
-        }
-      } else {
-        const deleteQuery = await tableNames.brandIndustry.destroy({
-          where: { brand_id: brand_id },
-        });
-        if (deleteQuery == 0) {
-          res.status(200).send({
-            status: 200,
-            message: "Content niche not deleted",
-          });
-        } else {
-          const data = industry_ids.map(async (result) => {
-            await tableNames.brandIndustry.create({
-              brand_id: brand_id,
-              industry_id: result,
-            });
-          });
-
-          if (!data) {
-            res.status(400).send({
-              status: 400,
-              message: "Brand content niche not update",
-            });
-          } else {
-            res.status(200).send({
-              status: 200,
-              message: "Brand content niche updated",
-            });
-          }
-        }
-      }
     } else {
-      res.status(404).send({
-        status: 404,
-        message: "brand profile not updated",
+      res.status(409).send({
+        status: 409,
+        message: "not deleted",
       });
     }
   } catch (err) {
@@ -151,6 +67,5 @@ async function updateBrandprofile(req, res) {
 
 module.exports = {
   getAllCampaign,
-  getInfluencerDemoList,
-  updateBrandprofile,
+  deleteCampaign,
 };
