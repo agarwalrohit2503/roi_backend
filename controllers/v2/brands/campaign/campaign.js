@@ -1,9 +1,8 @@
 const tableNames = require("../../../../utils/table_name");
-
 const operatorsAliases = require("../../../../utils/operator_aliases");
 
 
-async function getInfluencerList(req, res) {
+async function getAllCampaign(req, res) {
     var limit = req.query.limit;
     var offset = req.query.offset;
     var search_term = req.query.search_term;
@@ -211,7 +210,7 @@ async function updateBrandprofile(req, res) {
 }
 
 module.exports = {
-    getInfluencerList,
+    getAllCampaign,
     getInfluencerDemoList,
   updateBrandprofile,
 };
