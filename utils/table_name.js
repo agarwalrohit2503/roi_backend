@@ -2,29 +2,50 @@ const { db, sequelize } = require("../utils/conn");
 
 tableNames = {
   influencer: db.influencer,
+
   brands: db.brands,
+
   otp: db.otp,
+
   access_tokens: db.access_tokens,
+
   City: db.City,
+
   influencerAddress: db.influencer_address,
+
   State: db.state,
+
   influencerContentNiche: db.influencer_content_niche,
+
   contentNiche: db.content_niche,
+
   influencerPrice: db.influencer_price,
+
   campaignPaymentType: db.campaign_payment_type,
+
   Campaign: db.campaign,
+
   campaignContentNiche: db.campaignContentNiche,
 
+
   campaignApplication: db.campaign_application,
+
   brandIndustry: db.brand_industry,
+
   brandType: db.brand_type,
 
   applicationStatus : db.application_status,
 
+  campaignStatus : db.campaign_status,
+
+  campaignPaymentType : db.campaign_payment_type,
+
+
   //resource start
   Industry: db.industry,
-
   //resource end
+
+
 
   //row sql tables names
   // otps: "otp",

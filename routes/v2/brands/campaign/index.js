@@ -7,7 +7,7 @@ const {
     getInfluencerDemoList
 } = require('../../../../controllers/v2/brands/campaign/campaign');
 
-router.get("/get",(req, res)=> {
+router.get("/get/:brand_id",(req, res)=> {
     getAllCampaign(req, res);
 });
 

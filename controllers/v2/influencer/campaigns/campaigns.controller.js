@@ -34,7 +34,7 @@ async function getCampaigns(req, res) {
         ...(search_term
           ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
           : {}),
-        delete_flag: 0,
+          campaign_delete: 0,
         // campaign_status_id: 1,
       },
       offset: Number.parseInt(offset ? offset : 0),

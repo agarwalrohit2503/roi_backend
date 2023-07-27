@@ -1,100 +1,41 @@
 const tableNames = require("../../../../utils/table_name");
 const operatorsAliases = require("../../../../utils/operator_aliases");
 
-
 async function getAllCampaign(req, res) {
-    var limit = req.query.limit;
-    var offset = req.query.offset;
-    var search_term = req.query.search_term;
+  var limit = req.query.limit;
+  var offset = req.query.offset;
+  var search_term = req.query.search_term;
+  var brand_id = req.params.brand_id;
 
-  const findQuery = await tableNames.influencer.findAll({
-    where: { 
-        ...(search_term
-            ? { name: { [operatorsAliases.$like]: `%${search_term}%` } }
-            : {}),
+  const findQuery = await tableNames.Campaign.findAll({
+    where: {
+      brand_id: brand_id,
+      ...(search_term
+        ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
+        : {}),
     },
     include: [
-        {
-          //attributes: ["content_niche_id", "content_niche_name"],
-          model: tableNames.influencerContentNiche,
-          as: "inf_content",
-          include: [
-            {
-              //attributes: ["content_niche_id", "content_niche_name"],
-              model: tableNames.contentNiche,
-              as: "content_nich",
-            },
-          ],
-        },
-        {
-          model: tableNames.influencerAddress,
-          as: "address",
-          include: [
-            {
-              attributes: ["state_id", "state_name"],
-              model: tableNames.State,
-              // as: "influencer_state",
-            },
-            {
-              attributes: ["city_id", "city_name"],
-              model: tableNames.City,
-              // as: "influencer_city",
-            },
-  
-            // {
-            //   model: tableNames.State, as: "influencer_state"
-            // },
-            //  { model: tableNames.City, as: "influencer_city" },
-          ],
-          // attributes: {
-          //   include: [
-          //     [
-          //       sequelize.literal(`(
-          //       SELECT state_name
-          //       FROM state
-          //       WHERE
-          //       state.state_id  = address.state_id
-          //   )`),
-          //       "stateName",
-          //     ],
-          //     [
-          //       sequelize.literal(`(
-          //       SELECT city_name
-          //       FROM city
-          //       WHERE
-          //       city.city_id  = address.city_id
-          //   )`),
-          //       "cityName",
-          //     ],
-          //   ],
-          // },
-          //required: true
-        },
-        {
-            model:tableNames.influencerPrice,
-        }
-      ],
+      {
+        //attributes: ["content_niche_id", "content_niche_name"],
+        model: tableNames.campaignPaymentType,
+      },
+      {
+        model: tableNames.campaignStatus,
+      },
+    ],
     offset: Number.parseInt(offset ? offset : 0),
     limit: Number.parseInt(limit ? limit : 20),
   });
 
-  console.log(findQuery);
-  if (findQuery != "") {
-    res.status(200).send({
-      status: 404,
-      message: "Brand",
-      data: findQuery,
-    });
-  } else {
-    res.status(404).send({
-      status: 404,
-      message: "influencer not found",
-    });
-  }
+  res.status(200).send({
+    status: 200,
+    message: "Brand",
+    data: findQuery,
+  });
 }
 
 async function getInfluencerDemoList(req, res) {
-    getInfluencerList(req, res);
+  getInfluencerList(req, res);
 }
 
 async function updateBrandprofile(req, res) {
@@ -114,66 +55,38 @@ async function updateBrandprofile(req, res) {
   const profile_status = 1;
 
   try {
-  const result = await tableNames.brands.update(
-    {
-      brand_logo: brand_logo,
-      brand_type_id: brand_type_id,
-      Name: Name,
-      email: email,
-      number: number,
-      pan_card: pan_card,
-      gst_number: gst_number,
-      website: website,
-      address: address,
-      overview: overview,
-      city_id: city_id,
-      state_id: state_id,
-      profile_status: 1,
-    },
-    {
-      where: {
-        brands_id: brand_id,
+    const result = await tableNames.brands.update(
+      {
+        brand_logo: brand_logo,
+        brand_type_id: brand_type_id,
+        Name: Name,
+        email: email,
+        number: number,
+        pan_card: pan_card,
+        gst_number: gst_number,
+        website: website,
+        address: address,
+        overview: overview,
+        city_id: city_id,
+        state_id: state_id,
+        profile_status: 1,
       },
-    }
-  );
-
-  console.log(result);
-  if (result[0] != "") {
-    industry_ids = req.body.industry_ids;
-
-    findQuery = await tableNames.brandIndustry.findAll({
-      where: { brand_id: brand_id },
-    });
-
-    if (findQuery == "") {
-      const data = industry_ids.map(async (result) => {
-        await tableNames.brandIndustry.create({
-          brand_id: brand_id,
-          industry_id: result,
-        });
-      });
-
-      if (!data) {
-        res.status(400).send({
-          status: 400,
-          message: "Brand industry not updated",
-        });
-      } else {
-        res.status(200).send({
-          status: 200,
-          message: "Brand industry updated",
-        });
+      {
+        where: {
+          brands_id: brand_id,
+        },
       }
-    } else {
-      const deleteQuery = await tableNames.brandIndustry.destroy({
+    );
+
+    console.log(result);
+    if (result[0] != "") {
+      industry_ids = req.body.industry_ids;
+
+      findQuery = await tableNames.brandIndustry.findAll({
         where: { brand_id: brand_id },
       });
-      if (deleteQuery == 0) {
-        res.status(200).send({
-          status: 200,
-          message: "Content niche not deleted",
-        });
-      } else {
+
+      if (findQuery == "") {
         const data = industry_ids.map(async (result) => {
           await tableNames.brandIndustry.create({
             brand_id: brand_id,
@@ -184,23 +97,50 @@ async function updateBrandprofile(req, res) {
         if (!data) {
           res.status(400).send({
             status: 400,
-            message: "Brand content niche not update",
+            message: "Brand industry not updated",
           });
         } else {
           res.status(200).send({
             status: 200,
-            message: "Brand content niche updated",
+            message: "Brand industry updated",
           });
         }
-      }
-    }
-  } else {
-    res.status(404).send({
-      status: 404,
-      message: "brand profile not updated",
-    });
-  }
+      } else {
+        const deleteQuery = await tableNames.brandIndustry.destroy({
+          where: { brand_id: brand_id },
+        });
+        if (deleteQuery == 0) {
+          res.status(200).send({
+            status: 200,
+            message: "Content niche not deleted",
+          });
+        } else {
+          const data = industry_ids.map(async (result) => {
+            await tableNames.brandIndustry.create({
+              brand_id: brand_id,
+              industry_id: result,
+            });
+          });
 
+          if (!data) {
+            res.status(400).send({
+              status: 400,
+              message: "Brand content niche not update",
+            });
+          } else {
+            res.status(200).send({
+              status: 200,
+              message: "Brand content niche updated",
+            });
+          }
+        }
+      }
+    } else {
+      res.status(404).send({
+        status: 404,
+        message: "brand profile not updated",
+      });
+    }
   } catch (err) {
     res.status(500).send({
       status: 500,
@@ -210,7 +150,7 @@ async function updateBrandprofile(req, res) {
 }
 
 module.exports = {
-    getAllCampaign,
-    getInfluencerDemoList,
+  getAllCampaign,
+  getInfluencerDemoList,
   updateBrandprofile,
 };
