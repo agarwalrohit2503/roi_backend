@@ -27,25 +27,21 @@ tableNames = {
 
   campaignContentNiche: db.campaignContentNiche,
 
-
   campaignApplication: db.campaign_application,
 
   brandIndustry: db.brand_industry,
 
   brandType: db.brand_type,
 
-  applicationStatus : db.application_status,
+  applicationStatus: db.application_status,
 
-  campaignStatus : db.campaign_status,
+  campaignStatus: db.campaign_status,
 
-  campaignPaymentType : db.campaign_payment_type,
-
-
+  campaignPaymentType: db.campaign_payment_type,
+  favouriteInfluencer: db.favourite_influencer,
   //resource start
   Industry: db.industry,
   //resource end
-
-
 
   //row sql tables names
   // otps: "otp",

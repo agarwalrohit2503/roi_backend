@@ -132,19 +132,17 @@ async function otpverify(req, res) {
     where: {
       otp_code: otp,
       verification_code: verification_code,
-      // otp_flag: 0,
+    
     },
   });
-  //  console.log(otpquery);
+ 
   if (otpquery == null) {
     res.status(404).send({
       status: 404,
       message: "otp not match",
     });
   } else {
-    // console.log("okk");
-    // console.log(otpquery);
-    // console.log(otpquery["otp_flag"]);
+    
 
     if (otpquery["otp_flag"] == 1) {
       res.status(404).send({
@@ -286,159 +284,9 @@ async function otpverify(req, res) {
     }
   }
 
-  // if (otpquery == null) {
-  //   res.status(404).send({
-  //     status: 404,
-  //     message: "otp not match",
-  //   });
-  // } else {
-  //   console.log(otpquery["otp_flag"]);
-
-  //   if (otpquery["otp_flag"] == 1) {
-  //     res.status(404).send({
-  //       status: 404,
-  //       message: "Otp already verified",
-  //     });
-  //   } else {
-  //     console.log(otpquery["brand_id"]);
-  //     if (otpquery["brand_id"] == null) {
-  //       const number = otpquery["number"];
-  //       const email = otpquery["email"];
-  //       let userinfo = {
-  //         number: number ? number : "",
-  //         email: email ? email : "",
-  //         // ...(number ? { number: { number } } : {}),
-  //         // ...(email ? { email: { email } } : {}),
-  //       };
-  //       const user = await tableNames.brands.create(userinfo);
-
-  //       if (!user) {
-  //         res.status(404).send({
-  //           status: 404,
-  //           message: "error",
-  //         });
-  //       } else {
-  //         var data = user.toJSON();
-  //         const inf_id = data["brands_id"];
-  //         const user_number = data["number"];
-
-  //         const privatekey = process.env.privateKey;
-  //         let params = {
-  //           brands_id: inf_id,
-  //           number: user_number,
-  //           brandlog: true,
-  //         };
-  //         const token = await jwt.sign(params, privatekey, {
-  //           expiresIn: "10d",
-  //         });
-  //         let tokeninfo = {
-  //           brand_id: inf_id,
-  //           number: user_number,
-  //           access_tokens: token,
-  //         };
-  //         const sqlquery = await tableNames.access_tokens.create(tokeninfo);
-  //         if (!sqlquery) {
-  //           res.status(400).send({
-  //             status: 400,
-  //             message: "token not generated",
-  //           });
-  //         } else {
-  //           //  otp_flag = 1 WHERE otp_id = ${otpId}
-  //           const updateQuery = await tableNames.otp.update(
-  //             {
-  //               otp_flag: 1,
-  //             },
-  //             {
-  //               where: {
-  //                 otp_id: otpquery["otp_id"],
-  //               },
-  //             }
-  //           );
-  //           if (!updateQuery) {
-  //             res.status(400).send({
-  //               status: 400,
-  //               message: "Otp not verified",
-  //             });
-  //           } else {
-  //             res.status(200).send({
-  //               status: 200,
-  //               message: "Otp verified successfully",
-
-  //               token: sqlquery["access_tokens"],
-  //             });
-  //           }
-  //         }
-  //       }
-  //     } else {
-  //       // need to pass token and id
-
-  //       let influencerQuery = await tableNames.brands.findOne({
-  //         where: {
-  //           brands_id: otpquery["brands_id"],
-  //         },
-  //       });
-  //       if (!influencerQuery) {
-  //         res.status(404).send({
-  //           status: 404,
-  //           message: "user not found",
-  //         });
-  //       } else {
-  //         const brands_id = influencerQuery["brands_id"];
-  //         const number = influencerQuery["number"];
-
-  //         const privatekey = process.env.privateKey;
-  //         let params = {
-  //           brands_id: brands_id,
-  //           number: number,
-  //           brandlog: true,
-  //         };
-  //         const token = await jwt.sign(params, privatekey, {
-  //           expiresIn: "10d",
-  //         });
-  //         let tokeninfo = {
-  //           brand_id: brands_id,
-  //           number: number,
-  //           access_tokens: token,
-  //         };
-  //         const sqlquery = await tableNames.access_tokens.create(tokeninfo);
-  //         if (!sqlquery) {
-  //           res.status(400).send({
-  //             status: 400,
-  //             message: "token not generated",
-  //           });
-  //         } else {
-  //           const updateQuery = await tableNames.otp.update(
-  //             {
-  //               otp_flag: 1,
-  //             },
-  //             {
-  //               where: {
-  //                 otp_id: otpquery["otp_id"],
-  //               },
-  //             }
-  //           );
-  //           if (!updateQuery) {
-  //             res.status(400).send({
-  //               status: 400,
-  //               message: "Otp not verified",
-  //             });
-  //           } else {
-  //             res.status(200).send({
-  //               status: 200,
-  //               message: "Otp verified successfully",
-  //               // brands_id: brands_id,
-  //               token: sqlquery["access_tokens"],
-  //             });
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
 }
 
 module.exports = {
   brandLogin,
-  //brandLogin,
   otpverify,
 };

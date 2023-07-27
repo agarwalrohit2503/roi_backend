@@ -316,7 +316,7 @@ db.sequelize.sync({ force: false }).then(() => {});
 
 db.influencer.hasMany(db.influencer_address, {
   foreignKey: "influencer_id",
-  as: "address",
+ // as: "address",
 });
 
 db.influencer_address.hasMany(db.state, {
@@ -329,12 +329,12 @@ db.influencer_address.hasMany(db.City, {
 
 db.influencer.hasMany(db.influencer_content_niche, {
   foreignKey: "influencer_id",
-  as: "inf_content",
+ // as: "inf_content",
 });
 
 db.influencer_content_niche.hasMany(db.content_niche, {
   foreignKey: "content_niche_id",
-  as: "content_nich",
+  //as: "content_nich",
 });
 
 db.brands.hasMany(db.campaign, {
@@ -406,5 +406,11 @@ db.influencer.hasMany(db.influencer_price, {
   foreignKey: "influencer_id",
   // as: "influencer_state",
 });
+
+
+db.favourite_influencer.hasMany(db.influencer, {
+  foreignKey: "influencer_id",
+});
+
 //////////////////////////brands influends demo end//////////////////
 module.exports = { db, sequelize, operatorsAliases };

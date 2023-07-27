@@ -186,6 +186,5 @@ async function updateBrandprofile(req, res) {
 
 module.exports = {
   getProfile,
-
   updateBrandprofile,
 };
