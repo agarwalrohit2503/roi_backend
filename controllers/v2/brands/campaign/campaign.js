@@ -65,7 +65,123 @@ async function deleteCampaign(req, res) {
   }
 }
 
+async function editCampaign(req, res) {
+  var brand_id = req.params.brand_id;
+  var campaign_id = req.body.campaign_id;
+
+  var campaign_status_id = req.body.campaign_status_id;
+  var payment_status_id = req.body.payment_status_id;
+  var campaign_name = req.body.campaign_name;
+  var location = req.body.location;
+  var campaign_about = req.body.campaign_about;
+  var language = req.body.language;
+  var campaign_start_dt = req.body.campaign_start_dt;
+  var campaign_end_dt = req.body.campaign_end_dt;
+  var campaign_budget = req.body.campaign_budget;
+  var image_link = req.body.image_link;
+  var platform = req.body.platform;
+  var eligibility = req.body.eligibility;
+
+  try {
+    const updateQuery = await tableNames.Campaign.update(
+      {
+        campaign_status_id: campaign_status_id,
+        payment_status_id: payment_status_id,
+        campaign_name: campaign_name,
+        location: location,
+        campaign_about: campaign_about,
+        language: language,
+        campaign_start_dt: campaign_start_dt,
+        campaign_end_dt: campaign_end_dt,
+        campaign_budget: campaign_budget,
+        image_link: image_link,
+        platform: platform,
+        eligibility: eligibility,
+      },
+      {
+        where: {
+          campaign_id: campaign_id,
+          brand_id: brand_id,
+          campaign_delete: 0,
+        },
+      }
+    );
+    if (updateQuery[0] != "") {
+      res.status(200).send({
+        status: 200,
+        message: "Campaign edited",
+      });
+    } else {
+      res.status(409).send({
+        status: 409,
+        message: "Campaign not edited",
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      status: 500,
+      message: err,
+    });
+  }
+}
+
+async function addCampaign(req, res) {
+  var brand_id = req.params.brand_id;
+
+  var campaign_status_id = req.body.campaign_status_id;
+  var payment_status_id = req.body.payment_status_id;
+
+  var campaign_name = req.body.campaign_name;
+  var location = req.body.location;
+  var campaign_about = req.body.campaign_about;
+  var language = req.body.language;
+  var campaign_start_dt = req.body.campaign_start_dt;
+  var campaign_end_dt = req.body.campaign_end_dt;
+  var campaign_budget = req.body.campaign_budget;
+  var image_link = req.body.image_link;
+  var platform = req.body.platform;
+  var eligibility = req.body.eligibility;
+
+  try {
+    const createQuery = await tableNames.Campaign.create({
+      brand_id: brand_id,
+      campaign_status_id: campaign_status_id,
+      payment_status_id: payment_status_id,
+      campaign_name: campaign_name,
+      location: location,
+      campaign_about: campaign_about,
+      language: language,
+      campaign_start_dt: campaign_start_dt,
+      campaign_end_dt: campaign_end_dt,
+      campaign_budget: campaign_budget,
+      image_link: image_link,
+      platform: platform,
+      eligibility: eligibility,
+    });
+    console.log(createQuery);
+    if (createQuery != "") {
+      res.status(200).send({
+        status: 200,
+        message: "Campaign created",
+      });
+    } else {
+      res.status(409).send({
+        status: 409,
+        message: "Campaign not created ",
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      status: 500,
+      message: "INERNAL SERVER ERROR",
+      data: err,
+    });
+  }
+}
+
 module.exports = {
   getAllCampaign,
   deleteCampaign,
+  editCampaign,
+  addCampaign,
 };
