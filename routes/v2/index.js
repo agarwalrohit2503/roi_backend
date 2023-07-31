@@ -7,7 +7,7 @@ const resources = require("../resources");
 
 
 
-router.use("/resources", authJWT, resources);
+router.use("/resources",  authJWT,resources);
 router.use("/influencers", influencers);
 router.use("/brands", brands);
 

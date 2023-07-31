@@ -40,13 +40,7 @@ async function getCity(req, res) {
     paranoid
     
   });
-console.log(findQuery);
-  // selectQuery = `SELECT * FROM ${tableNames.city}  ${
-  //   state_id ? `WHERE state_id = ${state_id}` : ""
-  // }`;
-  // result = await sequelize.query(selectQuery, {
-  //   type: sequelize.QueryTypes.SELECT,
-  // });
+
 
   if (findQuery != "") {
     res.status(200).send({

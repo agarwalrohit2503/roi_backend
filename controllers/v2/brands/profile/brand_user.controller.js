@@ -1,6 +1,6 @@
 const tableNames = require("../../../../utils/table_name");
-const { db, sequelize } = require("../../../../utils/conn");
-var jwt = require("jsonwebtoken");
+
+
 
 async function getProfile(req, res) {
   const brands_id = req.params.brand_id;
@@ -186,6 +186,5 @@ async function updateBrandprofile(req, res) {
 
 module.exports = {
   getProfile,
-
   updateBrandprofile,
 };
