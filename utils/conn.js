@@ -135,6 +135,7 @@ db.brands.belongsTo(db.City, {
   foreignKey: "city_id", // foreign table
   targetKey: "city_id", // primary table
 });
+
 db.City.belongsTo(db.state, {
   foreignKey: "state_id", // foreign table
   targetKey: "state_id", // primary table

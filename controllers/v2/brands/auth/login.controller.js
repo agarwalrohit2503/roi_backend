@@ -274,6 +274,7 @@ async function otpverify(req, res) {
             } else {
               res.status(200).send({
                 status: 200,
+                brands_id:brands_id,
                 message: "Otp verified successfully",
                 token: sqlquery["access_tokens"],
               });
