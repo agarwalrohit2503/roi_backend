@@ -6,54 +6,76 @@ async function getCampaigns(req, res) {
   var offset = req.query.offset;
   var search_term = req.query.search_term;
 
-  try {
-    const findQuery = await tableNames.Campaign.findAll({
-      attributes: [
-        "campaign_id",
-        "campaign_name",
-        "location",
-        "language",
-        "image_link",
-        "campaign_budget",
-        "campaign_start_dt",
-        "campaign_end_dt",
-      ],
-      include: [
-        {
-          attributes: ["brands_id", "brand_logo", "name"],
-          model: tableNames.brands,
-          as: "brand",
-        },
-      ],
-      order: [
-        ["createdAt", "DESC"],
-        // ['name', 'ASC'],
-      ],
-      //raw: true,
-      where: {
-        ...(search_term
-          ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
-          : {}),
-          campaign_delete: 0,
-        // campaign_status_id: 1,
+  //try {
+  const findQuery = await tableNames.Campaign.findAll({
+    attributes: [
+      "campaign_id",
+      "campaign_name",
+      "campaign_about",
+      "location",
+      "platform",
+      "language",
+      "image_link",
+      "campaign_budget",
+      "campaign_start_dt",
+      "campaign_end_dt",
+    ],
+    include: [
+      {
+        attributes: ["brands_id", "brand_logo", "name"],
+        model: tableNames.brands,
+        as: "brand",
       },
-      offset: Number.parseInt(offset ? offset : 0),
-      limit: Number.parseInt(limit ? limit : 20),
-      //subQuery: true,
-    });
 
-    res.status(200).send({
-      status: 200,
-      message: "Data found",
-      data: findQuery,
-    });
-  } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: "error Found",
-      data: error,
-    });
-  }
+      {
+        attributes: ["campaign_payment_type_id", "name"],
+        model: tableNames.campaignPaymentType,
+      },
+      {
+        attributes: ["campaign_content_niche_id", "content_niche_id"],
+        model: tableNames.campaignContentNiche,
+        include: [
+          {
+            attributes: [
+              "content_niche_id",
+              "content_niche_name",
+              "image_link",
+            ],
+            model: tableNames.contentNiche,
+          },
+        ],
+      },
+    ],
+
+    //raw: true,
+    where: {
+      ...(search_term
+        ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
+        : {}),
+      campaign_delete: 0,
+      // campaign_status_id: 1,
+    },
+    order: [
+      ["campaign_id", "DESC"],
+      // ['name', 'ASC'],
+    ],
+    offset: Number.parseInt(offset ? offset : 0),
+    limit: Number.parseInt(limit ? limit : 20),
+    //subQuery: true,
+  });
+
+  res.status(200).send({
+    status: 200,
+    message: "Data found",
+    data: findQuery,
+  });
+  // } catch (error) {
+  //   res.status(500).send({
+  //     status: 500,
+  //     message: "error Found",
+  //     data: error,
+  //   });
+  //}
 }
 
 async function getCampaignDetails(req, res) {
@@ -119,31 +141,6 @@ async function getCampaignDetails(req, res) {
   //   });
 }
 
-async function addCampaigns(req, res) {
-  Name = req.body.Name;
-
-  test = ["1,2,3"];
-  sqlQuery = `INSERT INTO  ${tableNames.campaign}
-    (brand_id) 
-    VALUES ('${test}')`;
-
-  result = await sequelize.query(sqlQuery, {
-    type: sequelize.QueryTypes.INSERT,
-  });
-  if (result.length != 0) {
-    res.status(200).send({
-      status: 200,
-      message: "Data found",
-      data: result,
-    });
-  } else {
-    res.status(404).send({
-      status: 404,
-      message: "INTERNAL ERROR",
-    });
-  }
-}
-
 async function getDemoCampaigns(req, res) {
   getCampaigns(req, res);
 }
@@ -162,10 +159,12 @@ async function getCampaignApplications(req, res) {
       {
         attributes: [
           "campaign_id",
+
           "campaign_name",
           "location",
           "language",
           "image_link",
+          "platform",
           "campaign_budget",
           "campaign_start_dt",
           "campaign_end_dt",
@@ -191,6 +190,9 @@ async function getCampaignApplications(req, res) {
       },
       {
         model: tableNames.applicationStatus,
+      },
+      {
+        model: tableNames.campaignStatus,
       },
     ],
     // order: [
@@ -273,10 +275,54 @@ async function getCampaignApplications(req, res) {
     });
   }
 }
+
+async function applyCampaign(req, res) {
+  try {
+    var influencer_id = req.params.influencer_id;
+    var campaign_id = req.body.campaign_id;
+
+    const findQuery = await tableNames.Campaign.findOne({
+      where: {
+        campaign_id: campaign_id,
+      },
+    });
+
+    if (!findQuery) {
+      res.status(404).send({
+        status: 404,
+        message: "Campaign not found",
+      });
+    } else {
+      const insertQuery = tableNames.campaignApplication.create({
+        campaign_id: campaign_id,
+        campaign_status_id: findQuery["campaign_status_id"],
+        influencer_id: influencer_id,
+        application_status_id: 1,
+      });
+
+      if (insertQuery != "") {
+        res.status(200).send({
+          status: 200,
+          message: "Successfully applied",
+        });
+      } else {
+        res.status(404).send({
+          status: 404,
+          message: "Try again",
+        });
+      }
+    }
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error,
+    });
+  }
+}
 module.exports = {
-  addCampaigns,
   getCampaignDetails,
   getCampaigns,
   getDemoCampaigns,
   getCampaignApplications,
+  applyCampaign,
 };

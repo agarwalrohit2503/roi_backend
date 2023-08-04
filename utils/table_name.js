@@ -46,6 +46,9 @@ tableNames = {
 
   influencerYoutube: db.influencer_youtube,
 
+  campaignContentNiche:db.campaignContentNiche,
+
+ 
 
   //resource start
   Industry: db.industry,
