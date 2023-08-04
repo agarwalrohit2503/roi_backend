@@ -11,18 +11,18 @@ async function getProfile(req, res) {
       {
         //attributes: ["content_niche_id", "content_niche_name"],
         model: tableNames.influencerContentNiche,
-      //  as: "inf_content",
+        //  as: "inf_content",
         include: [
           {
             //attributes: ["content_niche_id", "content_niche_name"],
             model: tableNames.contentNiche,
-           // as: "content_nich",
+            // as: "content_nich",
           },
         ],
       },
       {
         model: tableNames.influencerAddress,
-       // as: "address",
+        // as: "address",
         include: [
           {
             attributes: ["state_id", "state_name"],
@@ -69,8 +69,8 @@ async function getProfile(req, res) {
 
   if (influencer != "") {
     res.status(200).send({
-      status: 404,
-      message: "influencerfound",
+      status: 200,
+      message: "influencer found",
       data: influencer,
     });
   } else {
@@ -79,8 +79,6 @@ async function getProfile(req, res) {
       message: "influencer not found",
     });
   }
-
-  
 }
 
 async function updateProfile(req, res) {
@@ -139,13 +137,13 @@ async function updateProfile(req, res) {
 
 async function updateInfluencerPrice(req, res) {
   influencer_id = req.params.influencer_id;
-  
+
   post_cost = req.body.post_cost;
   reels_cost = req.body.reels_cost;
   video_cost = req.body.video_cost;
   story_cost = req.body.story_cost;
 
-   try {
+  try {
     const findQuery = await tableNames.influencerPrice.findOne({
       where: {
         influencer_id: influencer_id,
