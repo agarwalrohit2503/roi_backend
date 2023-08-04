@@ -67,7 +67,6 @@ async function getProfile(req, res) {
     ],
   });
 
-  console.log(influencer);
   if (influencer != "") {
     res.status(200).send({
       status: 404,
@@ -81,35 +80,13 @@ async function getProfile(req, res) {
     });
   }
 
-  // const influencer = await tableNames.influencerAddress.findAll({
-  //     where: { influencer_id: influencer_id },
-  //     include: [
-  //       {
-  //         model: tableNames.influencer,
-
-  //         //required: true
-  //       },
-  //     ],
-  //   });
-  //   console.log(influencer);
-  //   if (influencer != '') {
-  //     res.status(200).send({
-  //       status: 404,
-  //       message: "influencerfound",
-  //       data: influencer,
-  //     });
-  //   } else {
-  //     res.status(404).send({
-  //       status: 404,
-  //       message: "influencer not found",
-  //     });
-  //   }
+  
 }
 
 async function updateProfile(req, res) {
   influencer_id = req.params.influencer_id;
 
-  influencer_address_id = req.body.influencer_address_id;
+  //influencer_address_id = req.body.influencer_address_id;
   profile_status = req.body.profile_status;
 
   var name = req.body.name;
@@ -162,7 +139,7 @@ async function updateProfile(req, res) {
 
 async function updateInfluencerPrice(req, res) {
   influencer_id = req.params.influencer_id;
-  console.log(influencer_id);
+  
   post_cost = req.body.post_cost;
   reels_cost = req.body.reels_cost;
   video_cost = req.body.video_cost;
