@@ -19,6 +19,7 @@ async function getProfile(req, res) {
             // as: "content_nich",
           },
         ],
+        
       },
       {
         model: tableNames.influencerAddress,
@@ -39,7 +40,9 @@ async function getProfile(req, res) {
           //   model: tableNames.State, as: "influencer_state"
           // },
           //  { model: tableNames.City, as: "influencer_city" },
+       
         ],
+
         // attributes: {
         //   include: [
         //     [
@@ -64,7 +67,9 @@ async function getProfile(req, res) {
         // },
         //required: true
       },
-    ],
+      {
+        model: tableNames.influencerPrice,
+      }, ],
   });
 
   if (influencer != "") {
