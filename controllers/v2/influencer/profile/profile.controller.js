@@ -5,7 +5,7 @@ const { addAddress } = require("../address/address.controller");
 async function getProfile(req, res) {
   const influencer_id = req.params.influencer_id;
 
-  const influencer = await tableNames.influencer.findAll({
+  const influencer = await tableNames.influencer.findOne({
     where: { influencer_id: influencer_id },
     include: [
       {

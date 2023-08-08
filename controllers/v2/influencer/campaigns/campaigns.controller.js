@@ -166,6 +166,7 @@ async function getCampaignApplications(req, res) {
           "image_link",
           "platform",
           "campaign_budget",
+          "campaign_about",
           "campaign_start_dt",
           "campaign_end_dt",
         ],
