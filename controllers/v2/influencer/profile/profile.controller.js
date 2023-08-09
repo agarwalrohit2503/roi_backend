@@ -22,68 +22,74 @@ async function getProfile(req, res) {
         
       },
       {
-        model: tableNames.influencerAddress,
-        // as: "address",
-        include: [
-          {
-            attributes: ["state_id", "state_name"],
-            model: tableNames.State,
-            // as: "influencer_state",
-          },
-          {
-            attributes: ["city_id", "city_name"],
-            model: tableNames.City,
-            // as: "influencer_city",
-          },
-
-          // {
-          //   model: tableNames.State, as: "influencer_state"
-          // },
-          //  { model: tableNames.City, as: "influencer_city" },
-       
-        ],
-
-        // attributes: {
-        //   include: [
-        //     [
-        //       sequelize.literal(`(
-        //       SELECT state_name
-        //       FROM state
-        //       WHERE
-        //       state.state_id  = address.state_id
-        //   )`),
-        //       "stateName",
-        //     ],
-        //     [
-        //       sequelize.literal(`(
-        //       SELECT city_name
-        //       FROM city
-        //       WHERE
-        //       city.city_id  = address.city_id
-        //   )`),
-        //       "cityName",
-        //     ],
-        //   ],
-        // },
-        //required: true
+        model:tableNames.influencerFacebook,
       },
+      {
+        model:tableNames.influencerInstagram,
+      },
+      {
+        model:tableNames.influencerYoutube,
+      },
+      // {
+      //   model: tableNames.influencerAddress,
+      //   // as: "address",
+      //   include: [
+      //     {
+      //       attributes: ["state_id", "state_name"],
+      //       model: tableNames.State,
+      //       // as: "influencer_state",
+      //     },
+      //     {
+      //       attributes: ["city_id", "city_name"],
+      //       model: tableNames.City,
+      //       // as: "influencer_city",
+      //     },
+
+      //     // {
+      //     //   model: tableNames.State, as: "influencer_state"
+      //     // },
+      //     //  { model: tableNames.City, as: "influencer_city" },
+       
+      //   ],
+
+      //   // attributes: {
+      //   //   include: [
+      //   //     [
+      //   //       sequelize.literal(`(
+      //   //       SELECT state_name
+      //   //       FROM state
+      //   //       WHERE
+      //   //       state.state_id  = address.state_id
+      //   //   )`),
+      //   //       "stateName",
+      //   //     ],
+      //   //     [
+      //   //       sequelize.literal(`(
+      //   //       SELECT city_name
+      //   //       FROM city
+      //   //       WHERE
+      //   //       city.city_id  = address.city_id
+      //   //   )`),
+      //   //       "cityName",
+      //   //     ],
+      //   //   ],
+      //   // },
+      //   //required: true
+      // },
+
+
       {
         model: tableNames.influencerPrice,
       }, ],
   });
 
-  if (influencer != "") {
+ 
     res.status(200).send({
       status: 200,
       message: "influencer found",
       data: influencer,
     });
-  } else {
-    res.status(404).send({
-      status: 404,
-      message: "influencer not found",
-    });
-  }
+
 }
 
 async function updateProfile(req, res) {
