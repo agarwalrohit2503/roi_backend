@@ -56,18 +56,36 @@ async function influencerLogin(req, res) {
           message: "Otp not send",
         });
       } else {
-       
-        const influencerProfileStatus =
-          await tableNames.influencerProfileStatus.create({
+        const findall = await tableNames.influencerProfileStatus.findAll({
+          where: {
             influencer_id: data["influencer_id"],
-          });
-        
-        
-          res.status(200).send({
-          status: 200,
-          message: "successfully login",
-          verification_code: UserOtp["verification_code"],
+          },
         });
+        if (findall == '') {
+          const ProfileStatusFind =
+            await tableNames.influencerProfileStatus.create({
+              influencer_id: data["influencer_id"],
+            });
+
+          if (!ProfileStatusFind) {
+            res.status(404).send({
+              status: 404,
+              message: "try again to login",
+            });
+          } else {
+            res.status(200).send({
+              status: 200,
+              message: "successfully login",
+              verification_code: UserOtp["verification_code"],
+            });
+          }
+        } else {
+          res.status(200).send({
+            status: 200,
+            message: "successfully login",
+            verification_code: UserOtp["verification_code"],
+          });
+        }
       }
     }
   }
@@ -233,9 +251,7 @@ async function otpverify(req, res) {
                 message: "Otp verified successfully",
                 influencer_id: influencer_id,
                 profile_status:
-                  influencerQuery["influencer_profile_statuses"][0][
-                    "profile_complete_status"
-                  ],
+                  influencerQuery['influencer_profile_statuses'][0]['profile_complete_status'],
                 token: sqlquery["access_tokens"],
               });
             }
