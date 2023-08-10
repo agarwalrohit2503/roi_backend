@@ -13,9 +13,6 @@ async function influencerLogin(req, res) {
   });
 
   if (!SqlQuery) {
-    // const otpnum = Math.floor(1000 + Math.random() * 9000);
-
-    // const verificationCode = Math.floor(1000 + Math.random() * 900000);
     const UserOtp = await tableNames.otp.create({
       verification_code: vcode,
       otp_code: 1111,
@@ -40,18 +37,12 @@ async function influencerLogin(req, res) {
 
     var data = SqlQuery.toJSON();
 
-    // console.log(data);
-    // console.log(mobile_number);
-    // console.log(data["influencer_id"]);
     if (data["account_delete"] == 1) {
       res.status(404).send({
         status: 404,
         message: "you account has been deactivated",
       });
     } else {
-      // const otpnum = Math.floor(1000 + Math.random() * 9000);
-      //  const verificationCode = Math.floor(1000 + Math.random() * 900000);
-
       const UserOtp = await tableNames.otp.create({
         verification_code: vcode,
         otp_code: 1111,
@@ -65,17 +56,17 @@ async function influencerLogin(req, res) {
           message: "Otp not send",
         });
       } else {
-        res.status(200).send({
+       
+        const influencerProfileStatus =
+          await tableNames.influencerProfileStatus.create({
+            influencer_id: data["influencer_id"],
+          });
+        
+        
+          res.status(200).send({
           status: 200,
-          // "isuserfound": true,
-
           message: "successfully login",
-          //  user_details: [
-          //  {
-          //"profile_status": data['profile_status'],
           verification_code: UserOtp["verification_code"],
-          //  },
-          // ],
         });
       }
     }
@@ -168,11 +159,10 @@ async function otpverify(req, res) {
               res.status(200).send({
                 status: 200,
                 message: "Otp verified successfully",
-              
+
                 influencer_id: inf_id,
-                profile_status:0,
+                profile_status: 0,
                 token: sqlquery["access_tokens"],
-              
               });
             }
           }
@@ -181,9 +171,12 @@ async function otpverify(req, res) {
         // need to pass token and id
 
         let influencerQuery = await tableNames.influencer.findOne({
-          include:[{
-            model:tableNames.influencerProfileStatus
-          }],
+          include: [
+            {
+              model: tableNames.influencerProfileStatus,
+              required: false,
+            },
+          ],
           where: {
             influencer_id: otpquery["influencer_id"],
             //verification_code: verification_code,
@@ -239,14 +232,14 @@ async function otpverify(req, res) {
                 status: 200,
                 message: "Otp verified successfully",
                 influencer_id: influencer_id,
-                profile_status:influencerQuery["influencer_profile_statuses"][0]['profile_complete_status'],
+                profile_status:
+                  influencerQuery["influencer_profile_statuses"][0][
+                    "profile_complete_status"
+                  ],
                 token: sqlquery["access_tokens"],
-               
               });
             }
           }
-
-         
         }
       }
     }
