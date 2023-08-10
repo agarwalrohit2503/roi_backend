@@ -120,10 +120,8 @@ db.application_status = require("../models/application_status.model")(
   sequelize,
   DataTypes
 );
-db.influencer_profile_status = require("../models/influencer_profile_status.model")(
-  sequelize,
-  DataTypes
-);
+db.influencer_profile_status =
+  require("../models/influencer_profile_status.model")(sequelize, DataTypes);
 ///relationships table start
 // db.influencer.belongsTo(db.City, {
 //   foreignKey: "city_id", // foreign table
@@ -315,8 +313,13 @@ db.influencer_content_niche.belongsTo(db.content_niche, {
   targetKey: "content_niche_id", // primary table
 });
 
-db.sequelize.sync({ force: false }).then(() => {});
-
+db.influencer_profile_status.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+db.sequelize.sync({ force: false }).then(() => {
+  console.log("yes re-sync done!");
+});
 ///////////////////////////table join query//////////////////////
 
 db.influencer.hasMany(db.influencer_address, {

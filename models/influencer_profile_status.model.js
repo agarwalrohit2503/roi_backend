@@ -8,9 +8,9 @@ module.exports = (sequelize, DataTypes) => {
           primaryKey: true,
         },
         influencer_id: {
-          type: DataTypes.INTEGER,
-          defaultValue: null
-        },
+            type: DataTypes.INTEGER,
+            defaultValue: null
+          },
         profile_complete_status: {
           type: DataTypes.TINYINT,
           defaultValue: 0,
