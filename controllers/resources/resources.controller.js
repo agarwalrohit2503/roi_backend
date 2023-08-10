@@ -83,6 +83,33 @@ async function getContentNiche(req, res) {
   }
 }
 
+async function getBrandType(req, res) {
+  try {
+    findQuery = await tableNames.brandType.findAll({
+      attributes: ["brand_type_id", "brand_type_name"],
+      where: { delete_flag: 0 },
+    });
+
+    if (findQuery != "0") {
+      res.status(200).send({
+        status: 200,
+        message: "Brand Type",
+        data: findQuery,
+      });
+    } else {
+      res.status(404).send({
+        status: 404,
+        message: "INTERNAL ERROR",
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: "Internal server error",
+    });
+  }
+}
+
 async function getBusinessList(req, res) {
 
   fondQuery = await tableNames.Industry.findAll({
@@ -109,4 +136,5 @@ module.exports = {
   getState,
   getContentNiche,
   getBusinessList,
+  getBrandType,
 };

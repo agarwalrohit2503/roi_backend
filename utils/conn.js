@@ -120,6 +120,10 @@ db.application_status = require("../models/application_status.model")(
   sequelize,
   DataTypes
 );
+db.influencer_profile_status = require("../models/influencer_profile_status.model")(
+  sequelize,
+  DataTypes
+);
 ///relationships table start
 // db.influencer.belongsTo(db.City, {
 //   foreignKey: "city_id", // foreign table

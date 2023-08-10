@@ -50,6 +50,7 @@ tableNames = {
   influencerYoutube: db.influencer_youtube,
 
   campaignContentNiche:db.campaignContentNiche,
+  influencerProfileStatus:db.influencer_profile_status,
 
  
 
