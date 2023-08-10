@@ -93,7 +93,7 @@ async function updateBrandprofile(req, res) {
     {
       brand_logo: brand_logo,
       brand_type_id: brand_type_id,
-      Name: Name,
+      name: Name,
       email: email,
       number: number,
       pan_card: pan_card,
