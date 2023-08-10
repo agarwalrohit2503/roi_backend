@@ -327,6 +327,11 @@ db.influencer.hasMany(db.influencer_address, {
   // as: "address",
 });
 
+db.influencer.hasMany(db.influencer_profile_status, {
+  foreignKey: "influencer_id",
+  // as: "address",
+});
+
 db.influencer_address.hasMany(db.state, {
   foreignKey: "state_id",
 });

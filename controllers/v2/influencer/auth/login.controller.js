@@ -168,12 +168,11 @@ async function otpverify(req, res) {
               res.status(200).send({
                 status: 200,
                 message: "Otp verified successfully",
-                // data: [
-                //   {
+              
                 influencer_id: inf_id,
+                profile_status:0,
                 token: sqlquery["access_tokens"],
-                //   },
-                // ],
+              
               });
             }
           }
@@ -182,6 +181,9 @@ async function otpverify(req, res) {
         // need to pass token and id
 
         let influencerQuery = await tableNames.influencer.findOne({
+          include:[{
+            model:tableNames.influencerProfileStatus
+          }],
           where: {
             influencer_id: otpquery["influencer_id"],
             //verification_code: verification_code,
@@ -237,21 +239,14 @@ async function otpverify(req, res) {
                 status: 200,
                 message: "Otp verified successfully",
                 influencer_id: influencer_id,
+                profile_status:influencerQuery["influencer_profile_statuses"][0]['profile_complete_status'],
                 token: sqlquery["access_tokens"],
+               
               });
             }
           }
 
-          // let tokenquery = await tableNames.access_tokens.findOne({
-          //   where: {
-          //     influencer_id : influencer_id ,
-          //     verification_code: verification_code,
-          //   },
-          // });
-          // res.status(200).send({
-          //   status: 200,
-          //   message: influencerQuery,
-          // });
+         
         }
       }
     }
