@@ -57,10 +57,10 @@ async function getProfile(req, res) {
     ],
   });
 
-  console.log(findQuery);
+  
   if (findQuery != "") {
     res.status(200).send({
-      status: 404,
+      status: 200,
       message: "Brand",
       data: findQuery,
     });
@@ -93,7 +93,7 @@ async function updateBrandprofile(req, res) {
     {
       brand_logo: brand_logo,
       brand_type_id: brand_type_id,
-      Name: Name,
+      name: Name,
       email: email,
       number: number,
       pan_card: pan_card,
@@ -112,7 +112,7 @@ async function updateBrandprofile(req, res) {
     }
   );
 
-  console.log(result);
+  
   if (result[0] != "") {
     industry_ids = req.body.industry_ids;
 

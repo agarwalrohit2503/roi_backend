@@ -8,6 +8,7 @@ const {
   getState,
   getCity,
   getBusinessList,
+  getBrandType,
 } = require("../../controllers/resources/resources.controller");
 
 router.get("/get-content-niche", (req, res) => {
@@ -17,7 +18,9 @@ router.get("/get-content-niche", (req, res) => {
 router.get("/get-state", (req, res) => {
   getState(req, res);
 });
-
+router.get("/get-brand-type", (req, res) => {
+  getBrandType(req, res);
+});
 router.get("/get-city", (req, res) => {
   getCity(req, res);
 });

@@ -1,7 +1,10 @@
 const { db, sequelize } = require("../utils/conn");
 
 tableNames = {
+
   influencer: db.influencer,
+
+  
 
   brands: db.brands,
 
@@ -46,6 +49,10 @@ tableNames = {
 
   influencerYoutube: db.influencer_youtube,
 
+  campaignContentNiche:db.campaignContentNiche,
+  influencerProfileStatus:db.influencer_profile_status,
+
+ 
 
   //resource start
   Industry: db.industry,

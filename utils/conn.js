@@ -120,6 +120,8 @@ db.application_status = require("../models/application_status.model")(
   sequelize,
   DataTypes
 );
+db.influencer_profile_status =
+  require("../models/influencer_profile_status.model")(sequelize, DataTypes);
 ///relationships table start
 // db.influencer.belongsTo(db.City, {
 //   foreignKey: "city_id", // foreign table
@@ -311,13 +313,24 @@ db.influencer_content_niche.belongsTo(db.content_niche, {
   targetKey: "content_niche_id", // primary table
 });
 
-db.sequelize.sync({ force: false }).then(() => {});
+db.influencer_profile_status.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
 
+db.sequelize.sync({ force: false }).then(() => {
+  console.log("yes re-sync done!");
+});
 ///////////////////////////table join query//////////////////////
 
 db.influencer.hasMany(db.influencer_address, {
   foreignKey: "influencer_id",
- // as: "address",
+  // as: "address",
+});
+
+db.influencer.hasMany(db.influencer_profile_status, {
+  foreignKey: "influencer_id",
+  // as: "address",
 });
 
 db.influencer_address.hasMany(db.state, {
@@ -330,7 +343,7 @@ db.influencer_address.hasMany(db.City, {
 
 db.influencer.hasMany(db.influencer_content_niche, {
   foreignKey: "influencer_id",
- // as: "inf_content",
+  // as: "inf_content",
 });
 
 db.influencer_content_niche.hasMany(db.content_niche, {
@@ -389,8 +402,24 @@ db.campaign.hasMany(db.brands, {
   foreignKey: "brands_id",
 });
 
+db.campaign.hasMany(db.campaign_payment_type, {
+  foreignKey: "payment_status_id",
+});
+
+db.campaign.hasMany(db.campaignContentNiche, {
+  foreignKey: "campaign_id",
+});
+
+db.campaignContentNiche.hasMany(db.content_niche, {
+  foreignKey: "content_niche_id",
+});
+
 db.campaign_application.hasMany(db.application_status, {
   foreignKey: "application_status_id",
+});
+
+db.campaign_application.hasMany(db.campaign_status, {
+  foreignKey: "campaign_status_id",
 });
 
 db.campaign.hasMany(db.campaign_status, {
@@ -402,17 +431,15 @@ db.campaign.hasMany(db.campaign_payment_type, {
 });
 //////////////APPLICATION CAMPAIGING RELATION SECTION END///////////////////////////
 
-//////////////////////////brands influends demo start//////////////////
+//////////////////////////brands influencer demo start//////////////////
 db.influencer.hasMany(db.influencer_price, {
   foreignKey: "influencer_id",
   // as: "influencer_state",
 });
 
-
 db.favourite_influencer.hasMany(db.influencer, {
   foreignKey: "influencer_id",
 });
-
 
 db.influencer.hasMany(db.influencer_facebook, {
   foreignKey: "influencer_id",
@@ -425,7 +452,6 @@ db.influencer.hasMany(db.influencer_youtube, {
 db.influencer.hasMany(db.influencer_instagram, {
   foreignKey: "influencer_id",
 });
-
 
 //////////////////////////brands influends demo end//////////////////
 module.exports = { db, sequelize, operatorsAliases };

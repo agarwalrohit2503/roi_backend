@@ -199,7 +199,7 @@ async function otpverify(req, res) {
               message: "token not generated",
             });
           } else {
-            console.log(otpquery["otp_id"]);
+          
             const updateQuery = await tableNames.otp.update(
               { otp_flag: 1 },
               { where: { otp_id: otpquery["otp_id"] } }
@@ -213,6 +213,7 @@ async function otpverify(req, res) {
               res.status(200).send({
                 status: 200,
                 message: "Otp verified successfully",
+                brands_id:brand_id,
                 token: sqlquery["access_tokens"],
               });
             }

@@ -5,112 +5,99 @@ const { addAddress } = require("../address/address.controller");
 async function getProfile(req, res) {
   const influencer_id = req.params.influencer_id;
 
-  const influencer = await tableNames.influencer.findAll({
+  const influencer = await tableNames.influencer.findOne({
     where: { influencer_id: influencer_id },
     include: [
       {
+        attributes: ["profile_complete_status"],
+        model: tableNames.influencerProfileStatus,
+      },
+      {
         //attributes: ["content_niche_id", "content_niche_name"],
         model: tableNames.influencerContentNiche,
-      //  as: "inf_content",
+        //  as: "inf_content",
         include: [
           {
             //attributes: ["content_niche_id", "content_niche_name"],
             model: tableNames.contentNiche,
-           // as: "content_nich",
+            // as: "content_nich",
           },
         ],
       },
-      {
-        model: tableNames.influencerAddress,
-       // as: "address",
-        include: [
-          {
-            attributes: ["state_id", "state_name"],
-            model: tableNames.State,
-            // as: "influencer_state",
-          },
-          {
-            attributes: ["city_id", "city_name"],
-            model: tableNames.City,
-            // as: "influencer_city",
-          },
 
-          // {
-          //   model: tableNames.State, as: "influencer_state"
-          // },
-          //  { model: tableNames.City, as: "influencer_city" },
-        ],
-        // attributes: {
-        //   include: [
-        //     [
-        //       sequelize.literal(`(
-        //       SELECT state_name
-        //       FROM state
-        //       WHERE
-        //       state.state_id  = address.state_id
-        //   )`),
-        //       "stateName",
-        //     ],
-        //     [
-        //       sequelize.literal(`(
-        //       SELECT city_name
-        //       FROM city
-        //       WHERE
-        //       city.city_id  = address.city_id
-        //   )`),
-        //       "cityName",
-        //     ],
-        //   ],
-        // },
-        //required: true
+      {
+        model: tableNames.influencerFacebook,
+      },
+      {
+        model: tableNames.influencerInstagram,
+      },
+      {
+        model: tableNames.influencerYoutube,
+      },
+      // {
+      //   model: tableNames.influencerAddress,
+      //   // as: "address",
+      //   include: [
+      //     {
+      //       attributes: ["state_id", "state_name"],
+      //       model: tableNames.State,
+      //       // as: "influencer_state",
+      //     },
+      //     {
+      //       attributes: ["city_id", "city_name"],
+      //       model: tableNames.City,
+      //       // as: "influencer_city",
+      //     },
+
+      //     // {
+      //     //   model: tableNames.State, as: "influencer_state"
+      //     // },
+      //     //  { model: tableNames.City, as: "influencer_city" },
+
+      //   ],
+
+      //   // attributes: {
+      //   //   include: [
+      //   //     [
+      //   //       sequelize.literal(`(
+      //   //       SELECT state_name
+      //   //       FROM state
+      //   //       WHERE
+      //   //       state.state_id  = address.state_id
+      //   //   )`),
+      //   //       "stateName",
+      //   //     ],
+      //   //     [
+      //   //       sequelize.literal(`(
+      //   //       SELECT city_name
+      //   //       FROM city
+      //   //       WHERE
+      //   //       city.city_id  = address.city_id
+      //   //   )`),
+      //   //       "cityName",
+      //   //     ],
+      //   //   ],
+      //   // },
+      //   //required: true
+      // },
+
+      {
+        model: tableNames.influencerPrice,
       },
     ],
   });
 
-  console.log(influencer);
-  if (influencer != "") {
-    res.status(200).send({
-      status: 404,
-      message: "influencerfound",
-      data: influencer,
-    });
-  } else {
-    res.status(404).send({
-      status: 404,
-      message: "influencer not found",
-    });
-  }
-
-  // const influencer = await tableNames.influencerAddress.findAll({
-  //     where: { influencer_id: influencer_id },
-  //     include: [
-  //       {
-  //         model: tableNames.influencer,
-
-  //         //required: true
-  //       },
-  //     ],
-  //   });
-  //   console.log(influencer);
-  //   if (influencer != '') {
-  //     res.status(200).send({
-  //       status: 404,
-  //       message: "influencerfound",
-  //       data: influencer,
-  //     });
-  //   } else {
-  //     res.status(404).send({
-  //       status: 404,
-  //       message: "influencer not found",
-  //     });
-  //   }
+  res.status(200).send({
+    status: 200,
+    message: "influencer found",
+    data: influencer,
+  });
 }
 
 async function updateProfile(req, res) {
   influencer_id = req.params.influencer_id;
 
-  influencer_address_id = req.body.influencer_address_id;
-  profile_status = req.body.profile_status;
+  //influencer_address_id = req.body.influencer_address_id;
 
   var name = req.body.name;
   var email = req.body.email;
@@ -121,25 +108,27 @@ async function updateProfile(req, res) {
   var gst_number = req.body.gst_number;
   var bio = req.body.bio;
 
+  var bodyData = {
+    name: name,
+    email: email,
+    gender: gender,
+    number: mobile_number,
+    dob: dob,
+    pan_card: pan_card,
+    gst_number: gst_number,
+    bio: bio,
+  };
+  var newData = {};
+  for (var keys in bodyData) {
+    if (bodyData[keys] != "") newData[keys] = bodyData[keys];
+  }
+
   try {
-    const result = await tableNames.influencer.update(
-      {
-        name: name,
-        email: email,
-        gender: gender,
-        dob: dob,
-        number: mobile_number,
-        pan_card: pan_card,
-        gst_number: gst_number,
-        bio: bio,
-        profile_status: profile_status,
+    const result = await tableNames.influencer.update(newData, {
+      where: {
+        influencer_id: influencer_id,
       },
-      {
-        where: {
-          influencer_id: influencer_id,
-        },
-      }
-    );
+    });
 
     if (result[0] != 0) {
       res.status(200).send({
@@ -162,13 +151,13 @@ async function updateProfile(req, res) {
 
 async function updateInfluencerPrice(req, res) {
   influencer_id = req.params.influencer_id;
-  console.log(influencer_id);
+
   post_cost = req.body.post_cost;
   reels_cost = req.body.reels_cost;
   video_cost = req.body.video_cost;
   story_cost = req.body.story_cost;
 
-   try {
+  try {
     const findQuery = await tableNames.influencerPrice.findOne({
       where: {
         influencer_id: influencer_id,
@@ -295,9 +284,45 @@ async function addContentNiche(req, res) {
   }
 }
 
+async function influencerProfileUpdate(req, res) {
+  var influencer_id = req.params.influencer_id;
+
+  var profile_status = req.body.profile_status;
+
+  try {
+    const result = await tableNames.influencerProfileStatus.update(
+      {
+        profile_complete_status: profile_status,
+      },
+      {
+        where: {
+          influencer_id: influencer_id,
+        },
+      }
+    );
+
+    if (result[0] == 0) {
+      res.status(200).send({
+        status: 200,
+        message: "Influencer profile status updated",
+      });
+    } else {
+      res.status(209).send({
+        status: 209,
+        message: "Influencer profile status not updated",
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      status: 500,
+      message: err,
+    });
+  }
+}
 module.exports = {
   getProfile,
   updateProfile,
   updateInfluencerPrice,
   addContentNiche,
+  influencerProfileUpdate,
 };
