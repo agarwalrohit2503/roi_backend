@@ -13,17 +13,17 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING,
-       // defaultValue: null,
-      //  unique: true,
+        // defaultValue: null,
+        //  unique: true,
       },
       gender: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
       number: {
-       type: DataTypes.BIGINT,
-       // allowNull: false,
-     // unique: true,
+        type: DataTypes.BIGINT,
+        // allowNull: false,
+        // unique: true,
       },
       dob: {
         type: DataTypes.DATE,
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       gst_number: { type: DataTypes.STRING, defaultValue: null },
       bio: { type: DataTypes.TEXT, defaultValue: null },
       account_delete: { type: DataTypes.TINYINT, defaultValue: 0 },
-      profile_status: { type: DataTypes.TINYINT, defaultValue: 0 },
+      // profile_status: { type: DataTypes.TINYINT, defaultValue: 0 },
     },
     {
       createdAt: true,

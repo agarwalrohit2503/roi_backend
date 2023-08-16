@@ -9,6 +9,10 @@ async function getProfile(req, res) {
     where: { influencer_id: influencer_id },
     include: [
       {
+        attributes: ["profile_complete_status"],
+        model: tableNames.influencerProfileStatus,
+      },
+      {
         //attributes: ["content_niche_id", "content_niche_name"],
         model: tableNames.influencerContentNiche,
         //  as: "inf_content",
@@ -19,16 +23,16 @@ async function getProfile(req, res) {
             // as: "content_nich",
           },
         ],
-        
+      },
+
+      {
+        model: tableNames.influencerFacebook,
       },
       {
-        model:tableNames.influencerFacebook,
+        model: tableNames.influencerInstagram,
       },
       {
-        model:tableNames.influencerInstagram,
-      },
-      {
-        model:tableNames.influencerYoutube,
+        model: tableNames.influencerYoutube,
       },
       // {
       //   model: tableNames.influencerAddress,
@@ -49,7 +53,7 @@ async function getProfile(req, res) {
       //     //   model: tableNames.State, as: "influencer_state"
       //     // },
       //     //  { model: tableNames.City, as: "influencer_city" },
-       
+
       //   ],
 
       //   // attributes: {
@@ -77,19 +81,17 @@ async function getProfile(req, res) {
       //   //required: true
       // },
 
-
       {
         model: tableNames.influencerPrice,
-      }, ],
+      },
+    ],
   });
 
- 
-    res.status(200).send({
-      status: 200,
-      message: "influencer found",
-      data: influencer,
-    });
-
+  res.status(200).send({
+    status: 200,
+    message: "influencer found",
+    data: influencer,
+  });
 }
 
 async function updateProfile(req, res) {
@@ -286,12 +288,10 @@ async function influencerProfileUpdate(req, res) {
 
   var profile_status = req.body.profile_status;
 
-
   try {
     const result = await tableNames.influencerProfileStatus.update(
       {
         profile_complete_status: profile_status,
-       
       },
       {
         where: {

@@ -61,7 +61,7 @@ async function influencerLogin(req, res) {
             influencer_id: data["influencer_id"],
           },
         });
-        if (findall == '') {
+        if (findall == "") {
           const ProfileStatusFind =
             await tableNames.influencerProfileStatus.create({
               influencer_id: data["influencer_id"],
@@ -246,12 +246,15 @@ async function otpverify(req, res) {
                 message: "Otp not verified",
               });
             } else {
+              console.log(influencerQuery);
               res.status(200).send({
                 status: 200,
                 message: "Otp verified successfully",
                 influencer_id: influencer_id,
                 profile_status:
-                  influencerQuery['influencer_profile_statuses'][0]['profile_complete_status'],
+                  influencerQuery["influencer_profile_statuses"][0][
+                    "profile_complete_status"
+                  ],
                 token: sqlquery["access_tokens"],
               });
             }

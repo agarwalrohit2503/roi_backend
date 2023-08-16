@@ -317,6 +317,7 @@ db.influencer_profile_status.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
+
 db.sequelize.sync({ force: false }).then(() => {
   console.log("yes re-sync done!");
 });
