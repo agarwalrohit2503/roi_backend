@@ -98,7 +98,6 @@ async function updateProfile(req, res) {
   influencer_id = req.params.influencer_id;
 
   //influencer_address_id = req.body.influencer_address_id;
-  profile_status = req.body.profile_status;
 
   var name = req.body.name;
   var email = req.body.email;
@@ -109,25 +108,27 @@ async function updateProfile(req, res) {
   var gst_number = req.body.gst_number;
   var bio = req.body.bio;
 
+  var bodyData = {
+    name: name,
+    email: email,
+    gender: gender,
+    number: mobile_number,
+    dob: dob,
+    pan_card: pan_card,
+    gst_number: gst_number,
+    bio: bio,
+  };
+  var newData = {};
+  for (var keys in bodyData) {
+    if (bodyData[keys] != "") newData[keys] = bodyData[keys];
+  }
+
   try {
-    const result = await tableNames.influencer.update(
-      {
-        name: name,
-        email: email,
-        gender: gender,
-        dob: dob,
-        number: mobile_number,
-        pan_card: pan_card,
-        gst_number: gst_number,
-        bio: bio,
-        profile_status: profile_status,
+    const result = await tableNames.influencer.update(newData, {
+      where: {
+        influencer_id: influencer_id,
       },
-      {
-        where: {
-          influencer_id: influencer_id,
-        },
-      }
-    );
+    });
 
     if (result[0] != 0) {
       res.status(200).send({
