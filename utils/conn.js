@@ -318,9 +318,9 @@ db.influencer_profile_status.belongsTo(db.influencer, {
   targetKey: "influencer_id", // primary table
 });
 
-db.sequelize.sync({ force: false }).then(() => {
-  console.log("yes re-sync done!");
-});
+// db.sequelize.sync({ force: false }).then(() => {
+//   console.log("yes re-sync done!");
+// });
 ///////////////////////////table join query//////////////////////
 
 db.influencer.hasMany(db.influencer_address, {
