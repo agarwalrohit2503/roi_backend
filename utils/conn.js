@@ -104,10 +104,10 @@ db.campaign_application = require("../models/campaign_application.model")(
   DataTypes
 );
 db.campaign = require("../models/campaign.model")(sequelize, DataTypes);
-db.favourite_influencer = require("../models/favourite_influencer.model")(
-  sequelize,
-  DataTypes
-);
+// db.favourite_influencer = require("../models/favourite_influencer.model")(
+//   sequelize,
+//   DataTypes
+// );
 db.access_tokens = require("../models/access_tokens.model")(
   sequelize,
   DataTypes

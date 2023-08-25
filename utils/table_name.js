@@ -41,6 +41,7 @@ tableNames = {
   campaignStatus: db.campaign_status,
 
   campaignPaymentType: db.campaign_payment_type,
+
   favouriteInfluencer: db.favourite_influencer,
 
   influencerFacebook: db.influencer_facebook,

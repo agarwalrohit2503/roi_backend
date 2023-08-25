@@ -138,65 +138,88 @@ async function markFavourite(req, res) {
   const brand_id = req.params.brand_id;
 
   const influencer_id = req.body.influencer_id;
-  console.log(influencer_id);
-  const findQquery = await tableNames.favouriteInfluencer.findOne({
-    where: { influencer_id: influencer_id, brand_id: brand_id },
-  });
+  try {
+    const findQuery = await tableNames.brands.findOne({
+      where: {
+        brands_id: brand_id,
+      },
+    });
 
-  if (!findQquery) {
-    let favInfo = {
-      brand_id: brand_id,
-      influencer_id: influencer_id,
-    };
-
-    const insertQuery = await tableNames.favouriteInfluencer.create(favInfo);
-    if (!insertQuery) {
-      res.status(404).send({
-        status: 404,
-        message: "error",
+    if (findQuery == null) {
+      res.status(200).send({
+        status: 200,
+        message: "Brand not found",
       });
     } else {
-      const updateQuery = await tableNames.favouriteInfluencer.update(
-        { favourite_influencer_flag: 1 },
-        { where: { influencer_id: influencer_id, brand_id: brand_id } }
-      );
-      if (!updateQuery) {
-        res.status(200).send({
-          status: 200,
-          message: "Influencer not marked as a favorite",
-        });
+      const findQquery = await tableNames.favouriteInfluencer.findOne({
+        where: { influencer_id: influencer_id, brand_id: brand_id },
+      });
+
+      if (findQquery == null) {
+        let favdataInfo = {
+          brand_id: brand_id,
+          influencer_id: influencer_id,
+          favourite_influencer_flag: 0,
+        };
+
+        const sqlinsert = await tableNames.favouriteInfluencer.create(
+          favdataInfo
+        );
+        if (!sqlinsert) {
+          res.status(404).send({
+            status: 404,
+            message: "error",
+          });
+        } else {
+          res.status(200).send({
+            status: 200,
+            message: "Influencer marked as a favorite",
+          });
+        }
       } else {
-        res.status(200).send({
-          status: 200,
-          message: "Influencer marked as a favorite",
-        });
+        if (findQquery["favourite_influencer_flag"] == 1) {
+          const updataQuery = await tableNames.favouriteInfluencer.update(
+            { favourite_influencer_flag: 0 },
+            { where: { influencer_id: influencer_id, brand_id: brand_id } }
+          );
+
+          if (updataQuery[0] != "") {
+            res.status(200).send({
+              status: 200,
+              message: "Influencer marked as a favorite",
+            });
+          } else {
+            res.status(200).send({
+              status: 200,
+              message: "Influencer not marked as a favorite",
+            });
+          }
+        } else {
+          const updataQuery = await tableNames.favouriteInfluencer.update(
+            {
+              favourite_influencer_flag: 1,
+            },
+            { where: { influencer_id: influencer_id, brand_id: brand_id } }
+          );
+          if (updataQuery[0] != "") {
+            res.status(200).send({
+              status: 200,
+              message: "Influencer Removed",
+            });
+          } else {
+            res.status(200).send({
+              status: 200,
+              message: "Influencer not removed",
+            });
+          }
+        }
       }
     }
-  } else {
-    if (findQquery["favourite_influencer_flag"] == 1) {
-      const updataQuery = await tableNames.favouriteInfluencer.update(
-        { favourite_influencer_flag: 0 },
-        { where: { influencer_id: influencer_id, brand_id: brand_id } }
-      );
-      res.status(200).send({
-        status: 200,
-        //cartstatus: 0,
-        message: updataQuery,
-      });
-    } else {
-      const updataQuery = await tableNames.favouriteInfluencer.update(
-        {
-          favourite_influencer_flag: 1,
-        },
-        { where: { influencer_id: influencer_id, brand_id: brand_id } }
-      );
-
-      res.status(200).send({
-        status: 200,
-
-        message: updataQuery,
-      });
-    }
+  } catch (e) {
+    res.status(500).send({
+      status: 500,
+      message: e,
+    });
   }
 }
 

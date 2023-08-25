@@ -1,4 +1,3 @@
-const tableNames = require("../utils/table_name");
 module.exports = (sequelize, DataTypes) => {
   const favourite_influencer = sequelize.define(
     "favourite_influencer",
@@ -10,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       influencer_id: {
         type: DataTypes.INTEGER,
-        defaultValue: null
+        defaultValue: null,
       },
       brand_id: {
         type: DataTypes.INTEGER,
-        defaultValue: null
+        defaultValue: null,
       },
       favourite_influencer_flag: {
         type: DataTypes.TINYINT,
