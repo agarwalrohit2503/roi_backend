@@ -91,14 +91,13 @@ async function influencerLogin(req, res) {
     }
   }
 }
+
 async function otpverify(req, res) {
-  const otp = req.body.otp;
-  const verification_code = req.body.verification_code;
+ 
+  var otp = req.body.otp;
+  var verification_code = req.body.verification_code;
   let otpquery = await tableNames.otp.findOne({
-    // attributes: [
-    //   'configuration_id',
-    //    'config_name',
-    //    'config_value'],
+   
     where: {
       otp_code: otp,
       verification_code: verification_code,
@@ -121,9 +120,7 @@ async function otpverify(req, res) {
         number = otpquery["number"];
         let userinfo = {
           number: number,
-          // city_id: null,
-          // state_id: null,
-          // email: null,
+       
         };
         const user = await tableNames.influencer.create(userinfo);
         console.log(user);
