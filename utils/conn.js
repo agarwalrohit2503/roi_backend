@@ -402,8 +402,12 @@ db.campaign.hasMany(db.brands, {
   foreignKey: "brands_id",
 });
 
+// db.campaign.hasMany(db.campaign_payment_type, {
+//   foreignKey: "payment_status_id",
+// });
+
 db.campaign.hasMany(db.campaign_payment_type, {
-  foreignKey: "payment_status_id",
+  foreignKey: "campaign_payment_type_id",
 });
 
 db.campaign.hasMany(db.campaignContentNiche, {

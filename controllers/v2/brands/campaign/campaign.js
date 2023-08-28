@@ -179,9 +179,73 @@ async function addCampaign(req, res) {
   }
 }
 
+async function getCampaignDetails(req, res) {
+  const campaign_id = req.params.campaign_id;
+
+   try {
+  const findQuery = await tableNames.Campaign.findOne({
+    attributes: [
+      "campaign_id",
+      "campaign_name",
+      "location",
+      "campaign_about",
+      "language",
+      "image_link",
+      "platform",
+      "eligibility",
+      "campaign_budget",
+      "campaign_start_dt",
+      "campaign_end_dt",
+    ],
+    include: [
+      {
+        attributes: ["brands_id", "brand_logo", "name"],
+        model: tableNames.brands,
+        as: "brand",
+      },
+      {
+        attributes: ["campaign_payment_type_id", "name"],
+        model: tableNames.campaignPaymentType,
+       
+      },
+
+      {
+      
+        model: tableNames.campaignContentNiche,
+     
+        include: [
+          {
+            attributes: ["content_niche_id", "content_niche_name"],
+            model: tableNames.contentNiche,
+            // as: "cc",
+          },
+        ],
+      },
+    ],
+
+    where: {
+      campaign_id: campaign_id,
+    },
+  });
+
+  res.status(200).send({
+    status: 200,
+    message: "Data found",
+    data: findQuery ,
+  });
+
+} catch (err) {
+  res.status(500).send({
+     status: 500,
+    message: "INERNAL SERVER ERROR",
+    data: err,
+  });
+}
+}
 module.exports = {
   getAllCampaign,
   deleteCampaign,
   editCampaign,
   addCampaign,
+  getCampaignDetails
 };
