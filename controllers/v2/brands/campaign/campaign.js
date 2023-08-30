@@ -128,7 +128,7 @@ async function editCampaign(req, res) {
 async function addCampaign(req, res) {
   var brand_id = req.params.brand_id;
   var campaign_goal_id = req.body.campaign_goal_id;
-  var content_niche_id = req.body.content_niche_id; 
+  var content_niche_id = req.body.content_niche_id;
   var platform_id = req.body.platform_id;
   var campaign_status_id = req.body.campaign_status_id;
   var payment_status_id = req.body.payment_status_id;
@@ -144,11 +144,11 @@ async function addCampaign(req, res) {
   var platform = req.body.platform;
   var eligibility = req.body.eligibility;
 
-  //   var  post = req.body.post;
-  // var  story = req.body.story;
-  // var  real = req.body.real;
-  // var  youtube = req.body.youtube;
-  // var  video = req.body.video;
+  var post = req.body.post;
+  var story = req.body.story;
+  var real = req.body.real;
+  var youtube = req.body.youtube;
+  var video = req.body.video;
 
   try {
     const createQuery = await tableNames.Campaign.create({
@@ -170,8 +170,6 @@ async function addCampaign(req, res) {
     //  console.log(createQuery);
     console.log(createQuery.campaign_id);
     if (createQuery != "") {
-     
-
       let campaignContentNicheRespData = await Promise.all(
         content_niche_id.map(async (item) => {
           try {
@@ -202,7 +200,9 @@ async function addCampaign(req, res) {
               platform_id: item,
             };
             insertcampaignPlatformQuery =
-              await tableNames.campaignPlatform.create(campaign_campaignPlatform_info);
+              await tableNames.campaignPlatform.create(
+                campaign_campaignPlatform_info
+              );
 
             return insertcampaignPlatformQuery;
           } catch (error) {
@@ -213,13 +213,30 @@ async function addCampaign(req, res) {
       if (campaignPlatformRespData == "") {
         res.status(209).send({
           status: 209,
-          message: "Campaign Platform Not Inserted",
+          message: "Platform Not Inserted",
         });
       }
 
+      let campaign_deliverables_info = {
+        campaign_id: createQuery.campaign_id,
+        post: post,
+        story: story,
+        real: real,
+        youtube: youtube,
+        video: video,
+      };
+      insertcampaignDeliverablesQuery =
+        await tableNames.campaignDeliverables.create(
+          campaign_deliverables_info
+        );
+      if (insertcampaignDeliverablesQuery == "") {
+        res.status(209).send({
+          status: 209,
+          message: "Campaign  Deliverables Not Inserted",
+        });
+      }
 
-
-       res.status(200).send({
+      res.status(200).send({
         status: 200,
         message: "Campaign Created",
       });
