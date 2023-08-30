@@ -127,7 +127,9 @@ async function editCampaign(req, res) {
 
 async function addCampaign(req, res) {
   var brand_id = req.params.brand_id;
-
+  var campaign_goal_id = req.body.campaign_goal_id;
+  var content_niche_id = req.body.content_niche_id; 
+  var platform_id = req.body.platform_id;
   var campaign_status_id = req.body.campaign_status_id;
   var payment_status_id = req.body.payment_status_id;
 
@@ -141,7 +143,7 @@ async function addCampaign(req, res) {
   var image_link = req.body.image_link;
   var platform = req.body.platform;
   var eligibility = req.body.eligibility;
-  var campaign_goal_id = req.body.campaign_goal_id;
+
   //   var  post = req.body.post;
   // var  story = req.body.story;
   // var  real = req.body.real;
@@ -168,16 +170,65 @@ async function addCampaign(req, res) {
     //  console.log(createQuery);
     console.log(createQuery.campaign_id);
     if (createQuery != "") {
-      res.status(200).send({
+     
+
+      let campaignContentNicheRespData = await Promise.all(
+        content_niche_id.map(async (item) => {
+          try {
+            let content_niche_info = {
+              campaign_id: createQuery.campaign_id,
+              content_niche_id: item,
+            };
+            insertContentNicheQuery =
+              await tableNames.campaignContentNiche.create(content_niche_info);
+
+            return insertContentNicheQuery;
+          } catch (error) {
+            return { ...item, error };
+          }
+        })
+      );
+      if (campaignContentNicheRespData == "") {
+        res.status(209).send({
+          status: 209,
+          message: "Campaing Content Niche not inserted",
+        });
+      }
+      let campaignPlatformRespData = await Promise.all(
+        platform_id.map(async (item) => {
+          try {
+            let campaign_campaignPlatform_info = {
+              campaign_id: createQuery.campaign_id,
+              platform_id: item,
+            };
+            insertcampaignPlatformQuery =
+              await tableNames.campaignPlatform.create(campaign_campaignPlatform_info);
+
+            return insertcampaignPlatformQuery;
+          } catch (error) {
+            return { ...item, error };
+          }
+        })
+      );
+      if (campaignPlatformRespData == "") {
+        res.status(209).send({
+          status: 209,
+          message: "Campaing Content Niche not inserted",
+        });
+      }
+
+
+
+       res.status(200).send({
         status: 200,
-        message: "Campaign created",
+        message: "Campaign Created",
       });
 
-      
+      console.log(data);
     } else {
       res.status(409).send({
         status: 409,
-        message: "Campaign not created ",
+        message: "Campaign Not Created ",
       });
     }
   } catch (err) {
