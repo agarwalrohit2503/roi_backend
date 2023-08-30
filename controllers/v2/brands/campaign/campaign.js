@@ -213,7 +213,7 @@ async function addCampaign(req, res) {
       if (campaignPlatformRespData == "") {
         res.status(209).send({
           status: 209,
-          message: "Campaing Content Niche not inserted",
+          message: "Campaign Platform Not Inserted",
         });
       }
 
