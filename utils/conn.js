@@ -122,16 +122,30 @@ db.application_status = require("../models/application_status.model")(
 );
 db.influencer_profile_status =
   require("../models/influencer_profile_status.model")(sequelize, DataTypes);
-///relationships table start
-// db.influencer.belongsTo(db.City, {
-//   foreignKey: "city_id", // foreign table
-//   targetKey: "city_id", // primary table
-// });
 
-// db.influencer.belongsTo(db.state, {
-//   foreignKey: "state_id", // foreign table
-//   targetKey: "state_id", // primary table
-// });
+db.campaign_goal = require("../models/campaign_goal.model")(
+  sequelize,
+  DataTypes
+);
+db.campaign_deliverables = require("../models/campaign_deliverables.model")(
+  sequelize,
+  DataTypes
+);
+
+db.campaign_platform = require("../models/campaign_platform.model")(
+  sequelize,
+  DataTypes
+);
+db.platform = require("../models/platform.model")(sequelize, DataTypes);
+db.campaign_platform.belongsTo(db.campaign, {
+  foreignKey: "campaign_id", // foreign table
+  targetKey: "campaign_id", // primary table
+});
+
+db.campaign_platform.belongsTo(db.platform, {
+  foreignKey: "platform_id", // foreign table
+  targetKey: "platform_id", // primary table
+});
 
 db.brands.belongsTo(db.City, {
   foreignKey: "city_id", // foreign table
@@ -193,10 +207,10 @@ db.campaign.belongsTo(db.brands, {
   targetKey: "brands_id", // primary table
 });
 
-// db.campaign.belongsTo(db.campaign_status, {
-//   foreignKey: "campaign_status_id	", // foreign table
-//   targetKey: "campaign_status_id", // primary table
-// });
+db.campaign_deliverables.belongsTo(db.campaign, {
+  foreignKey: "campaign_id", // foreign table
+  targetKey: "campaign_id", // primary table
+});
 
 db.campaign_application.belongsTo(db.campaign, {
   foreignKey: "campaign_id", // foreign table
@@ -302,7 +316,10 @@ db.campaign.belongsTo(db.campaign_payment_type, {
   targetKey: "campaign_payment_type_id", // change the referenced column
   uniqueKey: "campaign_type_fk", // foreign key constraint name
 });
-
+db.campaign.belongsTo(db.campaign_goal, {
+  foreignKey: "campaign_goal_id", // foreign table
+  targetKey: "campaign_goal_id", // primary table
+});
 db.campaign_application.belongsTo(db.campaign_status, {
   foreignKey: "campaign_status_id", // foreign table
   targetKey: "campaign_status_id", // primary table

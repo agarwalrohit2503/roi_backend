@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         defaultValue: null,
       },
+      campaign_goal_id: {
+        type: DataTypes.INTEGER,
+        defaultValue: null,
+      },
       campaign_status_id: {
         type: DataTypes.INTEGER,
         defaultValue: null,
@@ -53,10 +57,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      platform: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+     
       eligibility: {
         type: DataTypes.STRING,
         defaultValue: null,

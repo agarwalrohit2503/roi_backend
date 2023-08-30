@@ -141,9 +141,16 @@ async function addCampaign(req, res) {
   var image_link = req.body.image_link;
   var platform = req.body.platform;
   var eligibility = req.body.eligibility;
+  var campaign_goal_id = req.body.campaign_goal_id;
+  //   var  post = req.body.post;
+  // var  story = req.body.story;
+  // var  real = req.body.real;
+  // var  youtube = req.body.youtube;
+  // var  video = req.body.video;
 
   try {
     const createQuery = await tableNames.Campaign.create({
+      campaign_goal_id: campaign_goal_id,
       brand_id: brand_id,
       campaign_status_id: campaign_status_id,
       payment_status_id: payment_status_id,
@@ -158,12 +165,15 @@ async function addCampaign(req, res) {
       platform: platform,
       eligibility: eligibility,
     });
-    console.log(createQuery);
+    //  console.log(createQuery);
+    console.log(createQuery.campaign_id);
     if (createQuery != "") {
       res.status(200).send({
         status: 200,
         message: "Campaign created",
       });
+
+      
     } else {
       res.status(409).send({
         status: 409,
@@ -182,70 +192,67 @@ async function addCampaign(req, res) {
 async function getCampaignDetails(req, res) {
   const campaign_id = req.params.campaign_id;
 
-   try {
-  const findQuery = await tableNames.Campaign.findOne({
-    attributes: [
-      "campaign_id",
-      "campaign_name",
-      "location",
-      "campaign_about",
-      "language",
-      "image_link",
-      "platform",
-      "eligibility",
-      "campaign_budget",
-      "campaign_start_dt",
-      "campaign_end_dt",
-    ],
-    include: [
-      {
-        attributes: ["brands_id", "brand_logo", "name"],
-        model: tableNames.brands,
-        as: "brand",
+  try {
+    const findQuery = await tableNames.Campaign.findOne({
+      attributes: [
+        "campaign_id",
+        "campaign_name",
+        "location",
+        "campaign_about",
+        "language",
+        "image_link",
+        "platform",
+        "eligibility",
+        "campaign_budget",
+        "campaign_start_dt",
+        "campaign_end_dt",
+      ],
+      include: [
+        {
+          attributes: ["brands_id", "brand_logo", "name"],
+          model: tableNames.brands,
+          as: "brand",
+        },
+        {
+          attributes: ["campaign_payment_type_id", "name"],
+          model: tableNames.campaignPaymentType,
+        },
+
+        {
+          model: tableNames.campaignContentNiche,
+
+          include: [
+            {
+              attributes: ["content_niche_id", "content_niche_name"],
+              model: tableNames.contentNiche,
+              // as: "cc",
+            },
+          ],
+        },
+      ],
+
+      where: {
+        campaign_id: campaign_id,
       },
-      {
-        attributes: ["campaign_payment_type_id", "name"],
-        model: tableNames.campaignPaymentType,
-       
-      },
+    });
 
-      {
-      
-        model: tableNames.campaignContentNiche,
-     
-        include: [
-          {
-            attributes: ["content_niche_id", "content_niche_name"],
-            model: tableNames.contentNiche,
-            // as: "cc",
-          },
-        ],
-      },
-    ],
-
-    where: {
-      campaign_id: campaign_id,
-    },
-  });
-
-  res.status(200).send({
-    status: 200,
-    message: "Data found",
-    data: findQuery ,
-  });
-
-} catch (err) {
-  res.status(500).send({
-     status: 500,
-    message: "INERNAL SERVER ERROR",
-    data: err,
-  });
-}
+    res.status(200).send({
+      status: 200,
+      message: "Data found",
+      data: findQuery,
+    });
+  } catch (err) {
+    res.status(500).send({
+      status: 500,
+      message: "INERNAL SERVER ERROR",
+      data: err,
+    });
+  }
 }
 module.exports = {
   getAllCampaign,
   deleteCampaign,
   editCampaign,
   addCampaign,
-  getCampaignDetails
+  getCampaignDetails,
 };

@@ -53,8 +53,14 @@ tableNames = {
   campaignContentNiche:db.campaignContentNiche,
   influencerProfileStatus:db.influencer_profile_status,
 
- 
+  Platform:db.platform,
 
+  campaignGoal:db.campaign_goal,
+
+  campaignDeliverables:db.campaign_deliverables,
+
+  campaignPlatform:db.campaign_platform,
+  
   //resource start
   Industry: db.industry,
   //resource end

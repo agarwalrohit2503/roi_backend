@@ -138,7 +138,7 @@ async function getCampaignPaymentType(req, res) {
 
     res.status(200).send({
       status: 200,
-      message: findQuery != ''? "Data found" : "Data not found",
+      message: findQuery != "" ? "Data found" : "Data not found",
       data: findQuery,
     });
   } catch (error) {
@@ -148,6 +148,28 @@ async function getCampaignPaymentType(req, res) {
     });
   }
 }
+
+async function getPlatform(req, res) {
+  const findQueryPlatform = await tableNames.Platform.findAll({
+    where: { delete_flag: 0 },
+  });
+  res.status(200).send({
+    status: 200,
+    message: findQueryPlatform != "" ? "Data found" : "Data not found",
+    data: findQueryPlatform,
+  });
+}
+
+async function getCampaignGoal(req, res) {
+  const findQueryCampaignGoal = await tableNames.campaignGoal.findAll({
+    where: { delete_flag: 0 },
+  });
+  res.status(200).send({
+    status: 200,
+    message: findQueryCampaignGoal != "" ? "Data found" : "Data not found",
+    data: findQueryCampaignGoal,
+  });
+}
 module.exports = {
   getCity,
   getState,
@@ -155,4 +177,6 @@ module.exports = {
   getBusinessList,
   getBrandType,
   getCampaignPaymentType,
+  getPlatform,
+  getCampaignGoal,
 };
