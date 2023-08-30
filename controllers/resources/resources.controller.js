@@ -151,6 +151,7 @@ async function getCampaignPaymentType(req, res) {
 
 async function getPlatform(req, res) {
   const findQueryPlatform = await tableNames.Platform.findAll({
+    attributes: ["platform_id", "platform_name"],
     where: { delete_flag: 0 },
   });
   res.status(200).send({
@@ -162,6 +163,7 @@ async function getPlatform(req, res) {
 
 async function getCampaignGoal(req, res) {
   const findQueryCampaignGoal = await tableNames.campaignGoal.findAll({
+    attributes: ["campaign_goal_id", "goal_name", "goal_desc"],
     where: { delete_flag: 0 },
   });
   res.status(200).send({
