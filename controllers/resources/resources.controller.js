@@ -31,16 +31,14 @@ async function getCity(req, res) {
 
   let where = {
     delete_flag: 0,
-    state_id: state_id
+    state_id: state_id,
   };
-  let paranoid = { paranoid: true }
+  let paranoid = { paranoid: true };
   findQuery = await tableNames.City.findAll({
     attributes: ["city_id", "state_id", "city_name"],
     where,
-    paranoid
-    
+    paranoid,
   });
-
 
   if (findQuery != "") {
     res.status(200).send({
@@ -111,14 +109,13 @@ async function getBrandType(req, res) {
 }
 
 async function getBusinessList(req, res) {
-
   fondQuery = await tableNames.Industry.findAll({
-    attributes:['industry_id','industry_name'],
-    where:{
-      delete_flag:0
-    }
-  })
-  if (fondQuery != '') {
+    attributes: ["industry_id", "industry_name"],
+    where: {
+      delete_flag: 0,
+    },
+  });
+  if (fondQuery != "") {
     res.status(200).send({
       status: 200,
       message: "Industry",
@@ -131,10 +128,57 @@ async function getBusinessList(req, res) {
     });
   }
 }
+
+async function getCampaignPaymentType(req, res) {
+  try {
+    findQuery = await tableNames.campaignPaymentType.findAll({
+      attributes: ["campaign_payment_type_id", "name"],
+      where: { campaign_delete: 0 },
+    });
+
+    res.status(200).send({
+      status: 200,
+      message: findQuery != "" ? "Data found" : "Data not found",
+      data: findQuery,
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: "Internal server error",
+    });
+  }
+}
+
+async function getPlatform(req, res) {
+  const findQueryPlatform = await tableNames.Platform.findAll({
+    attributes: ["platform_id", "platform_name","platform_img"],
+    where: { delete_flag: 0 },
+  });
+  res.status(200).send({
+    status: 200,
+    message: findQueryPlatform != "" ? "Data found" : "Data not found",
+    data: findQueryPlatform,
+  });
+}
+
+async function getCampaignGoal(req, res) {
+  const findQueryCampaignGoal = await tableNames.campaignGoal.findAll({
+    attributes: ["campaign_goal_id", "goal_name", "goal_desc"],
+    where: { delete_flag: 0 },
+  });
+  res.status(200).send({
+    status: 200,
+    message: findQueryCampaignGoal != "" ? "Data found" : "Data not found",
+    data: findQueryCampaignGoal,
+  });
+}
 module.exports = {
   getCity,
   getState,
   getContentNiche,
   getBusinessList,
   getBrandType,
+  getCampaignPaymentType,
+  getPlatform,
+  getCampaignGoal,
 };

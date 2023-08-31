@@ -285,32 +285,46 @@ async function addContentNiche(req, res) {
 }
 
 async function influencerProfileUpdate(req, res) {
-  var influencer_id = req.params.influencer_id;
-
-  var profile_status = req.body.profile_status;
-
   try {
-    const result = await tableNames.influencerProfileStatus.update(
-      {
-        profile_complete_status: profile_status,
-      },
-      {
-        where: {
-          influencer_id: influencer_id,
-        },
-      }
-    );
+    var influencer_id = req.params.influencer_id;
+    var profile_status = req.body.profile_status;
 
-    if (result[0] == 0) {
+    const findQuery = await tableNames.influencerProfileStatus.findOne({
+      where: {
+        influencer_id: influencer_id,
+      },
+    });
+
+    var data = findQuery.toJSON();
+    console.log(data["profile_complete_status"]);
+    if (data["profile_complete_status"] == 1) {
       res.status(200).send({
         status: 200,
-        message: "Influencer profile status updated",
+        message: "Influencer profile status already updated",
       });
     } else {
-      res.status(209).send({
-        status: 209,
-        message: "Influencer profile status not updated",
-      });
+      const result = await tableNames.influencerProfileStatus.update(
+        {
+          profile_complete_status: profile_status,
+        },
+        {
+          where: {
+            influencer_id: influencer_id,
+          },
+        }
+      );
+      console.log(result[0]);
+      if (result == 1) {
+        res.status(200).send({
+          status: 200,
+          message: "Influencer profile status updated",
+        });
+      } else {
+        res.status(209).send({
+          status: 209,
+          message: "Influencer profile status not updated",
+        });
+      }
     }
   } catch (err) {
     res.status(500).send({

@@ -40,28 +40,28 @@ async function addAddress(req, res) {
 
 async function getAddress(req, res) {
   const influencer_id = req.params.influencer_id;
-//  try {
-    findQuery = await tableNames.influencerAddress.findAll({
-      attributes: ["influencer_id", "address", "country", "pin","state_id"],
-      where: { influencer_id: influencer_id },
-      include: [
-        {
-          attributes: ["state_name"],
-          model: tableNames.State,
-         // as: "influencer_state",
-        },
-        {
-          attributes: ["city_name"],
-          model: tableNames.City,
-         // as: "influencer_city",
-        },
-      ],
-    });
-    res.status(200).send({
-      status: 200,
-      message: "Influencer address",
-      data: findQuery,
-    });
+  //  try {
+  findQuery = await tableNames.influencerAddress.findAll({
+    attributes: ["influencer_id", "address", "country", "pin", "state_id"],
+    where: { influencer_id: influencer_id, delete_flag: 0 },
+    include: [
+      {
+        attributes: ["state_name"],
+        model: tableNames.State,
+        // as: "influencer_state",
+      },
+      {
+        attributes: ["city_name"],
+        model: tableNames.City,
+        // as: "influencer_city",
+      },
+    ],
+  });
+  res.status(200).send({
+    status: 200,
+    message: "Influencer address",
+    data: findQuery,
+  });
   // } catch (error) {
   //   res.status(400).send({
   //     status: 400,

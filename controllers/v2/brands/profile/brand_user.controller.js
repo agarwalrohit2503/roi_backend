@@ -88,6 +88,10 @@ async function updateBrandprofile(req, res) {
   const state_id = req.body.state_id;
   const profile_status = 1;
 
+  const facebook_url = req.body.facebook_url;
+  const instagram_url = req.body.instagram_url;
+  const youtube_url = req.body.youtube_url;
+
   try {
   const result = await tableNames.brands.update(
     {
@@ -103,6 +107,10 @@ async function updateBrandprofile(req, res) {
       overview: overview,
       city_id: city_id,
       state_id: state_id,
+      facebook_url:facebook_url,
+      instagram_url:instagram_url,
+      youtube_url:youtube_url,
+
       profile_status: 1,
     },
     {
@@ -131,12 +139,12 @@ async function updateBrandprofile(req, res) {
       if (!data) {
         res.status(400).send({
           status: 400,
-          message: "Brand industry not updated",
+          message: "Brand profile not updated",
         });
       } else {
         res.status(200).send({
           status: 200,
-          message: "Brand industry updated",
+          message: "Brand profile updated",
         });
       }
     } else {

@@ -9,6 +9,9 @@ const {
   getCity,
   getBusinessList,
   getBrandType,
+  getCampaignPaymentType,
+  getPlatform,
+  getCampaignGoal
 } = require("../../controllers/resources/resources.controller");
 
 router.get("/get-content-niche", (req, res) => {
@@ -27,6 +30,17 @@ router.get("/get-city", (req, res) => {
 
 router.get("/get-business-list", (req, res) => {
   getBusinessList(req, res);
+});
+
+router.get("/get-campaign-payment-type", (req, res) => {
+  getCampaignPaymentType(req, res);
+});
+
+router.get("/get-platform", (req, res) => {
+  getPlatform(req, res);
+});
+router.get("/get-campaign-goal", (req, res) => {
+  getCampaignGoal(req, res);
 });
 
 module.exports = router;
