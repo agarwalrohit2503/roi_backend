@@ -151,7 +151,7 @@ async function getCampaignPaymentType(req, res) {
 
 async function getPlatform(req, res) {
   const findQueryPlatform = await tableNames.Platform.findAll({
-    attributes: ["platform_id", "platform_name"],
+    attributes: ["platform_id", "platform_name","platform_img"],
     where: { delete_flag: 0 },
   });
   res.status(200).send({

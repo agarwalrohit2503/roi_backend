@@ -6,139 +6,201 @@ async function getCampaigns(req, res) {
   var offset = req.query.offset;
   var search_term = req.query.search_term;
 
-  //try {
-  const findQuery = await tableNames.Campaign.findAll({
-    attributes: [
-      "campaign_id",
-      "campaign_name",
-      "campaign_about",
-      "location",
-      "platform",
-      "language",
-      "image_link",
-      "campaign_budget",
-      "campaign_start_dt",
-      "campaign_end_dt",
-    ],
-    include: [
-      {
-        attributes: ["brands_id", "brand_logo", "name"],
-        model: tableNames.brands,
-        as: "brand",
-      },
+  try {
+    const findQuery = await tableNames.Campaign.findAll({
+      // attributes: [
+      //   "campaign_id",
+      //   "campaign_name",
+      //   "campaign_about",
+      //   "location",
+      //   "platform",
+      //   "language",
+      //   "image_link",
+      //   "campaign_budget",
+      //   "campaign_start_dt",
+      //   "campaign_end_dt",
+      // ],
+      include: [
+        {
+          attributes: [
+            "brands_id",
+            "brand_logo",
+            "name",
+            "overview",
+            "facebook_url",
+            "instagram_url",
+            "youtube_url",
+          ],
+          model: tableNames.brands,
+          as: "brand",
+        },
 
-      {
-        attributes: ["campaign_payment_type_id", "name"],
-        model: tableNames.campaignPaymentType,
-      },
-      {
-        attributes: ["campaign_content_niche_id", "content_niche_id"],
-        model: tableNames.campaignContentNiche,
-        include: [
-          {
-            attributes: [
-              "content_niche_id",
-              "content_niche_name",
-              "image_link",
-            ],
-            model: tableNames.contentNiche,
-          },
-        ],
-      },
-    ],
+        {
+          attributes: ["campaign_payment_type_id", "name"],
+          model: tableNames.campaignPaymentType,
+        },
+        {
+          attributes: [
+            "campaign_deliverables_id",
+            "campaign_id",
+            "post",
+            "story",
+            "real",
+            "youtube",
+            "video",
+          ],
+          model: tableNames.campaignDeliverables,
+        },
+        {
+          attributes: ["campaign_platform_id"],
+          model: tableNames.campaignPlatform,
+          include: [
+            {
+              attributes: ["platform_id", "platform_name", "platform_img"],
+              model: tableNames.Platform,
+            },
+          ],
+        },
+        {
+          attributes: ["campaign_content_niche_id", "content_niche_id"],
+          model: tableNames.campaignContentNiche,
+          include: [
+            {
+              attributes: [
+                "content_niche_id",
+                "content_niche_name",
+                "image_link",
+              ],
+              model: tableNames.contentNiche,
+            },
+          ],
+        },
+      ],
 
-    //raw: true,
-    where: {
-      ...(search_term
-        ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
-        : {}),
-      campaign_delete: 0,
-      // campaign_status_id: 1,
-    },
-    order: [
-      ["campaign_id", "DESC"],
-      // ['name', 'ASC'],
-    ],
-    offset: Number.parseInt(offset ? offset : 0),
-    limit: Number.parseInt(limit ? limit : 20),
-    //subQuery: true,
-  });
+      //raw: true,
+      where: {
+        ...(search_term
+          ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
+          : {}),
+        campaign_delete: 0,
+        // campaign_status_id: 1,
+      },
+      order: [
+        ["campaign_id", "DESC"],
+        // ['name', 'ASC'],
+      ],
+      offset: Number.parseInt(offset ? offset : 0),
+      limit: Number.parseInt(limit ? limit : 20),
+      //subQuery: true,
+    });
 
-  res.status(200).send({
-    status: 200,
-    message: "Data found",
-    data: findQuery,
-  });
-  // } catch (error) {
-  //   res.status(500).send({
-  //     status: 500,
-  //     message: "error Found",
-  //     data: error,
-  //   });
-  //}
+    res.status(200).send({
+      status: 200,
+      message:
+        findQuery != "" ? "Campaign Data found" : "Campaign Data Not Found",
+      data: findQuery,
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: "Internal server error",
+      data: error,
+    });
+  }
 }
 
 async function getCampaignDetails(req, res) {
   const campaign_id = req.params.campaign_id;
 
-  // try {
-  const findQuery = await tableNames.Campaign.findOne({
-    attributes: [
-      "campaign_id",
-      "campaign_name",
-      "location",
-      "campaign_about",
-      "language",
-      "image_link",
-      "platform",
-      "eligibility",
-      "campaign_budget",
-      "campaign_start_dt",
-      "campaign_end_dt",
-    ],
-    include: [
-      {
-        attributes: ["brands_id", "brand_logo", "name"],
-        model: tableNames.brands,
-        as: "brand",
+  try {
+    const findQuery = await tableNames.Campaign.findOne({
+      include: [
+        {
+          attributes: [
+            "brands_id",
+            "brand_logo",
+            "name",
+            "overview",
+            "facebook_url",
+            "instagram_url",
+            "youtube_url",
+          ],
+          model: tableNames.brands,
+          as: "brand",
+        },
+        {
+          attributes: ["campaign_payment_type_id", "name"],
+          model: tableNames.campaignPaymentType,
+          // as: "payment_status",
+        },
+        {
+          attributes: [
+            "campaign_deliverables_id",
+            "campaign_id",
+            "post",
+            "story",
+            "real",
+            "youtube",
+            "video",
+          ],
+          model: tableNames.campaignDeliverables,
+        },
+        {
+          attributes: ["campaign_platform_id"],
+          model: tableNames.campaignPlatform,
+          include: [
+            {
+              attributes: ["platform_id", "platform_name", "platform_img"],
+              model: tableNames.Platform,
+            },
+          ],
+        },
+        {
+          attributes: ["campaign_content_niche_id", "content_niche_id"],
+          model: tableNames.campaignContentNiche,
+          include: [
+            {
+              attributes: [
+                "content_niche_id",
+                "content_niche_name",
+                "image_link",
+              ],
+              model: tableNames.contentNiche,
+            },
+          ],
+        },
+
+        {
+          model: tableNames.campaignContentNiche,
+          include: [
+            {
+              attributes: ["content_niche_id", "content_niche_name"],
+              model: tableNames.contentNiche,
+            },
+          ],
+        },
+      ],
+
+      where: {
+        campaign_id: campaign_id,
       },
-      {
-        attributes: ["campaign_payment_type_id", "name"],
-        model: tableNames.campaignPaymentType,
-        // as: "payment_status",
-      },
+    });
 
-      {
-        //attributes: ["content_niche_id ", "content_niche_name"],
-        model: tableNames.campaignContentNiche,
-        // as: "payment_status",
-        include: [
-          {
-            attributes: ["content_niche_id", "content_niche_name"],
-            model: tableNames.contentNiche,
-            // as: "cc",
-          },
-        ],
-      },
-    ],
-
-    where: {
-      campaign_id: campaign_id,
-    },
-  });
-
-  res.status(200).send({
-    status: 200,
-    message: "Data found",
-    data: findQuery ? findQuery : [],
-  });
-
-  // } catch (error) {
-  //   res.status(500).send({
-  //     status: 500,
-  //     message: "Data found",
-  //     data: error,
-  //   });
+    res.status(200).send({
+      status: 200,
+      message:
+        findQuery != null
+          ? "Campaign Details found"
+          : "Campaign Details Not Found",
+      data: findQuery,
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: "Internal server error",
+      data: error,
+    });
+  }
 }
 
 async function getDemoCampaigns(req, res) {

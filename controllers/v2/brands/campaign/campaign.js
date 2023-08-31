@@ -23,6 +23,28 @@ async function getAllCampaign(req, res) {
       {
         model: tableNames.campaignStatus,
       },
+      {
+        attributes: [
+          "campaign_deliverables_id",
+          "campaign_id",
+          "post",
+          "story",
+          "real",
+          "youtube",
+          "video",
+        ],
+        model: tableNames.campaignDeliverables,
+      },
+      {
+        attributes: ["campaign_platform_id"],
+        model: tableNames.campaignPlatform,
+        include: [
+          {
+            attributes: ["platform_id", "platform_name", "platform_img"],
+            model: tableNames.Platform,
+          },
+        ],
+      },
     ],
     offset: Number.parseInt(offset ? offset : 0),
     limit: Number.parseInt(limit ? limit : 20),
@@ -141,7 +163,8 @@ async function addCampaign(req, res) {
   var campaign_end_dt = req.body.campaign_end_dt;
   var campaign_budget = req.body.campaign_budget;
   var image_link = req.body.image_link;
-  var platform = req.body.platform;
+  var about_product = req.body.about_product;
+  //var platform = req.body.platform;
   var eligibility = req.body.eligibility;
 
   var post = req.body.post;
@@ -159,12 +182,14 @@ async function addCampaign(req, res) {
       campaign_name: campaign_name,
       location: location,
       campaign_about: campaign_about,
+      about_product: about_product,
       language: language,
       campaign_start_dt: campaign_start_dt,
       campaign_end_dt: campaign_end_dt,
       campaign_budget: campaign_budget,
       image_link: image_link,
-      platform: platform,
+
+      // platform: platform,
       eligibility: eligibility,
     });
     //  console.log(createQuery);
@@ -262,28 +287,45 @@ async function getCampaignDetails(req, res) {
 
   try {
     const findQuery = await tableNames.Campaign.findOne({
-      attributes: [
-        "campaign_id",
-        "campaign_name",
-        "location",
-        "campaign_about",
-        "language",
-        "image_link",
-        "platform",
-        "eligibility",
-        "campaign_budget",
-        "campaign_start_dt",
-        "campaign_end_dt",
-      ],
       include: [
         {
-          attributes: ["brands_id", "brand_logo", "name"],
+          attributes: [
+            "brands_id",
+            "brand_logo",
+            "name",
+            "overview",
+            "facebook_url",
+            "instagram_url",
+            "youtube_url",
+          ],
           model: tableNames.brands,
           as: "brand",
         },
         {
           attributes: ["campaign_payment_type_id", "name"],
           model: tableNames.campaignPaymentType,
+        },
+        {
+          attributes: [
+            "campaign_deliverables_id",
+            "campaign_id",
+            "post",
+            "story",
+            "real",
+            "youtube",
+            "video",
+          ],
+          model: tableNames.campaignDeliverables,
+        },
+        {
+          attributes: ["campaign_platform_id"],
+          model: tableNames.campaignPlatform,
+          include: [
+            {
+              attributes: ["platform_id", "platform_name", "platform_img"],
+              model: tableNames.Platform,
+            },
+          ],
         },
 
         {
@@ -306,7 +348,8 @@ async function getCampaignDetails(req, res) {
 
     res.status(200).send({
       status: 200,
-      message: "Data found",
+      message:
+        findQuery != null ? "Campaign Data found" : "Campaign Data Not Found",
       data: findQuery,
     });
   } catch (err) {

@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: null,
       },
+      platform_img: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+      },
       delete_flag: {
         type: DataTypes.TINYINT,
         defaultValue: 0,

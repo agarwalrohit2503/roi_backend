@@ -36,10 +36,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
+      about_product: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       language: {
         type: DataTypes.STRING,
         allowNull: false,
       },
+    
       campaign_start_dt: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -48,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-     
+
       campaign_budget: {
         type: DataTypes.FLOAT,
         defaultValue: 0,
@@ -57,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-     
+
       eligibility: {
         type: DataTypes.STRING,
         defaultValue: null,

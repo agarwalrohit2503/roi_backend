@@ -10,15 +10,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       city_id: {
         type: DataTypes.INTEGER,
-        defaultValue: null
+        defaultValue: null,
       },
       state_id: {
         type: DataTypes.INTEGER,
-        defaultValue: null
+        defaultValue: null,
       },
       brand_type_id: {
         type: DataTypes.INTEGER,
-        defaultValue: null
+        defaultValue: null,
       },
       brand_logo: {
         type: DataTypes.STRING,
@@ -30,23 +30,35 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING,
-       // unique: true,
-       // allowNull: false,
+        // unique: true,
+        // allowNull: false,
+      },
+      facebook_url: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      instagram_url: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      youtube_url: {
+        type: DataTypes.STRING,
+        defaultValue: "",
       },
 
       number: {
         type: DataTypes.BIGINT,
-     //   unique: true,
-      //  allowNull: false,
+        //   unique: true,
+        //  allowNull: false,
       },
       gst_number: { type: DataTypes.TEXT },
       website: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      pan_card: { type: DataTypes.TEXT,  allowNull: true, },
-      address: { type: DataTypes.STRING,  allowNull: true, },
-      overview: { type: DataTypes.TEXT, allowNull: true, },
+      pan_card: { type: DataTypes.TEXT, allowNull: true },
+      address: { type: DataTypes.STRING, allowNull: true },
+      overview: { type: DataTypes.TEXT, allowNull: true },
       profile_status: { type: DataTypes.TINYINT, defaultValue: 0 },
       account_delete: { type: DataTypes.TINYINT, defaultValue: 0 },
     },

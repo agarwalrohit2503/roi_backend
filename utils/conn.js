@@ -137,6 +137,7 @@ db.campaign_platform = require("../models/campaign_platform.model")(
   DataTypes
 );
 db.platform = require("../models/platform.model")(sequelize, DataTypes);
+
 db.campaign_platform.belongsTo(db.campaign, {
   foreignKey: "campaign_id", // foreign table
   targetKey: "campaign_id", // primary table
@@ -335,19 +336,33 @@ db.influencer_profile_status.belongsTo(db.influencer, {
   targetKey: "influencer_id", // primary table
 });
 
-// db.sequelize.sync({ force: false }).then(() => {
-//   console.log("yes re-sync done!");
-// });
+db.sequelize.sync({ force: false }).then(() => {
+  console.log("yes re-sync done!");
+});
 ///////////////////////////table join query//////////////////////
 
 db.influencer.hasMany(db.influencer_address, {
   foreignKey: "influencer_id",
-  // as: "address",
+
+});
+
+db.campaign.hasMany(db.campaign_platform, {
+  foreignKey: "campaign_id",
+  
+});
+
+db.campaign_platform.hasMany(db.platform, {
+  foreignKey: "platform_id",
+  
 });
 
 db.influencer.hasMany(db.influencer_profile_status, {
   foreignKey: "influencer_id",
-  // as: "address",
+ 
+});
+db.campaign.hasMany(db.campaign_deliverables, {
+  foreignKey: "campaign_id",
+
 });
 
 db.influencer_address.hasMany(db.state, {
