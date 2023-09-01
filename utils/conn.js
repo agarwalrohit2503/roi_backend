@@ -375,12 +375,18 @@ db.influencer_address.hasMany(db.City, {
 
 db.influencer.hasMany(db.influencer_content_niche, {
   foreignKey: "influencer_id",
-  // as: "inf_content",
+ 
 });
 
 db.influencer_content_niche.hasMany(db.content_niche, {
   foreignKey: "content_niche_id",
-  //as: "content_nich",
+ 
+});
+
+
+db.influencer.hasMany(db.favourite_influencer, {
+  foreignKey: "influencer_id",
+ 
 });
 
 db.brands.hasMany(db.campaign, {
