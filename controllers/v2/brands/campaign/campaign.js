@@ -31,7 +31,6 @@ async function getAllCampaign(req, res) {
           "story",
           "real",
           "youtube",
-          "video",
         ],
         model: tableNames.campaignDeliverables,
       },
@@ -164,14 +163,14 @@ async function addCampaign(req, res) {
   var campaign_budget = req.body.campaign_budget;
   var image_link = req.body.image_link;
   var about_product = req.body.about_product;
-  //var platform = req.body.platform;
+
   var eligibility = req.body.eligibility;
 
   var post = req.body.post;
   var story = req.body.story;
   var real = req.body.real;
   var youtube = req.body.youtube;
-  var video = req.body.video;
+ 
 
   try {
     const createQuery = await tableNames.Campaign.create({
@@ -248,7 +247,6 @@ async function addCampaign(req, res) {
         story: story,
         real: real,
         youtube: youtube,
-        video: video,
       };
       insertcampaignDeliverablesQuery =
         await tableNames.campaignDeliverables.create(
