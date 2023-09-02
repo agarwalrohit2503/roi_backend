@@ -336,33 +336,28 @@ db.influencer_profile_status.belongsTo(db.influencer, {
   targetKey: "influencer_id", // primary table
 });
 
-db.sequelize.sync({ force: false }).then(() => {
-  console.log("yes re-sync done!");
-});
+// db.sequelize.sync({ force: false }).then(() => {
+//   console.log("yes re-sync done!");
+// });
 ///////////////////////////table join query//////////////////////
 
 db.influencer.hasMany(db.influencer_address, {
   foreignKey: "influencer_id",
-
 });
 
 db.campaign.hasMany(db.campaign_platform, {
   foreignKey: "campaign_id",
-  
 });
 
 db.campaign_platform.hasMany(db.platform, {
   foreignKey: "platform_id",
-  
 });
 
 db.influencer.hasMany(db.influencer_profile_status, {
   foreignKey: "influencer_id",
- 
 });
 db.campaign.hasMany(db.campaign_deliverables, {
   foreignKey: "campaign_id",
-
 });
 
 db.influencer_address.hasMany(db.state, {
@@ -375,18 +370,14 @@ db.influencer_address.hasMany(db.City, {
 
 db.influencer.hasMany(db.influencer_content_niche, {
   foreignKey: "influencer_id",
- 
 });
 
 db.influencer_content_niche.hasMany(db.content_niche, {
   foreignKey: "content_niche_id",
- 
 });
-
 
 db.influencer.hasMany(db.favourite_influencer, {
   foreignKey: "influencer_id",
- 
 });
 
 db.brands.hasMany(db.campaign, {

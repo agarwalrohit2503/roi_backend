@@ -90,11 +90,15 @@ async function editCampaign(req, res) {
   var brand_id = req.params.brand_id;
   var campaign_id = req.body.campaign_id;
 
+  var content_niche_id = req.body.content_niche_id;
+  var platform_id = req.body.platform_id;
+  var campaign_goal_id = req.body.campaign_goal_id;
   var campaign_status_id = req.body.campaign_status_id;
   var payment_status_id = req.body.payment_status_id;
   var campaign_name = req.body.campaign_name;
   var location = req.body.location;
   var campaign_about = req.body.campaign_about;
+  var about_product = req.body.about_product;
   var language = req.body.language;
   var campaign_start_dt = req.body.campaign_start_dt;
   var campaign_end_dt = req.body.campaign_end_dt;
@@ -108,9 +112,11 @@ async function editCampaign(req, res) {
       {
         campaign_status_id: campaign_status_id,
         payment_status_id: payment_status_id,
+        campaign_goal_id: campaign_goal_id,
         campaign_name: campaign_name,
         location: location,
         campaign_about: campaign_about,
+        about_product: about_product,
         language: language,
         campaign_start_dt: campaign_start_dt,
         campaign_end_dt: campaign_end_dt,
@@ -128,6 +134,62 @@ async function editCampaign(req, res) {
       }
     );
     if (updateQuery[0] != "") {
+      let campaignContentNicheRespData = await Promise.all(
+        content_niche_id.map(async (item) => {
+          try {
+            let content_niche_info = {
+              campaign_id: campaign_id,
+              content_niche_id: item,
+            };
+            insertContentNicheQuery =
+              await tableNames.campaignContentNiche.create(content_niche_info);
+
+            return insertContentNicheQuery;
+          } catch (error) {
+            return { ...item, error };
+          }
+        })
+      );
+
+      console.log(campaignContentNicheRespData);
+      if (
+        campaignContentNicheRespData == "" ||
+        campaignContentNicheRespData == null
+      ) {
+        res.status(209).send({
+          status: 209,
+          message: "Campaing Content Niche not inserted",
+        });
+      }
+
+      let campaignPlatformRespData = await Promise.all(
+        platform_id.map(async (item) => {
+          try {
+            let campaign_campaignPlatform_info = {
+              campaign_id: campaign_id,
+              platform_id: item,
+            };
+            insertcampaignPlatformQuery =
+              await tableNames.campaignPlatform.create(
+                campaign_campaignPlatform_info
+              );
+
+            return insertcampaignPlatformQuery;
+          } catch (error) {
+            return { ...item, error };
+          }
+        })
+      );
+      if (
+        (campaignPlatformRespData == "") |
+        (campaignPlatformRespData == null)
+      ) {
+        res.status(209).send({
+          status: 209,
+          message: "Platform Not Inserted",
+        });
+      }
+
       res.status(200).send({
         status: 200,
         message: "Campaign edited",
@@ -170,7 +232,6 @@ async function addCampaign(req, res) {
   var story = req.body.story;
   var real = req.body.real;
   var youtube = req.body.youtube;
- 
 
   try {
     const createQuery = await tableNames.Campaign.create({
@@ -358,10 +419,66 @@ async function getCampaignDetails(req, res) {
     });
   }
 }
+
+async function contentNicheDelete(req, res) {
+  var campaign_id = req.params.campaign_id;
+  var content_niche_id = req.body.content_niche_id;
+
+  const content_niche_delete = content_niche_id.map(async (item) => {
+    return (deleteQuery = await tableNames.campaignContentNiche.destroy({
+      where: {
+        campaign_id: campaign_id,
+        content_niche_id: item,
+      },
+    }));
+  });
+ 
+  const respData = await Promise.all(content_niche_delete);
+  if (respData != 0) {
+    res.status(200).send({
+      status: 200,
+      message: "Deleted successfully",
+    });
+  } else {
+    res.status(209).send({
+      status: 209,
+      message: "Not removed",
+    });
+  }
+}
+
+async function platformDelete(req, res) {
+  var campaign_id = req.params.campaign_id;
+  var platform_id = req.body.platform_id;
+
+  const platfrom_delete = platform_id.map(async (item) => {
+    return (deleteQuery = await tableNames.campaignPlatform.destroy({
+      where: {
+        campaign_id: campaign_id,
+        platform_id: item,
+      },
+    }));
+  });
+ 
+  const respData = await Promise.all(platfrom_delete);
+  if (respData != 0) {
+    res.status(200).send({
+      status: 200,
+      message: "Deleted successfully",
+    });
+  } else {
+    res.status(209).send({
+      status: 209,
+      message: "Not removed",
+    });
+  }
+}
 module.exports = {
   getAllCampaign,
   deleteCampaign,
   editCampaign,
   addCampaign,
   getCampaignDetails,
+  contentNicheDelete,
+  platformDelete,
 };
