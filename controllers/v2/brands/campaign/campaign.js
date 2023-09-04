@@ -1,6 +1,6 @@
 const tableNames = require("../../../../utils/table_name");
 const operatorsAliases = require("../../../../utils/operator_aliases");
-
+const editParameterQuery = require("../../../../utils/edit_query");
 async function getAllCampaign(req, res) {
   var limit = req.query.limit;
   var offset = req.query.offset;
@@ -107,6 +107,11 @@ async function editCampaign(req, res) {
   var platform = req.body.platform;
   var eligibility = req.body.eligibility;
 
+  var post = req.body.post;
+  var story = req.body.story;
+  var real = req.body.real;
+  var youtube = req.body.youtube;
+
   try {
     const updateQuery = await tableNames.Campaign.update(
       {
@@ -190,6 +195,24 @@ async function editCampaign(req, res) {
         });
       }
 
+      let DeliverablesEdit = {
+        post: post,
+        story: story,
+        real: real,
+        youtube: youtube,
+      };
+      var DeliverablesEditedData = await editParameterQuery(DeliverablesEdit);
+
+      const updateQuery = await tableNames.campaignDeliverables.update(
+        DeliverablesEditedData,
+        {
+          where: {
+            campaign_id: campaign_id,
+          },
+        }
+      );
+
+      //console.log(updateQuery);
       res.status(200).send({
         status: 200,
         message: "Campaign edited",
@@ -432,7 +455,7 @@ async function contentNicheDelete(req, res) {
       },
     }));
   });
- 
+
   const respData = await Promise.all(content_niche_delete);
   if (respData != 0) {
     res.status(200).send({
@@ -459,7 +482,7 @@ async function platformDelete(req, res) {
       },
     }));
   });
- 
+
   const respData = await Promise.all(platfrom_delete);
   if (respData != 0) {
     res.status(200).send({
