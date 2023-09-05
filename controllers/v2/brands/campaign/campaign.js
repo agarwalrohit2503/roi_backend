@@ -1,6 +1,7 @@
 const tableNames = require("../../../../utils/table_name");
 const operatorsAliases = require("../../../../utils/operator_aliases");
 const editParameterQuery = require("../../../../utils/edit_query");
+const imageUpload = require("../../../../utils/image_upload");
 async function getAllCampaign(req, res) {
   var limit = req.query.limit;
   var offset = req.query.offset;
@@ -87,6 +88,7 @@ async function deleteCampaign(req, res) {
 }
 
 async function editCampaign(req, res) {
+  
   var brand_id = req.params.brand_id;
   var campaign_id = req.body.campaign_id;
 
@@ -255,7 +257,9 @@ async function addCampaign(req, res) {
   var story = req.body.story;
   var real = req.body.real;
   var youtube = req.body.youtube;
+  var finalImgeUrl = await imageUpload(image_link);
 
+  //console.log(finalImgeUrl);
   try {
     const createQuery = await tableNames.Campaign.create({
       campaign_goal_id: campaign_goal_id,
@@ -270,7 +274,7 @@ async function addCampaign(req, res) {
       campaign_start_dt: campaign_start_dt,
       campaign_end_dt: campaign_end_dt,
       campaign_budget: campaign_budget,
-      image_link: image_link,
+      image_link: finalImgeUrl,
 
       // platform: platform,
       eligibility: eligibility,

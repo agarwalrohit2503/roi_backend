@@ -10,11 +10,15 @@ const v1 = require("./routes/v1");
 const dotenv = require("dotenv").config({
   path: path.resolve(process.cwd(), ".env"),
 });
+
 // /api/v1 ==> Routes Folder
 
 let port = process.env.PORT || 8000;
 const app = express();
 //console.log(process.env.HOST);
+
+app.use("/uploads", express.static("uploads"));
+
 app.use(cors());
 app.use(
   express.json({
@@ -33,6 +37,5 @@ app.use("/v1", v1);
 app.use("/v2", v2);
 
 app.get("/", (req, res) => res.send("Welcome to ROI backend APIs"));
-
 
 module.exports = app;
