@@ -47,7 +47,6 @@ async function getCampaigns(req, res) {
             "story",
             "real",
             "youtube",
-           
           ],
           model: tableNames.campaignDeliverables,
         },
@@ -141,7 +140,6 @@ async function getCampaignDetails(req, res) {
             "story",
             "real",
             "youtube",
-           
           ],
           model: tableNames.campaignDeliverables,
         },
@@ -226,7 +224,7 @@ async function getCampaignApplications(req, res) {
           "location",
           "language",
           "image_link",
-          "platform",
+
           "campaign_budget",
           "campaign_about",
           "campaign_start_dt",
@@ -276,56 +274,8 @@ async function getCampaignApplications(req, res) {
     //subQuery: true,
   });
 
-  // selectQuery = `
-  //     SELECT
-  //     camapplied.influencer_id,
-  //     camapplied.campaign_applied_id,
-  //     c.campaign_name,
-  //       c.campaign_id,
-  //       c.campaign_about ,
-  //       c.language,
-  //       c.campaign_start_dt,
-  //       c.campaign_end_dt,
-  //       c.campaign_image,
-  //       c.campaign_budget,
-  //       b.brand_logo,
-  //       b.name,
-  //       f.campaign_status_name
-
-  //       FROM ${tableNames.campaign_application}  as camapplied
-  //       LEFT JOIN ${
-  //         tableNames.campaign
-  //       } as c ON camapplied.campaign_id = c.campaign_id
-  //        LEFT JOIN ${
-  //          tableNames.campaign_status
-  //        } as f ON camapplied.campaign_status_id = f.campaign_status_id
-  //        LEFT JOIN ${tableNames.brand} as b ON c.brand_id = b.brands_id
-  //        WHERE
-  //        camapplied.influencer_id = ${influencer_id}
-  //        and
-  //        c.campaign_delete = 0
-
-  //        ${
-  //          req.query.status_id
-  //            ? ` and f.campaign_status_id IN(${req.query.status_id.split(
-  //                ","
-  //              )}) `
-  //            : ""
-  //        }
-  //        ${
-  //          req.query.search_term
-  //            ? ` and c.campaign_name LIKE '%${req.query.search_term}%'`
-  //            : ""
-  //        }
-  //        ${req.query.limit ? `limit  ${req.query.limit} ` : ""}
-  //        ${req.query.offset ? `offset ${req.query.offset} ` : ""}
-  //       `;
-
-  // result = await sequelize.query(selectQuery, {
-  //   type: sequelize.QueryTypes.SELECT,
-  // });
-
-  if (findQuery != 0) {
+  console.log(findQuery);
+  if (findQuery != "") {
     res.status(200).send({
       status: 200,
       message: "Data found",
