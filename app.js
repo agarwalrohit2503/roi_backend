@@ -36,6 +36,6 @@ app.use("/api-docs", swaggerServe, swaggerSetup);
 app.use("/v1", v1);
 app.use("/v2", v2);
 
-app.get("/", (req, res) => res.send("Welcome to ROI backend APIs"));
+app.get("/", (req, res) => res.send("Welcome to ROI APIs"));
 
 module.exports = app;
