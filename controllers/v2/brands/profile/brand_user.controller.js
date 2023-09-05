@@ -5,7 +5,7 @@ const tableNames = require("../../../../utils/table_name");
 async function getProfile(req, res) {
   const brands_id = req.params.brand_id;
 
-  const findQuery = await tableNames.brands.findAll({
+  const findQuery = await tableNames.brands.findOne({
     where: { brands_id: brands_id },
     include: [
       {
