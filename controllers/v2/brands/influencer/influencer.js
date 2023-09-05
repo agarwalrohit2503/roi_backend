@@ -15,16 +15,17 @@ async function getInfluencerList(req, res) {
     },
     include: [
       {
-        //attributes: ["content_niche_id", "content_niche_name"],
         model: tableNames.influencerContentNiche,
-        // as: "inf_content",
+
         include: [
           {
-            //attributes: ["content_niche_id", "content_niche_name"],
             model: tableNames.contentNiche,
-            // as: "content_nich",
           },
         ],
+      },
+      {
+        attributes: ["favourite_influencer_flag"],
+        model: tableNames.favouriteInfluencer,
       },
       {
         model: tableNames.influencerAddress,
@@ -107,6 +108,10 @@ async function getInfluencerDetails(req, res) {
             // as: "content_nich",
           },
         ],
+      },
+      {
+        attributes: ["favourite_influencer_flag"],
+        model: tableNames.favouriteInfluencer,
       },
       {
         model: tableNames.influencerAddress,
@@ -230,20 +235,8 @@ async function getFavouriteInfluencers(req, res) {
   var brand_id = req.params.brand_id;
 
   const fingQuery = await tableNames.favouriteInfluencer.findAll({
-    // attributes: ["favourite_influencer_id"],
     include: [
       {
-        // attributes: [
-        //   "influencer_id",
-        //   "name",
-        //   "email",
-        //   "number",
-        //   "dob",
-        //   "pan_card",
-        //   "gst_number",
-        //   "bio",
-        //   "profile_status",
-        // ],
         model: tableNames.influencer,
         where: {
           ...(search_term
@@ -295,7 +288,7 @@ async function getFavouriteInfluencers(req, res) {
     ],
     where: {
       brand_id: brand_id,
-      favourite_influencer_flag: 1,
+      favourite_influencer_flag: 0,
     },
     offset: Number.parseInt(offset ? offset : 0),
     limit: Number.parseInt(limit ? limit : 20),

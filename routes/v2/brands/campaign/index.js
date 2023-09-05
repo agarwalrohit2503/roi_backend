@@ -6,6 +6,8 @@ const {
   editCampaign,
   addCampaign,
   getCampaignDetails,
+  contentNicheDelete,
+  platformDelete
 } = require("../../../../controllers/v2/brands/campaign/campaign");
 
 router.get("/get/:brand_id", (req, res) => {
@@ -26,6 +28,14 @@ router.post("/add/:brand_id", (req, res) => {
 
 router.get("/details/:campaign_id", (req, res) => {
   getCampaignDetails(req, res);
+});
+
+router.delete("/content-niche-delete/:campaign_id", (req, res) => {
+  contentNicheDelete(req, res);
+});
+
+router.delete("/platform-delete/:campaign_id", (req, res) => {
+  platformDelete(req, res);
 });
 
 module.exports = router;

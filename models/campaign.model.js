@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
       },
 
       eligibility: {
-        type: DataTypes.STRING,
+        type: DataTypes.TINYINT,
         defaultValue: null,
       },
       campaign_delete: {
