@@ -404,7 +404,7 @@ async function getCampaignDetails(req, res) {
             "story",
             "real",
             "youtube",
-            "video",
+            
           ],
           model: tableNames.campaignDeliverables,
         },
