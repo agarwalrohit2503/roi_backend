@@ -294,7 +294,7 @@ async function getFavouriteInfluencers(req, res) {
     limit: Number.parseInt(limit ? limit : 20),
   });
 
-  res.status(404).send({
+  res.status(200).send({
     status: 200,
     message: "brand favorite Influencer lists ",
     data: fingQuery,
