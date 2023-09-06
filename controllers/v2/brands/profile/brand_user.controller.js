@@ -71,28 +71,27 @@ async function getProfile(req, res) {
 }
 
 async function updateBrandprofile(req, res) {
-
-  const brand_id = req.params.brand_id;
-  const brand_logo = req.body.brand_logo;
-  const brand_type_id = req.body.brand_type_id;
-  const Name = req.body.name;
-  const email = req.body.email;
-  const number = req.body.number;
-  const pan_card = req.body.pan_card;
-  const gst_number = req.body.gst_number;
-  const website = req.body.website;
-  const address = req.body.address;
-  const overview = req.body.overview;
-  const city_id = req.body.city_id;
-  const state_id = req.body.state_id;
-  const facebook_url = req.body.facebook_url;
-  const instagram_url = req.body.instagram_url;
-  const youtube_url = req.body.youtube_url;
+  var brand_id = req.params.brand_id;
+  var brand_logo = req.body.brand_logo;
+  var brand_type_id = req.body.brand_type_id;
+  var Name = req.body.name;
+  var email = req.body.email;
+  var number = req.body.number;
+  var pan_card = req.body.pan_card;
+  var gst_number = req.body.gst_number;
+  var website = req.body.website;
+  var address = req.body.address;
+  var overview = req.body.overview;
+  var city_id = req.body.city_id;
+  var state_id = req.body.state_id;
+  var facebook_url = req.body.facebook_url;
+  var instagram_url = req.body.instagram_url;
+  var youtube_url = req.body.youtube_url;
 
   if (brand_logo != "") {
     brand_logo = await imageUpload(brand_logo);
   }
-  
+
   let brandsEditParameters = {
     brand_logo: brand_logo,
     brand_type_id: brand_type_id,
@@ -113,9 +112,7 @@ async function updateBrandprofile(req, res) {
   };
   var campaignEditedValue = await editParameterQuery(brandsEditParameters);
   try {
-    const result = await tableNames.brands.update(
-      campaignEditedValue, 
-    {
+    const result = await tableNames.brands.update(campaignEditedValue, {
       where: {
         brands_id: brand_id,
       },
