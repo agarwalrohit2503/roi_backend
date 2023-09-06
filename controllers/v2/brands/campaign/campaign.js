@@ -89,7 +89,6 @@ async function deleteCampaign(req, res) {
 }
 
 async function editCampaign(req, res) {
-  
   var brand_id = req.params.brand_id;
   var campaign_id = req.body.campaign_id;
 
@@ -115,32 +114,37 @@ async function editCampaign(req, res) {
   var real = req.body.real;
   var youtube = req.body.youtube;
 
+  if (image_link != "") {
+    image_link = await imageUpload(image_link);
+  }
+
   try {
-    const updateQuery = await tableNames.Campaign.update(
-      {
-        campaign_status_id: campaign_status_id,
-        payment_status_id: payment_status_id,
-        campaign_goal_id: campaign_goal_id,
-        campaign_name: campaign_name,
-        location: location,
-        campaign_about: campaign_about,
-        about_product: about_product,
-        language: language,
-        campaign_start_dt: campaign_start_dt,
-        campaign_end_dt: campaign_end_dt,
-        campaign_budget: campaign_budget,
-        image_link: image_link,
-        platform: platform,
-        eligibility: eligibility,
+    let campaingEditParameters = {
+      campaign_status_id: campaign_status_id,
+      payment_status_id: payment_status_id,
+      campaign_goal_id: campaign_goal_id,
+      campaign_name: campaign_name,
+      location: location,
+      campaign_about: campaign_about,
+      about_product: about_product,
+      language: language,
+      campaign_start_dt: campaign_start_dt,
+      campaign_end_dt: campaign_end_dt,
+      campaign_budget: campaign_budget,
+      image_link: image_link,
+      platform: platform,
+      eligibility: eligibility,
+    };
+    var campaignEditedValue = await editParameterQuery(campaingEditParameters);
+
+    const updateQuery = await tableNames.Campaign.update(campaignEditedValue, {
+      where: {
+        campaign_id: campaign_id,
+        brand_id: brand_id,
+        campaign_delete: 0,
       },
-      {
-        where: {
-          campaign_id: campaign_id,
-          brand_id: brand_id,
-          campaign_delete: 0,
-        },
-      }
-    );
+    });
+
     if (updateQuery[0] != "") {
       let campaignContentNicheRespData = await Promise.all(
         content_niche_id.map(async (item) => {
