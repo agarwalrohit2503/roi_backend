@@ -88,10 +88,11 @@ async function updateBrandprofile(req, res) {
   const facebook_url = req.body.facebook_url;
   const instagram_url = req.body.instagram_url;
   const youtube_url = req.body.youtube_url;
-  
+
   if (brand_logo != "") {
     brand_logo = await imageUpload(brand_logo);
   }
+  
   let brandsEditParameters = {
     brand_logo: brand_logo,
     brand_type_id: brand_type_id,
