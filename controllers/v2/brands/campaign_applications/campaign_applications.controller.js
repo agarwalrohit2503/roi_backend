@@ -16,53 +16,59 @@ async function get(req, res) {
       .status(409)
       .send({ status: 409, message: "campaign id is empty" });
   }
+  try {
+    const findQuery = await tableNames.campaignApplication.findAll({
+      attributes: ["campaign_applied_id", "campaign_id"],
 
-  const findQuery = await tableNames.campaignApplication.findAll({
-    attributes: ["campaign_applied_id", "campaign_id"],
-
-    include: [
-      {
-        model: tableNames.influencer,
-        required: true,
-        where: {
-          ...(search_term
-            ? { name: { [operatorsAliases.$like]: `%${search_term}%` } }
-            : {}),
+      include: [
+        {
+          model: tableNames.influencer,
+          required: true,
+          where: {
+            ...(search_term
+              ? { name: { [operatorsAliases.$like]: `%${search_term}%` } }
+              : {}),
+          },
         },
+        {
+          attributes: ["application_status_id", "application_status_name"],
+          model: tableNames.applicationStatus,
+          required: false,
+        },
+        {
+          attributes: ["campaign_status_id", "campaign_status_name"],
+          model: tableNames.campaignStatus,
+          required: false,
+        },
+      ],
+      where: {
+        campaign_id: campaign_id,
+        ...(application_status
+          ? {
+              application_status_id: application_status,
+            }
+          : {}),
       },
-      {
-        attributes: ["application_status_id", "application_status_name"],
-        model: tableNames.applicationStatus,
-        required: false,
-      },
-      {
-        attributes: ["campaign_status_id", "campaign_status_name"],
-        model: tableNames.campaignStatus,
-        required: false,
-      },
-    ],
-    where: {
-      campaign_id: campaign_id,
-      ...(application_status
-        ? {
-            application_status_id: application_status,
-          }
-        : {}),
-    },
-    subQuery: true,
-    order: [
-      ["campaign_applied_id", "DESC"],
-      // ['name', 'ASC'],
-    ],
-    offset: Number.parseInt(offset ? offset : 0),
-    limit: Number.parseInt(limit ? limit : 20),
-  });
+      subQuery: true,
+      order: [
+        ["campaign_applied_id", "DESC"],
+        // ['name', 'ASC'],
+      ],
+      offset: Number.parseInt(offset ? offset : 0),
+      limit: Number.parseInt(limit ? limit : 20),
+    });
 
-  res.status(200).send({
-    status: 200,
-    message: findQuery != "" ? "Data found" : "Data not found",
-    data: findQuery,
-  });
+    res.status(200).send({
+      status: 200,
+      message: findQuery != "" ? "Data found" : "Data not found",
+      data: findQuery,
+    });
+  } catch (err) {
+    res.status(500).send({
+      status: 500,
+      message: err,
+    });
+  }
 }
 
 async function update(req, res) {
