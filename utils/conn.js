@@ -345,6 +345,10 @@ db.influencer.hasMany(db.influencer_address, {
   foreignKey: "influencer_id",
 });
 
+db.campaign_application.hasMany(db.influencer, {
+  foreignKey: "influencer_id",
+});
+
 db.campaign.hasMany(db.campaign_platform, {
   foreignKey: "campaign_id",
 });
