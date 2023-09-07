@@ -337,6 +337,21 @@ db.influencer_profile_status.belongsTo(db.influencer, {
   targetKey: "influencer_id", // primary table
 });
 
+db.Comments.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
+db.Comments.belongsTo(db.brands, {
+  foreignKey: "brand_id", // foreign table
+  targetKey: "brands_id", // primary table
+});
+
+db.Comments.belongsTo(db.campaign, {
+  foreignKey: "campaign_id", // foreign table
+  targetKey: "campaign_id", // primary table
+});
+
 /////////////////////////////sync query start/////////////////////////////
 
 // db.sequelize.sync({ force: false }).then(() => {
@@ -349,6 +364,16 @@ db.influencer_profile_status.belongsTo(db.influencer, {
 
 db.influencer.hasMany(db.influencer_address, {
   foreignKey: "influencer_id",
+});
+
+db.Comments.hasMany(db.influencer, {
+  foreignKey: "influencer_id",
+});
+db.Comments.hasMany(db.brands, {
+  foreignKey: "brands_id",
+});
+db.Comments.hasMany(db.campaign, {
+  foreignKey: "campaign_id",
 });
 
 db.campaign_application.hasMany(db.influencer, {
