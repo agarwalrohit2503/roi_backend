@@ -137,6 +137,7 @@ db.campaign_platform = require("../models/campaign_platform.model")(
   DataTypes
 );
 db.platform = require("../models/platform.model")(sequelize, DataTypes);
+db.Comments = require("../models/comments.model")(sequelize, DataTypes);
 
 db.campaign_platform.belongsTo(db.campaign, {
   foreignKey: "campaign_id", // foreign table
@@ -336,9 +337,14 @@ db.influencer_profile_status.belongsTo(db.influencer, {
   targetKey: "influencer_id", // primary table
 });
 
+/////////////////////////////sync query start/////////////////////////////
+
 // db.sequelize.sync({ force: false }).then(() => {
 //   console.log("yes re-sync done!");
 // });
+
+/////////////////////////////sync query  end/////////////////////////////
+
 ///////////////////////////table join query//////////////////////
 
 db.influencer.hasMany(db.influencer_address, {
