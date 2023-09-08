@@ -60,7 +60,7 @@ tableNames = {
   campaignDeliverables:db.campaign_deliverables,
 
   campaignPlatform:db.campaign_platform,
-  
+  Comments:db.Comments,
   //resource start
   Industry: db.industry,
   //resource end

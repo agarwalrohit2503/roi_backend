@@ -75,7 +75,7 @@ async function getInfluencerList(req, res) {
   console.log(findQuery);
   if (findQuery != "") {
     res.status(200).send({
-      status: 404,
+      status: 200,
       message: "Brand",
       data: findQuery,
     });
@@ -94,7 +94,7 @@ async function getInfluencerDemoList(req, res) {
 async function getInfluencerDetails(req, res) {
   var influencer_id = req.params.influencer_id;
 
-  const findQuery = await tableNames.influencer.findAll({
+  const findQuery = await tableNames.influencer.findOne({
     where: {
       influencer_id: influencer_id,
     },
@@ -133,7 +133,7 @@ async function getInfluencerDetails(req, res) {
     ],
   });
   res.status(200).send({
-    status: 404,
+    status: 200,
     message: "influencer details",
     data: findQuery,
   });

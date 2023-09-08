@@ -5,7 +5,6 @@ const {
   addComments,
   getComments,
   deleteComments,
-
 } = require("../../../../controllers/v2/influencer/comments/comments.controller");
 
 router.post("/add/:campaign_id", (req, res) => {
@@ -19,6 +18,5 @@ router.get("/get/:campaign_id", (req, res) => {
 router.delete("/delete/:campaign_id", (req, res) => {
   deleteComments(req, res);
 });
-
 
 module.exports = router;
