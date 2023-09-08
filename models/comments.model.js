@@ -22,16 +22,16 @@ module.exports = (sequelize, DataTypes) => {
       },
       sender_type: {
         type: DataTypes.STRING(5),
-        allowNull: false,
+        defaultValue: null,
       },
 
       comment_text: {
         type: DataTypes.STRING,
-        allowNull: false,
+        defaultValue: null,
       },
       comment_file: {
         type: DataTypes.TEXT,
-        defaultValue: 0,
+        defaultValue: null,
       },
       delete_flag: {
         type: DataTypes.TINYINT,
