@@ -347,9 +347,9 @@ db.Comments.belongsTo(db.brands, {
   targetKey: "brands_id", // primary table
 });
 
-db.Comments.belongsTo(db.campaign, {
-  foreignKey: "campaign_id", // foreign table
-  targetKey: "campaign_id", // primary table
+db.Comments.belongsTo(db.campaign_application, {
+  foreignKey: "campaign_applied_id", // foreign table
+  targetKey: "campaign_applied_id", // primary table
 });
 
 /////////////////////////////sync query start/////////////////////////////
@@ -372,8 +372,8 @@ db.Comments.hasMany(db.influencer, {
 db.Comments.hasMany(db.brands, {
   foreignKey: "brands_id",
 });
-db.Comments.hasMany(db.campaign, {
-  foreignKey: "campaign_id",
+db.Comments.hasMany(db.campaign_application, {
+  foreignKey: "campaign_applied_id",
 });
 
 db.campaign_application.hasMany(db.influencer, {

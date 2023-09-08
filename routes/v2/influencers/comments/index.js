@@ -7,15 +7,15 @@ const {
   deleteComments,
 } = require("../../../../controllers/v2/influencer/comments/comments.controller");
 
-router.post("/add/:campaign_id", (req, res) => {
+router.post("/add/:campaign_applied_id", (req, res) => {
   addComments(req, res);
 });
 
-router.get("/get/:campaign_id", (req, res) => {
+router.get("/get/:campaign_applied_id", (req, res) => {
   getComments(req, res);
 });
 
-router.delete("/delete/:campaign_id", (req, res) => {
+router.delete("/delete/:comment_id", (req, res) => {
   deleteComments(req, res);
 });
 

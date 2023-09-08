@@ -5,7 +5,6 @@ const imageUpload = require("../../../../utils/image_upload");
 
 async function get(req, res) {
   var campaign_id = req.params.campaign_id;
-
   var limit = req.query.limit;
   var offset = req.query.offset;
   var application_status = req.query.application_status;
@@ -19,7 +18,6 @@ async function get(req, res) {
   try {
     const findQuery = await tableNames.campaignApplication.findAll({
       attributes: ["campaign_applied_id", "campaign_id"],
-
       include: [
         {
           model: tableNames.influencer,
@@ -52,12 +50,10 @@ async function get(req, res) {
       subQuery: true,
       order: [
         ["campaign_applied_id", "DESC"],
-        // ['name', 'ASC'],
       ],
       offset: Number.parseInt(offset ? offset : 0),
       limit: Number.parseInt(limit ? limit : 20),
     });
-
     res.status(200).send({
       status: 200,
       message: findQuery != "" ? "Data found" : "Data not found",

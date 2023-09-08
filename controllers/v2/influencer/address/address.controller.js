@@ -42,7 +42,14 @@ async function getAddress(req, res) {
   const influencer_id = req.params.influencer_id;
   //  try {
   findQuery = await tableNames.influencerAddress.findAll({
-    attributes: ["influencer_id", "address", "country", "pin", "state_id"],
+    attributes: [
+      "influencer_address_id",
+      "influencer_id",
+      "address",
+      "country",
+      "pin",
+      "state_id",
+    ],
     where: { influencer_id: influencer_id, delete_flag: 0 },
     include: [
       {

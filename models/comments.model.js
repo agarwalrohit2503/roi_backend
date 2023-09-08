@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
 
-      campaign_id: {
+      campaign_applied_id: {
         type: DataTypes.INTEGER,
         defaultValue: null,
       },
@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
       brand_id: {
         type: DataTypes.INTEGER,
         defaultValue: null,
+      },
+      sender_type: {
+        type: DataTypes.STRING(5),
+        allowNull: false,
       },
 
       comment_text: {
