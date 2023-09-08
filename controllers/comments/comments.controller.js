@@ -38,11 +38,11 @@ async function addComments(req, res) {
 
   var commentAddQuery = await tableNames.Comments.create(commentAddParameter);
 
-  console.log(commentAddQuery);
+  //console.log(commentAddQuery);
   res.status(200).send({
     status: 200,
     message: commentAddQuery != "" ? "Comments added" : "No comments added",
-   // data: commentAddQuery,
+    // data: commentAddQuery,
   });
 }
 

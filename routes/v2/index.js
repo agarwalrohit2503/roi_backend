@@ -4,9 +4,7 @@ const router = Router();
 const influencers = require("./influencers");
 const brands = require("./brands");
 const resources = require("../resources");
-const comments = require("../comments");
 
-router.use("/comments", authJWT, comments);
 router.use("/resources", authJWT, resources);
 router.use("/influencers", influencers);
 router.use("/brands", brands);
