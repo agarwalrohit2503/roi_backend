@@ -8,10 +8,9 @@ const {
   deleteComments,
 } = require("../../../../controllers/comments/comments.controller");
 
-router.post("/add/", (req, res) => {
+router.post("/add", (req, res) => {
   addComments(req, res);
 });
-
 
 router.get("/get/:campaign_applied_id/:influencer_id", (req, res) => {
   getBrandsComments(req, res);
