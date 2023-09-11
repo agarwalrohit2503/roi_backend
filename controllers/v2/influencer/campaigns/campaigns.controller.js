@@ -1,5 +1,6 @@
 const tableNames = require("../../../../utils/table_name");
 const operatorsAliases = require("../../../../utils/operator_aliases");
+const { success, error } = require("../../../../utils/responseApi");
 
 async function getCampaigns(req, res) {
   var influencer_id = req.query.influencer_id;
@@ -7,107 +8,92 @@ async function getCampaigns(req, res) {
   var offset = req.query.offset;
   var search_term = req.query.search_term;
 
-  //try {
-  const findQuery = await tableNames.Campaign.findAll({
-    include: [
-      {
-        attributes: [
-          "brands_id",
-          "brand_logo",
-          "name",
-          "overview",
-          "facebook_url",
-          "instagram_url",
-          "youtube_url",
-        ],
-        model: tableNames.brands,
-        as: "brand",
-      },
+  try {
+    const findQuery = await tableNames.Campaign.findAll({
+      include: [
+        {
+          attributes: [
+            "brands_id",
+            "brand_logo",
+            "name",
+            "overview",
+            "facebook_url",
+            "instagram_url",
+            "youtube_url",
+          ],
+          model: tableNames.brands,
+          as: "brand",
+        },
 
-      {
-        attributes: ["campaign_payment_type_id", "name"],
-        model: tableNames.campaignPaymentType,
-      },
-      {
-        attributes: [
-          "campaign_deliverables_id",
-          "campaign_id",
-          "post",
-          "story",
-          "real",
-          "youtube",
-        ],
-        model: tableNames.campaignDeliverables,
-      },
-      {
-        attributes: ["campaign_platform_id"],
-        model: tableNames.campaignPlatform,
-        include: [
-          {
-            attributes: ["platform_id", "platform_name", "platform_img"],
-            model: tableNames.Platform,
-          },
-        ],
-      },
-      {
-        attributes: ["campaign_content_niche_id", "content_niche_id"],
-        model: tableNames.campaignContentNiche,
-        include: [
-          {
-            attributes: [
-              "content_niche_id",
-              "content_niche_name",
-              "image_link",
-            ],
-            model: tableNames.contentNiche,
-          },
-        ],
-      },
-
-      ...(influencer_id
-        ? [
+        {
+          attributes: ["campaign_payment_type_id", "name"],
+          model: tableNames.campaignPaymentType,
+        },
+        {
+          attributes: [
+            "campaign_deliverables_id",
+            "campaign_id",
+            "post",
+            "story",
+            "real",
+            "youtube",
+          ],
+          model: tableNames.campaignDeliverables,
+        },
+        {
+          attributes: ["campaign_platform_id"],
+          model: tableNames.campaignPlatform,
+          include: [
             {
-              attributes: ["influencer_id"],
-              model: tableNames.campaignApplication,
-              required: false,
-              where: {
-                influencer_id: influencer_id,
-              },
+              attributes: ["platform_id", "platform_name", "platform_img"],
+              model: tableNames.Platform,
             },
-          ]
-        : ""),
-    ],
+          ],
+        },
+        {
+          attributes: ["campaign_content_niche_id", "content_niche_id"],
+          model: tableNames.campaignContentNiche,
+          include: [
+            {
+              attributes: [
+                "content_niche_id",
+                "content_niche_name",
+                "image_link",
+              ],
+              model: tableNames.contentNiche,
+            },
+          ],
+        },
 
-    //raw: true,
-    where: {
-      ...(search_term
-        ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
-        : {}),
-      campaign_delete: 0,
-     
-    },
-    order: [
-      ["campaign_id", "DESC"],
-     
-    ],
-    offset: Number.parseInt(offset ? offset : 0),
-    limit: Number.parseInt(limit ? limit : 20),
-    subQuery: true,
-  });
+        ...(influencer_id
+          ? [
+              {
+                attributes: ["influencer_id"],
+                model: tableNames.campaignApplication,
+                required: false,
+                where: {
+                  influencer_id: influencer_id,
+                },
+              },
+            ]
+          : ""),
+      ],
+      where: {
+        ...(search_term
+          ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
+          : {}),
+        campaign_delete: 0,
+      },
+      order: [["campaign_id", "DESC"]],
+      offset: Number.parseInt(offset ? offset : 0),
+      limit: Number.parseInt(limit ? limit : 20),
+      subQuery: true,
+    });
 
-  res.status(200).send({
-    status: 200,
-    message:
-      findQuery != "" ? "Campaign Data found" : "Campaign Data Not Found",
-    data: findQuery,
-  });
-  // } catch (error) {
-  //   res.status(500).send({
-  //     status: 500,
-  //     message: "Internal server error",
-  //     data: error,
-  //   });
-  // }
+    success(res, "Campaign Data found", "Campaign Data Not Found", findQuery);
+  } catch (error) {
+    error(res, "Internal server error", error);
+  }
 }
 
 async function getCampaignDetails(req, res) {
@@ -185,21 +171,14 @@ async function getCampaignDetails(req, res) {
         campaign_id: campaign_id,
       },
     });
-
-    res.status(200).send({
-      status: 200,
-      message:
-        findQuery != null
-          ? "Campaign Details found"
-          : "Campaign Details Not Found",
-      data: findQuery,
-    });
+    success(
+      res,
+      "Campaign Details found",
+      "Campaign Details Not Found",
+      findQuery
+    );
   } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: "Internal server error",
-      data: error,
-    });
+    error(res, "Internal server error", error);
   }
 }
 
@@ -221,12 +200,10 @@ async function getCampaignApplications(req, res) {
       {
         attributes: [
           "campaign_id",
-
           "campaign_name",
           "location",
           "language",
           "image_link",
-
           "campaign_budget",
           "campaign_about",
           "campaign_start_dt",
@@ -258,36 +235,33 @@ async function getCampaignApplications(req, res) {
         model: tableNames.campaignStatus,
       },
     ],
-    // order: [
-    //   ["createdAt", "DESC"],
-    //   // ['name', 'ASC'],
-    // ],
-    //raw: true,
+
     where: {
       influencer_id: influencer_id,
       application_status_id: status_id,
       ...(search_term
         ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
         : {}),
-      // campaign_delete: 0,
     },
+    subQuery: true,
     offset: Number.parseInt(offset ? offset : 0),
     limit: Number.parseInt(limit ? limit : 20),
-    //subQuery: true,
   });
 
-  console.log(findQuery);
+  
   if (findQuery != "") {
-    res.status(200).send({
-      status: 200,
-      message: "Data found",
-      data: findQuery,
-    });
+    // res.status(200).send({
+    //   status: 200,
+    //   message: "Data found",
+    //   data: findQuery,
+    // });
+    success(res, "Campaign Applications Data found", "Campaign Applications Data Not Found", findQuery);
   } else {
-    res.status(404).send({
-      status: 404,
-      message: "Campaign not found",
-    });
+    // res.status(404).send({
+    //   status: 404,
+    //   message: "Campaign not found",
+    // });
+    error(res, "Campaign Applications not found");
   }
 }
 
@@ -303,10 +277,12 @@ async function applyCampaign(req, res) {
     });
 
     if (!findQuery) {
-      res.status(404).send({
-        status: 404,
-        message: "Campaign not found",
-      });
+      // res.status(404).send({
+      //   status: 404,
+      //   message: "Campaign not found",
+      // });
+
+      error(res, "Campaign not found");
     } else {
       const insertQuery = tableNames.campaignApplication.create({
         campaign_id: campaign_id,
@@ -316,22 +292,26 @@ async function applyCampaign(req, res) {
       });
 
       if (insertQuery != "") {
-        res.status(200).send({
-          status: 200,
-          message: "Successfully applied",
-        });
+        // res.status(200).send({
+        //   status: 200,
+        //   message: "Successfully applied",
+        // });
+        error(res, "Successfully applied");
+      
       } else {
-        res.status(404).send({
-          status: 404,
-          message: "Try again",
-        });
+        // res.status(404).send({
+        //   status: 404,
+        //   message: "Try again",
+        // });
+        error(res, "Try again");
       }
     }
   } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: error,
-    });
+    // res.status(500).send({
+    //   status: 500,
+    //   message: error,
+    // });
+    error(res, "Internal server error", error);
   }
 }
 module.exports = {
