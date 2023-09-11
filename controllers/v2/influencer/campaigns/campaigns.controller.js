@@ -255,13 +255,13 @@ async function getCampaignApplications(req, res) {
     //   message: "Data found",
     //   data: findQuery,
     // });
-    success(res, "Campaign Applications Data found", "Campaign Applications Data Not Found", findQuery);
+   success(res, "Campaign Applications Data found", "Campaign Applications Data Not Found", findQuery);
   } else {
-    // res.status(404).send({
-    //   status: 404,
-    //   message: "Campaign not found",
-    // });
-    error(res, "Campaign Applications not found");
+    res.status(404).send({
+      status: 404,
+      message: "Campaign not found",
+    });
+   // error(res, "Campaign Applications not found");
   }
 }
 
@@ -277,12 +277,12 @@ async function applyCampaign(req, res) {
     });
 
     if (!findQuery) {
-      // res.status(404).send({
-      //   status: 404,
-      //   message: "Campaign not found",
-      // });
+      res.status(404).send({
+        status: 404,
+        message: "Campaign not found",
+      });
 
-      error(res, "Campaign not found");
+      //error(res, "Campaign not found");
     } else {
       const insertQuery = tableNames.campaignApplication.create({
         campaign_id: campaign_id,
@@ -292,18 +292,18 @@ async function applyCampaign(req, res) {
       });
 
       if (insertQuery != "") {
-        // res.status(200).send({
-        //   status: 200,
-        //   message: "Successfully applied",
-        // });
-        error(res, "Successfully applied");
+        res.status(200).send({
+          status: 200,
+          message: "Successfully applied",
+        });
+       // error(res, "Successfully applied");
       
       } else {
-        // res.status(404).send({
-        //   status: 404,
-        //   message: "Try again",
-        // });
-        error(res, "Try again");
+        res.status(404).send({
+          status: 404,
+          message: "Try again",
+        });
+       // error(res, "Try again");
       }
     }
   } catch (error) {
