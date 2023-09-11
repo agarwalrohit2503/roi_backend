@@ -356,7 +356,7 @@ db.Comments.belongsTo(db.campaign_application, {
 
 // db.sequelize.sync({ force: false }).then(() => {
 //   console.log("yes re-sync done!");
-// });
+//});
 
 /////////////////////////////sync query  end/////////////////////////////
 
@@ -364,6 +364,10 @@ db.Comments.belongsTo(db.campaign_application, {
 
 db.influencer.hasMany(db.influencer_address, {
   foreignKey: "influencer_id",
+});
+
+db.campaign.hasMany(db.campaign_application, {
+  foreignKey: "campaign_id",
 });
 
 db.Comments.hasMany(db.influencer, {

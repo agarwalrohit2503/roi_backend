@@ -2,110 +2,112 @@ const tableNames = require("../../../../utils/table_name");
 const operatorsAliases = require("../../../../utils/operator_aliases");
 
 async function getCampaigns(req, res) {
+  var influencer_id = req.query.influencer_id;
   var limit = req.query.limit;
   var offset = req.query.offset;
   var search_term = req.query.search_term;
 
-  try {
-    const findQuery = await tableNames.Campaign.findAll({
-      // attributes: [
-      //   "campaign_id",
-      //   "campaign_name",
-      //   "campaign_about",
-      //   "location",
-      //   "platform",
-      //   "language",
-      //   "image_link",
-      //   "campaign_budget",
-      //   "campaign_start_dt",
-      //   "campaign_end_dt",
-      // ],
-      include: [
-        {
-          attributes: [
-            "brands_id",
-            "brand_logo",
-            "name",
-            "overview",
-            "facebook_url",
-            "instagram_url",
-            "youtube_url",
-          ],
-          model: tableNames.brands,
-          as: "brand",
-        },
-
-        {
-          attributes: ["campaign_payment_type_id", "name"],
-          model: tableNames.campaignPaymentType,
-        },
-        {
-          attributes: [
-            "campaign_deliverables_id",
-            "campaign_id",
-            "post",
-            "story",
-            "real",
-            "youtube",
-          ],
-          model: tableNames.campaignDeliverables,
-        },
-        {
-          attributes: ["campaign_platform_id"],
-          model: tableNames.campaignPlatform,
-          include: [
-            {
-              attributes: ["platform_id", "platform_name", "platform_img"],
-              model: tableNames.Platform,
-            },
-          ],
-        },
-        {
-          attributes: ["campaign_content_niche_id", "content_niche_id"],
-          model: tableNames.campaignContentNiche,
-          include: [
-            {
-              attributes: [
-                "content_niche_id",
-                "content_niche_name",
-                "image_link",
-              ],
-              model: tableNames.contentNiche,
-            },
-          ],
-        },
-      ],
-
-      //raw: true,
-      where: {
-        ...(search_term
-          ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
-          : {}),
-        campaign_delete: 0,
-        // campaign_status_id: 1,
+  //try {
+  const findQuery = await tableNames.Campaign.findAll({
+    include: [
+      {
+        attributes: [
+          "brands_id",
+          "brand_logo",
+          "name",
+          "overview",
+          "facebook_url",
+          "instagram_url",
+          "youtube_url",
+        ],
+        model: tableNames.brands,
+        as: "brand",
       },
-      order: [
-        ["campaign_id", "DESC"],
-        // ['name', 'ASC'],
-      ],
-      offset: Number.parseInt(offset ? offset : 0),
-      limit: Number.parseInt(limit ? limit : 20),
-      //subQuery: true,
-    });
 
-    res.status(200).send({
-      status: 200,
-      message:
-        findQuery != "" ? "Campaign Data found" : "Campaign Data Not Found",
-      data: findQuery,
-    });
-  } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: "Internal server error",
-      data: error,
-    });
-  }
+      {
+        attributes: ["campaign_payment_type_id", "name"],
+        model: tableNames.campaignPaymentType,
+      },
+      {
+        attributes: [
+          "campaign_deliverables_id",
+          "campaign_id",
+          "post",
+          "story",
+          "real",
+          "youtube",
+        ],
+        model: tableNames.campaignDeliverables,
+      },
+      {
+        attributes: ["campaign_platform_id"],
+        model: tableNames.campaignPlatform,
+        include: [
+          {
+            attributes: ["platform_id", "platform_name", "platform_img"],
+            model: tableNames.Platform,
+          },
+        ],
+      },
+      {
+        attributes: ["campaign_content_niche_id", "content_niche_id"],
+        model: tableNames.campaignContentNiche,
+        include: [
+          {
+            attributes: [
+              "content_niche_id",
+              "content_niche_name",
+              "image_link",
+            ],
+            model: tableNames.contentNiche,
+          },
+        ],
+      },
+
+      ...(influencer_id
+        ? [
+            {
+              attributes: ["influencer_id"],
+              model: tableNames.campaignApplication,
+              required: false,
+              where: {
+                influencer_id: influencer_id,
+              },
+            },
+          ]
+        : ""),
+    ],
+
+    //raw: true,
+    where: {
+      ...(search_term
+        ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
+        : {}),
+      campaign_delete: 0,
+     
+    },
+    order: [
+      ["campaign_id", "DESC"],
+     
+    ],
+    offset: Number.parseInt(offset ? offset : 0),
+    limit: Number.parseInt(limit ? limit : 20),
+    subQuery: true,
+  });
+
+  res.status(200).send({
+    status: 200,
+    message:
+      findQuery != "" ? "Campaign Data found" : "Campaign Data Not Found",
+    data: findQuery,
+  });
+  // } catch (error) {
+  //   res.status(500).send({
+  //     status: 500,
+  //     message: "Internal server error",
+  //     data: error,
+  //   });
+  // }
 }
 
 async function getCampaignDetails(req, res) {
