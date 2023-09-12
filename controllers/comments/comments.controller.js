@@ -76,7 +76,7 @@ async function getinfluencerComments(req, res) {
       campaign_applied_id: campaign_applied_id,
       delete_flag: 0,
     },
-    order: [["comment_id", "DESC"]],
+    order: [["comment_id", "ASC"]],
     offset: Number.parseInt(offset ? offset : 0),
     limit: Number.parseInt(limit ? limit : 20),
   });
