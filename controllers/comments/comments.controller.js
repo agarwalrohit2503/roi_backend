@@ -78,7 +78,7 @@ async function getinfluencerComments(req, res) {
     },
     order: [["comment_id", "ASC"]],
     offset: Number.parseInt(offset ? offset : 0),
-    limit: Number.parseInt(limit ? limit : 20),
+    limit: Number.parseInt(limit ? limit : 50),
   });
 
   res.status(200).send({
