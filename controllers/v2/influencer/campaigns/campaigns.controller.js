@@ -187,82 +187,86 @@ async function getDemoCampaigns(req, res) {
 }
 
 async function getCampaignApplications(req, res) {
-  influencer_id = req.params.influencer_id;
 
-  var limit = req.query.limit;
-  var offset = req.query.offset;
-  var search_term = req.query.search_term;
-  var status_id = req.query.status_id;
+  try {
 
-  const findQuery = await tableNames.campaignApplication.findAll({
-    attributes: ["campaign_applied_id"],
-    include: [
-      {
-        attributes: [
-          "campaign_id",
-          "campaign_name",
-          "location",
-          "language",
-          "image_link",
-          "campaign_budget",
-          "campaign_about",
-          "campaign_start_dt",
-          "campaign_end_dt",
-        ],
-        model: tableNames.Campaign,
-        include: [
-          {
-            attributes: ["brands_id", "brand_logo", "name"],
-            model: tableNames.brands,
-            include: [
-              {
-                attributes: ["state_id", "state_name"],
-                model: tableNames.State,
-              },
-              {
-                attributes: ["city_id", "city_name"],
-                model: tableNames.City,
-              },
-            ],
-          },
-        ],
-        // as: "brand",
-      },
-      {
-        model: tableNames.applicationStatus,
-      },
-      {
-        model: tableNames.campaignStatus,
-      },
-    ],
+    influencer_id = req.params.influencer_id;
 
-    where: {
-      influencer_id: influencer_id,
-      application_status_id: status_id,
-      ...(search_term
-        ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
-        : {}),
-    },
-    subQuery: true,
-    offset: Number.parseInt(offset ? offset : 0),
-    limit: Number.parseInt(limit ? limit : 20),
-  });
-
+    var limit = req.query.limit;
+    var offset = req.query.offset;
+    var search_term = req.query.search_term;
+    var status_id = req.query.status_id;
   
-  if (findQuery != "") {
-    // res.status(200).send({
-    //   status: 200,
-    //   message: "Data found",
-    //   data: findQuery,
-    // });
-   success(res, "Campaign Applications Data found", "Campaign Applications Data Not Found", findQuery);
-  } else {
-    res.status(404).send({
-      status: 404,
-      message: "Campaign not found",
+    const findQuery = await tableNames.campaignApplication.findAll({
+      attributes: ["campaign_applied_id"],
+      include: [
+        {
+          attributes: [
+            "campaign_id",
+            "campaign_name",
+            "location",
+            "language",
+            "image_link",
+            "campaign_budget",
+            "campaign_about",
+            "campaign_start_dt",
+            "campaign_end_dt",
+          ],
+          model: tableNames.Campaign,
+          include: [
+            {
+              attributes: ["brands_id", "brand_logo", "name"],
+              model: tableNames.brands,
+              required: false,
+              include: [
+                {
+                  attributes: ["state_id", "state_name"],
+                  model: tableNames.State,
+                  required: false,
+                },
+                {
+                  attributes: ["city_id", "city_name"],
+                  model: tableNames.City,
+                  required: false,
+                },
+              ],
+            },
+          ],
+          // as: "brand",
+        },
+        {
+          model: tableNames.applicationStatus,
+          required: false,
+        },
+        {
+          model: tableNames.campaignStatus,
+          required: false,
+        },
+      ],
+  
+      where: {
+        influencer_id: influencer_id,
+        application_status_id: status_id,
+        ...(search_term
+          ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
+          : {}),
+      },
+      subQuery: true,
+      offset: Number.parseInt(offset ? offset : 0),
+      limit: Number.parseInt(limit ? limit : 20),
     });
-   // error(res, "Campaign Applications not found");
+  
+      success(
+        res,
+        "Campaign Applications Data found",
+        "Campaign Applications Data Not Found",
+        findQuery
+      );
+    
+  } catch (error) {
+    error(res, "Internal server error", error);
   }
+
 }
 
 async function applyCampaign(req, res) {
@@ -296,14 +300,13 @@ async function applyCampaign(req, res) {
           status: 200,
           message: "Successfully applied",
         });
-       // error(res, "Successfully applied");
-      
+        // error(res, "Successfully applied");
       } else {
         res.status(404).send({
           status: 404,
           message: "Try again",
         });
-       // error(res, "Try again");
+        // error(res, "Try again");
       }
     }
   } catch (error) {
