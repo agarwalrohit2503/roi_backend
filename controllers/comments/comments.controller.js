@@ -27,7 +27,11 @@ async function addComments(req, res) {
   //   });
   // }
 
-  var finalImgeUrl = await imageUpload(comment_file);
+  
+
+  if(comment_file != ''){
+    var finalImgeUrl = await imageUpload(comment_file);
+  }
 
   let commentAddParameter = {
     campaign_applied_id: campaign_applied_id,
