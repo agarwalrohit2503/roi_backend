@@ -51,8 +51,8 @@ async function get(req, res) {
       order: [
         ["campaign_applied_id", "DESC"],
       ],
-      // offset: Number.parseInt(offset ? offset : 0),
-      // limit: Number.parseInt(limit ? limit : 20),
+      offset: Number.parseInt(offset ? offset : 0),
+      limit: Number.parseInt(limit ? limit : 20),
     });
     res.status(200).send({
       status: 200,
