@@ -1,7 +1,7 @@
 const tableNames = require("../../../../utils/table_name");
 const operatorsAliases = require("../../../../utils/operator_aliases");
 const editParameterQuery = require("../../../../utils/edit_query");
-const imageUpload = require("../../../../utils/image_upload");
+const {imageUpload,imageWithPdfUpload} = require("../../../../utils/image_upload");
 
 async function get(req, res) {
   var campaign_id = req.params.campaign_id;

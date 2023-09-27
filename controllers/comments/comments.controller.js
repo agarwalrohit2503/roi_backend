@@ -1,6 +1,6 @@
 const tableNames = require("../../utils/table_name");
 const { db, sequelize } = require("../../utils/conn");
-const imageUpload = require("../../utils/image_upload");
+const { imageUpload, imageWithPdfUpload } = require("../../utils/image_upload");
 async function addComments(req, res) {
   var campaign_applied_id = req.body.campaign_applied_id;
   var influencer_id = req.body.influencer_id;
@@ -29,7 +29,7 @@ async function addComments(req, res) {
   // }
 
   if (comment_file != "") {
-    var finalImgeUrl = await imageUpload(comment_file, file_type);
+    var finalImgeUrl = await imageWithPdfUpload(comment_file, file_type);
   }
 
   let commentAddParameter = {
@@ -39,7 +39,7 @@ async function addComments(req, res) {
     sender_type: sender_type,
     comment_text: comment_text,
     comment_file: finalImgeUrl ?? "",
-    file_type: file_type  != '' ?file_type :"image",
+    file_type: file_type != "" ? file_type : "image",
   };
 
   var commentAddQuery = await tableNames.Comments.create(commentAddParameter);
