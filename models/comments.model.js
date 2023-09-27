@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         defaultValue: null,
       },
+      file_type: {
+        type: DataTypes.STRING(20),
+        defaultValue: null,
+      },
       delete_flag: {
         type: DataTypes.TINYINT,
         defaultValue: 0,

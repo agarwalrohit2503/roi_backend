@@ -356,7 +356,7 @@ db.Comments.belongsTo(db.campaign_application, {
 
 // db.sequelize.sync({ force: false }).then(() => {
 //   console.log("yes re-sync done!");
-//});
+// });
 
 /////////////////////////////sync query  end/////////////////////////////
 

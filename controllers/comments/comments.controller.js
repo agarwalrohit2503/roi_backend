@@ -39,6 +39,7 @@ async function addComments(req, res) {
     sender_type: sender_type,
     comment_text: comment_text,
     comment_file: finalImgeUrl ?? "",
+    file_type: file_type  != '' ?file_type :"image",
   };
 
   var commentAddQuery = await tableNames.Comments.create(commentAddParameter);
