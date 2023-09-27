@@ -9,6 +9,7 @@ async function addComments(req, res) {
   console.log(sender_type);
   var comment_text = req.body.comment_text;
   var comment_file = req.body.comment_file;
+  var file_type = req.body.file_type;
 
   // if (
   //   campaign_applied_id == "" ||
@@ -27,10 +28,8 @@ async function addComments(req, res) {
   //   });
   // }
 
-  
-
-  if(comment_file != ''){
-    var finalImgeUrl = await imageUpload(comment_file);
+  if (comment_file != "") {
+    var finalImgeUrl = await imageUpload(comment_file, file_type);
   }
 
   let commentAddParameter = {
