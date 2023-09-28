@@ -1,7 +1,10 @@
 const tableNames = require("../../../../utils/table_name");
 const operatorsAliases = require("../../../../utils/operator_aliases");
 const editParameterQuery = require("../../../../utils/edit_query");
-const {imageUpload,imageWithPdfUpload} = require("../../../../utils/image_upload");
+const {
+  imageUpload,
+  imageWithPdfUpload,
+} = require("../../../../utils/image_upload");
 
 async function getAllCampaign(req, res) {
   var limit = req.query.limit;
@@ -404,7 +407,6 @@ async function getCampaignDetails(req, res) {
             "story",
             "real",
             "youtube",
-            
           ],
           model: tableNames.campaignDeliverables,
         },
@@ -429,6 +431,10 @@ async function getCampaignDetails(req, res) {
               // as: "cc",
             },
           ],
+        },
+        {
+          attributes:['influencer_id'],
+          model: tableNames.campaignApplication,
         },
       ],
 
