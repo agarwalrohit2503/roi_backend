@@ -398,6 +398,7 @@ async function getCampaignDetails(req, res) {
         {
           attributes: ["campaign_payment_type_id", "name"],
           model: tableNames.campaignPaymentType,
+       
         },
         {
           attributes: [
@@ -435,6 +436,10 @@ async function getCampaignDetails(req, res) {
         {
           attributes:['influencer_id'],
           model: tableNames.campaignApplication,
+          required: false,
+          where:{
+            application_status_id:2
+          }
         },
       ],
 
