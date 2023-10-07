@@ -398,7 +398,6 @@ async function getCampaignDetails(req, res) {
         {
           attributes: ["campaign_payment_type_id", "name"],
           model: tableNames.campaignPaymentType,
-       
         },
         {
           attributes: [
@@ -434,12 +433,12 @@ async function getCampaignDetails(req, res) {
           ],
         },
         {
-          attributes:['influencer_id'],
+          attributes: ["influencer_id"],
           model: tableNames.campaignApplication,
           required: false,
-          where:{
-            application_status_id:2
-          }
+          where: {
+            application_status_id: 2,
+          },
         },
       ],
 
@@ -495,12 +494,26 @@ async function platformDelete(req, res) {
   var platform_id = req.body.platform_id;
 
   const platfrom_delete = platform_id.map(async (item) => {
-    return (deleteQuery = await tableNames.campaignPlatform.destroy({
+    var platfrom_findquery = await tableNames.campaignPlatform.findAll({
       where: {
         campaign_id: campaign_id,
         platform_id: item,
       },
-    }));
+    });
+
+    if (platfrom_findquery == "") {
+      return res.status(200).send({
+        status: 200,
+        message: "Already deleted",
+      });
+    } else {
+      return (deleteQuery = await tableNames.campaignPlatform.destroy({
+        where: {
+          campaign_id: campaign_id,
+          platform_id: item,
+        },
+      }));
+    }
   });
 
   const respData = await Promise.all(platfrom_delete);
