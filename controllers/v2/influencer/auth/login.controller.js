@@ -2,7 +2,7 @@ const tableNames = require("../../../../utils/table_name");
 const { db, sequelize } = require("../../../../utils/conn");
 var jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
-
+const otpTimeValidation =require("../../../../utils/otp_time_checker");
 async function influencerLogin(req, res) {
     
   const mobile_number = req.body.mobile_number;
@@ -97,14 +97,23 @@ async function otpverify(req, res) {
   var otp = req.body.otp;
   var verification_code = req.body.verification_code;
   let otpquery = await tableNames.otp.findOne({
-   
     where: {
       otp_code: otp,
       verification_code: verification_code,
     },
   });
+  var otpTimestamp = otpquery["createdAt"];
 
-  if (otpquery == null) {
+var isExpired =await otpTimeValidation(otpTimestamp);
+
+if (isExpired) {
+  console.log("OTP has expired");
+  res.status(410).send({
+    status: 410,
+    message: "OTP has expired",
+  });
+} else {
+   if (otpquery == null) {
     res.status(404).send({
       status: 404,
       message: "otp not match",
@@ -195,7 +204,6 @@ async function otpverify(req, res) {
           ],
           where: {
             influencer_id: otpquery["influencer_id"],
-            //verification_code: verification_code,
           },
         });
         if (!influencerQuery) {
@@ -261,6 +269,9 @@ async function otpverify(req, res) {
       }
     }
   }
+}
+
+ 
 }
 module.exports = {
   influencerLogin,
