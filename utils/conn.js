@@ -138,7 +138,7 @@ db.campaign_platform = require("../models/campaign_platform.model")(
 );
 db.platform = require("../models/platform.model")(sequelize, DataTypes);
 db.Comments = require("../models/comments.model")(sequelize, DataTypes);
-
+db.language = require("../models/language.model")(sequelize, DataTypes);
 db.campaign_platform.belongsTo(db.campaign, {
   foreignKey: "campaign_id", // foreign table
   targetKey: "campaign_id", // primary table
