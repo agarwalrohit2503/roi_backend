@@ -110,6 +110,8 @@ async function editCampaign(req, res) {
   var campaign_budget = req.body.campaign_budget;
   var image_link = req.body.image_link;
   var platform = req.body.platform;
+  var language_id = req.body.language_id;
+
   var eligibility = req.body.eligibility;
 
   var post = req.body.post;
@@ -166,7 +168,7 @@ async function editCampaign(req, res) {
         })
       );
 
-      console.log(campaignContentNicheRespData);
+      //console.log(campaignContentNicheRespData);
       if (
         campaignContentNicheRespData == "" ||
         campaignContentNicheRespData == null
@@ -204,6 +206,34 @@ async function editCampaign(req, res) {
           message: "Platform Not Inserted",
         });
       }
+
+      // let campaignLanguageRespData = await Promise.all(
+      //   language_id.map(async (item) => {
+      //     try {
+
+      //       let campaign_language_info = {
+      //         campaign_id: campaign_id,
+      //         language_id: item,
+      //       };
+
+      //       insertCampaignLanguageInfoQuery = await tableNames.campaign_language.create(campaign_language_info);
+
+      //       return insertCampaignLanguageInfoQuery;
+      //     } catch (error) {
+      //       return { ...item, error };
+      //     }
+      //   })
+      // );
+
+      // if (
+      //   (campaignLanguageRespData == "") |
+      //   (campaignLanguageRespData == null)
+      // ) {
+      //   res.status(209).send({
+      //     status: 209,
+      //     message: "language Not Inserted",
+      //   });
+      // }
 
       let DeliverablesEdit = {
         post: post,
@@ -261,6 +291,8 @@ async function addCampaign(req, res) {
 
   var eligibility = req.body.eligibility;
 
+  var language_id = req.body.language_id;
+
   var post = req.body.post;
   var story = req.body.story;
   var real = req.body.real;
@@ -269,104 +301,138 @@ async function addCampaign(req, res) {
 
   //console.log(finalImgeUrl);
   try {
-    const createQuery = await tableNames.Campaign.create({
-      campaign_goal_id: campaign_goal_id,
-      brand_id: brand_id,
-      campaign_status_id: campaign_status_id,
-      payment_status_id: payment_status_id,
-      campaign_name: campaign_name,
-      location: location,
-      campaign_about: campaign_about,
-      about_product: about_product,
-      language: language,
-      campaign_start_dt: campaign_start_dt,
-      campaign_end_dt: campaign_end_dt,
-      campaign_budget: campaign_budget,
-      image_link: finalImgeUrl,
+  const createQuery = await tableNames.Campaign.create({
+    campaign_goal_id: campaign_goal_id,
+    brand_id: brand_id,
+    campaign_status_id: campaign_status_id,
+    payment_status_id: payment_status_id,
+    campaign_name: campaign_name,
+    location: location,
+    campaign_about: campaign_about,
+    about_product: about_product,
+    language: language,
+    campaign_start_dt: campaign_start_dt,
+    campaign_end_dt: campaign_end_dt,
+    campaign_budget: campaign_budget,
+    image_link: finalImgeUrl,
 
-      // platform: platform,
-      eligibility: eligibility,
-    });
-    //  console.log(createQuery);
-    console.log(createQuery.campaign_id);
-    if (createQuery != "") {
-      let campaignContentNicheRespData = await Promise.all(
-        content_niche_id.map(async (item) => {
-          try {
-            let content_niche_info = {
-              campaign_id: createQuery.campaign_id,
-              content_niche_id: item,
-            };
-            insertContentNicheQuery =
-              await tableNames.campaignContentNiche.create(content_niche_info);
+    // platform: platform,
+    eligibility: eligibility,
+  });
 
-            return insertContentNicheQuery;
-          } catch (error) {
-            return { ...item, error };
-          }
-        })
-      );
-      if (campaignContentNicheRespData == "") {
-        res.status(209).send({
-          status: 209,
-          message: "Campaing Content Niche not inserted",
-        });
-      }
-      let campaignPlatformRespData = await Promise.all(
-        platform_id.map(async (item) => {
-          try {
-            let campaign_campaignPlatform_info = {
-              campaign_id: createQuery.campaign_id,
-              platform_id: item,
-            };
-            insertcampaignPlatformQuery =
-              await tableNames.campaignPlatform.create(
-                campaign_campaignPlatform_info
-              );
+  //console.log(createQuery);
+  //console.log(createQuery.campaign_id);
 
-            return insertcampaignPlatformQuery;
-          } catch (error) {
-            return { ...item, error };
-          }
-        })
-      );
-      if (campaignPlatformRespData == "") {
-        res.status(209).send({
-          status: 209,
-          message: "Platform Not Inserted",
-        });
-      }
+  if (createQuery != "") {
+    let campaignContentNicheRespData = await Promise.all(
+      content_niche_id.map(async (item) => {
+        try {
+          let content_niche_info = {
+            campaign_id: createQuery.campaign_id,
+            content_niche_id: item,
+          };
+          insertContentNicheQuery =
+            await tableNames.campaignContentNiche.create(content_niche_info);
 
-      let campaign_deliverables_info = {
-        campaign_id: createQuery.campaign_id,
-        post: post,
-        story: story,
-        real: real,
-        youtube: youtube,
-      };
-      insertcampaignDeliverablesQuery =
-        await tableNames.campaignDeliverables.create(
-          campaign_deliverables_info
-        );
-      if (insertcampaignDeliverablesQuery == "") {
-        res.status(209).send({
-          status: 209,
-          message: "Campaign  Deliverables Not Inserted",
-        });
-      }
-
-      res.status(200).send({
-        status: 200,
-        message: "Campaign Created",
-      });
-
-      console.log(data);
-    } else {
-      res.status(409).send({
-        status: 409,
-        message: "Campaign Not Created ",
+          return insertContentNicheQuery;
+        } catch (error) {
+          return { ...item, error };
+        }
+      })
+    );
+    if (campaignContentNicheRespData == "") {
+      res.status(209).send({
+        status: 209,
+        message: "Campaing Content Niche not inserted",
       });
     }
+    let campaignPlatformRespData = await Promise.all(
+      platform_id.map(async (item) => {
+        try {
+          let campaign_campaignPlatform_info = {
+            campaign_id: createQuery.campaign_id,
+            platform_id: item,
+          };
+          insertcampaignPlatformQuery =
+            await tableNames.campaignPlatform.create(
+              campaign_campaignPlatform_info
+            );
+
+          return insertcampaignPlatformQuery;
+        } catch (error) {
+          return { ...item, error };
+        }
+      })
+    );
+    if (campaignPlatformRespData == "") {
+      res.status(209).send({
+        status: 209,
+        message: "Platform Not Inserted",
+      });
+    }
+
+    let campaignLanguageRespData = await Promise.all(
+      language_id.map(async (item) => {
+       try {
+
+    console.log(createQuery.campaign_id);
+    let campaign_language_info = {
+      campaign_id: createQuery.campaign_id,
+      language_id: language_id,
+    };
+
+    insertCampaignLanguageInfoQuery = await tableNames.campaignLanguage.create(
+      campaign_language_info
+    );
+    console.log(insertCampaignLanguageInfoQuery);
+
+      return insertCampaignLanguageInfoQuery;
+       } catch (error) {
+        return { ...item, error };
+       }
+      })
+    );
+
+    if (
+      (campaignLanguageRespData == "") |
+      (campaignLanguageRespData == null)
+    ) {
+      res.status(209).send({
+        status: 209,
+        message: "language Not Inserted",
+      });
+    }
+
+    let campaign_deliverables_info = {
+      campaign_id: createQuery.campaign_id,
+      post: post,
+      story: story,
+      real: real,
+      youtube: youtube,
+    };
+    insertcampaignDeliverablesQuery =
+      await tableNames.campaignDeliverables.create(
+        campaign_deliverables_info
+      );
+    if (insertcampaignDeliverablesQuery == "") {
+      res.status(209).send({
+        status: 209,
+        message: "Campaign  Deliverables Not Inserted",
+      });
+    }
+
+    res.status(200).send({
+      status: 200,
+      message: "Campaign Created",
+    });
+
+    console.log(data);
+  } else {
+    res.status(409).send({
+      status: 409,
+      message: "Campaign Not Created ",
+    });
+  }
   } catch (err) {
     res.status(500).send({
       status: 500,
