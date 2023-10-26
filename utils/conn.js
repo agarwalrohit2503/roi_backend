@@ -371,7 +371,7 @@ db.campaign.belongsTo(db.campaign_language, {
 /////////////////////////////sync query start////////////////////////////
 // db.sequelize.sync({ force: false }).then(() => {
 //   console.log("yes re-sync done!");
-// });
+//});
 /////////////////////////////sync query  end/////////////////////////////
 
 ///////////////////////////table join query//////////////////////
@@ -449,6 +449,16 @@ db.campaign.hasMany(db.campaignContentNiche, {
 db.campaignContentNiche.hasMany(db.content_niche, {
   foreignKey: "content_niche_id",
 });
+
+//////////////////Campaign Languag Start//////////////////
+db.campaign.hasMany(db.campaign_language, {
+  foreignKey: "campaign_id",
+});
+
+db.campaign_language.hasMany(db.language, {
+  foreignKey: "language_id",
+});
+//////////////////Campaign Languag end//////////////////
 
 //////////////// BRANDS RELATION SECTION START /////////////////////////////////////
 

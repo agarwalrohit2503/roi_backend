@@ -77,6 +77,17 @@ async function getCampaigns(req, res) {
               },
             ]
           : ""),
+
+        {
+          attributes: ["campaign_language_id"],
+          model: tableNames.campaignLanguage,
+          required: false,
+          include: [
+            {
+              model: tableNames.language,
+            },
+          ],
+        },
       ],
       where: {
         ...(search_term
@@ -187,16 +198,14 @@ async function getDemoCampaigns(req, res) {
 }
 
 async function getCampaignApplications(req, res) {
-
   try {
-
     influencer_id = req.params.influencer_id;
 
     var limit = req.query.limit;
     var offset = req.query.offset;
     var search_term = req.query.search_term;
     var status_id = req.query.status_id;
-  
+
     const findQuery = await tableNames.campaignApplication.findAll({
       attributes: ["campaign_applied_id"],
       include: [
@@ -243,7 +252,7 @@ async function getCampaignApplications(req, res) {
           required: false,
         },
       ],
-  
+
       where: {
         influencer_id: influencer_id,
         application_status_id: status_id,
@@ -255,18 +264,16 @@ async function getCampaignApplications(req, res) {
       offset: Number.parseInt(offset ? offset : 0),
       limit: Number.parseInt(limit ? limit : 20),
     });
-  
-      success(
-        res,
-        "Campaign Applications Data found",
-        "Campaign Applications Data Not Found",
-        findQuery
-      );
-    
+
+    success(
+      res,
+      "Campaign Applications Data found",
+      "Campaign Applications Data Not Found",
+      findQuery
+    );
   } catch (error) {
     error(res, "Internal server error", error);
   }
-
 }
 
 async function applyCampaign(req, res) {

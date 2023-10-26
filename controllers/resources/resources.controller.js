@@ -1,4 +1,5 @@
 const tableNames = require("../../utils/table_name");
+const { success, error } = require("../../utils/responseApi");
 
 async function getState(req, res) {
   try {
@@ -151,7 +152,7 @@ async function getCampaignPaymentType(req, res) {
 
 async function getPlatform(req, res) {
   const findQueryPlatform = await tableNames.Platform.findAll({
-    attributes: ["platform_id", "platform_name","platform_img"],
+    attributes: ["platform_id", "platform_name", "platform_img"],
     where: { delete_flag: 0 },
   });
   res.status(200).send({
@@ -172,6 +173,23 @@ async function getCampaignGoal(req, res) {
     data: findQueryCampaignGoal,
   });
 }
+
+async function getLanguageList(req, res) {
+  var limit = req.query.limit;
+  var offset = req.query.offset;
+  var search_term = req.query.search_term;
+
+  const getLanguageListFindQuery = await tableNames.language.findAll({
+    where: { delete_flag: 0 },
+  });
+
+  success(
+    res,
+    "Language Details Found",
+    "Language Details Not Found",
+    getLanguageListFindQuery
+  );
+}
 module.exports = {
   getCity,
   getState,
@@ -181,4 +199,5 @@ module.exports = {
   getCampaignPaymentType,
   getPlatform,
   getCampaignGoal,
+  getLanguageList,
 };

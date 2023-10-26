@@ -11,7 +11,8 @@ const {
   getBrandType,
   getCampaignPaymentType,
   getPlatform,
-  getCampaignGoal
+  getCampaignGoal,
+  getLanguageList
 } = require("../../controllers/resources/resources.controller");
 
 router.get("/get-content-niche", (req, res) => {
@@ -42,5 +43,10 @@ router.get("/get-platform", (req, res) => {
 router.get("/get-campaign-goal", (req, res) => {
   getCampaignGoal(req, res);
 });
+
+router.get("/get-languages", (req, res) => {
+  getLanguageList(req, res);
+});
+
 
 module.exports = router;
