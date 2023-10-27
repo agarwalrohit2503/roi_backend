@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       image_link: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
 
       eligibility: {

@@ -145,7 +145,7 @@ async function editCampaign(req, res) {
       campaign_start_dt: campaign_start_dt,
       campaign_end_dt: campaign_end_dt,
       campaign_budget: campaign_budget,
-      image_link: "image_link",
+      
       platform: platform,
       eligibility: eligibility,
     };
@@ -322,7 +322,6 @@ async function addCampaign(req, res) {
       campaign_start_dt: campaign_start_dt,
       campaign_end_dt: campaign_end_dt,
       campaign_budget: campaign_budget,
-      image_link: "gg",
       eligibility: eligibility,
     });
 
@@ -335,7 +334,7 @@ async function addCampaign(req, res) {
           message: "Campaign Images Not Uploaded",
         });
       } else {
-        console.log(finalImgeUrl);
+      
         let campaignContentNicheRespData = await Promise.all(
           content_niche_id.map(async (item) => {
             try {
@@ -388,7 +387,7 @@ async function addCampaign(req, res) {
         let campaignLanguageRespData = await Promise.all(
           language_id.map(async (item) => {
             try {
-              console.log(createQuery.campaign_id);
+            
               let campaign_language_info = {
                 campaign_id: createQuery.campaign_id,
                 language_id: language_id,
@@ -398,7 +397,7 @@ async function addCampaign(req, res) {
                 await tableNames.campaignLanguage.create(
                   campaign_language_info
                 );
-              console.log(insertCampaignLanguageInfoQuery);
+            
 
               return insertCampaignLanguageInfoQuery;
             } catch (error) {
