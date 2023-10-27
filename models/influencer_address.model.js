@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
       },
+      primary_address: {
+        type: DataTypes.TINYINT,
+        defaultValue: 0,
+      },
 
       delete_flag: {
         type: DataTypes.TINYINT,

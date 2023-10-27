@@ -88,6 +88,9 @@ async function getCampaigns(req, res) {
             },
           ],
         },
+        {
+          model: tableNames.campaignImages,
+        },
       ],
       where: {
         ...(search_term

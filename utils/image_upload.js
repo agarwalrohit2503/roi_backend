@@ -24,14 +24,6 @@ async function imageUpload(base64String, campaign_id) {
     }
   });
   return Promise.all(allData);
-  // Promise.all(allData).then(async function (values) {
-  //   //console.log(values);
-  //   if (!values) {
-  //     error(res, "image not uploaded");
-  //   } else {
-  //     return "okk";
-  //   }
-  // });
 }
 async function imageWithPdfUpload(base64String, file_type) {
   if (file_type != "") {

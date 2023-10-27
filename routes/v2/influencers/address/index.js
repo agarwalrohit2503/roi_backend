@@ -4,7 +4,8 @@ const {
   addAddress,
   getAddress,
   deleteAddress,
-  editAddress
+  editAddress,
+  addPrimaryAddress
 } = require("../../../../controllers/v2/influencer/address/address.controller");
 
 router.post("/add/:influencer_id", (req, res) => {
@@ -18,5 +19,8 @@ router.delete("/delete/:influencer_id", (req, res) => {
 });
 router.patch("/edit/:influencer_id", (req, res) => {
   editAddress(req, res);
+});
+router.patch("/add-primary-address/:influencer_id", (req, res) => {
+  addPrimaryAddress(req, res);
 });
 module.exports = router;

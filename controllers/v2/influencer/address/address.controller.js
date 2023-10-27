@@ -1,5 +1,5 @@
 const tableNames = require("../../../../utils/table_name");
-
+const { success, error } = require("../../../../utils/responseApi");
 async function addAddress(req, res) {
   const influencer_id = req.params.influencer_id;
   const address = req.body.address;
@@ -49,6 +49,7 @@ async function getAddress(req, res) {
       "country",
       "pin",
       "state_id",
+      "primary_address",
     ],
     where: { influencer_id: influencer_id, delete_flag: 0 },
     include: [
@@ -145,9 +146,45 @@ async function editAddress(req, res) {
   }
 }
 
+async function addPrimaryAddress(req, res) {
+  var influencer_id = req.params.influencer_id;
+  var influencer_address_id = req.body.influencer_address_id;
+
+  const findPrimaryAddress = await tableNames.influencerAddress.findOne({
+    where: {
+      influencer_id: influencer_id,
+      influencer_address_id: influencer_address_id,
+      delete_flag: 0,
+    },
+  });
+  var addPrimaryAddressUpdateQuery = await tableNames.influencerAddress.update(
+    {primary_address: findPrimaryAddress.primary_address == 1 ? 0 : 1},
+    {where: {
+        influencer_id: influencer_id,
+        influencer_address_id: influencer_address_id,
+      },}
+  );
+  findPrimaryAddress.primary_address == 1
+    ? success(
+        res,
+        "Primary address removed successfully",
+        "Primary address not added",
+        addPrimaryAddressUpdateQuery,
+        1
+      )
+    : success(
+        res,
+        "Primary address added successfully",
+        "Primary address not added",
+        addPrimaryAddressUpdateQuery,
+        1
+      );
+}
+
 module.exports = {
   addAddress,
   getAddress,
   deleteAddress,
   editAddress,
+  addPrimaryAddress,
 };

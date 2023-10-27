@@ -405,6 +405,10 @@ db.influencer.hasMany(db.influencer_language, {
   foreignKey: "influencer_id",
 });
 
+db.campaign.hasMany(db.campaign_images, {
+  foreignKey: "campaign_id",
+});
+
 db.influencer_language.hasMany(db.language, {
   foreignKey: "language_id",
 });
