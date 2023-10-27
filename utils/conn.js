@@ -140,6 +140,11 @@ db.platform = require("../models/platform.model")(sequelize, DataTypes);
 db.Comments = require("../models/comments.model")(sequelize, DataTypes);
 db.language = require("../models/language.model")(sequelize, DataTypes);
 
+db.campaign_images = require("../models/campaign_images.model")(
+  sequelize,
+  DataTypes
+);
+
 db.influencer_language = require("../models/influencer_language.model")(
   sequelize,
   DataTypes
@@ -381,6 +386,11 @@ db.influencer_language.belongsTo(db.language, {
 db.influencer_language.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
+});
+
+db.campaign_images.belongsTo(db.campaign, {
+  foreignKey: "campaign_id", // foreign table
+  targetKey: "campaign_id", // primary table
 });
 
 /////////////////////////////sync query start////////////////////////////

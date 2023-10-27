@@ -306,30 +306,35 @@ async function addCampaign(req, res) {
   var story = req.body.story;
   var real = req.body.real;
   var youtube = req.body.youtube;
-  var finalImgeUrl = await imageUpload(image_link);
 
-  
-  try {
-    const createQuery = await tableNames.Campaign.create({
-      campaign_goal_id: campaign_goal_id,
-      brand_id: brand_id,
-      campaign_status_id: campaign_status_id,
-      payment_status_id: payment_status_id,
-      campaign_name: campaign_name,
-      location: location,
-      campaign_about: campaign_about,
-      about_product: about_product,
-      language: language,
-      campaign_start_dt: campaign_start_dt,
-      campaign_end_dt: campaign_end_dt,
-      campaign_budget: campaign_budget,
-      image_link: finalImgeUrl,
-      eligibility: eligibility,
-    });
+  // try {
+  const createQuery = await tableNames.Campaign.create({
+    campaign_goal_id: campaign_goal_id,
+    brand_id: brand_id,
+    campaign_status_id: campaign_status_id,
+    payment_status_id: payment_status_id,
+    campaign_name: campaign_name,
+    location: location,
+    campaign_about: campaign_about,
+    about_product: about_product,
+    language: language,
+    campaign_start_dt: campaign_start_dt,
+    campaign_end_dt: campaign_end_dt,
+    campaign_budget: campaign_budget,
+    image_link: "gg",
+    eligibility: eligibility,
+  });
 
-   
+  if (createQuery != "") {
+    var finalImgeUrl = await imageUpload(image_link, createQuery.campaign_id);
 
-    if (createQuery != "") {
+    if (finalImgeUrl == "" || finalImgeUrl == null) {
+      res.status(209).send({
+        status: 209,
+        message: "Campaign Images Not Uploaded",
+      });
+    } else {
+      console.log(finalImgeUrl);
       let campaignContentNicheRespData = await Promise.all(
         content_niche_id.map(async (item) => {
           try {
@@ -429,21 +434,20 @@ async function addCampaign(req, res) {
         status: 200,
         message: "Campaign Created",
       });
-
-      console.log(data);
-    } else {
-      res.status(409).send({
-        status: 409,
-        message: "Campaign Not Created ",
-      });
     }
-  } catch (err) {
-    res.status(500).send({
-      status: 500,
-      message: "INERNAL SERVER ERROR",
-      data: err,
+  } else {
+    res.status(409).send({
+      status: 409,
+      message: "Campaign Not Created ",
     });
   }
+  // } catch (err) {
+  //   res.status(500).send({
+  //     status: 500,
+  //     message: "INERNAL SERVER ERROR",
+  //     data: err,
+  //   });
+  // }
 }
 
 async function getCampaignDetails(req, res) {
