@@ -391,6 +391,14 @@ db.influencer_language.belongsTo(db.influencer, {
 
 ///////////////////////////table join query//////////////////////
 
+db.influencer.hasMany(db.influencer_language, {
+  foreignKey: "influencer_id",
+});
+
+db.influencer_language.hasMany(db.language, {
+  foreignKey: "language_id",
+});
+
 db.influencer.hasMany(db.influencer_address, {
   foreignKey: "influencer_id",
 });

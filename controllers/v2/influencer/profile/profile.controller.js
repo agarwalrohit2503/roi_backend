@@ -34,6 +34,11 @@ async function getProfile(req, res) {
       {
         model: tableNames.influencerYoutube,
       },
+      {
+        attributes:['influencer_language_id'],
+        model: tableNames.influencerLanguage,
+        include: [{ model: tableNames.language }],
+      },
       // {
       //   model: tableNames.influencerAddress,
       //   // as: "address",
