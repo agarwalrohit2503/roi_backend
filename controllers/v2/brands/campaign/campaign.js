@@ -129,7 +129,7 @@ async function editCampaign(req, res) {
   var youtube = req.body.youtube;
 
   if (image_link != "") {
-    image_link = await imageUpload(image_link);
+    image_link = await imageUpload(image_link, campaign_id);
   }
 
   try {
@@ -145,7 +145,7 @@ async function editCampaign(req, res) {
       campaign_start_dt: campaign_start_dt,
       campaign_end_dt: campaign_end_dt,
       campaign_budget: campaign_budget,
-      image_link: image_link,
+      image_link: "image_link",
       platform: platform,
       eligibility: eligibility,
     };
@@ -216,33 +216,34 @@ async function editCampaign(req, res) {
         });
       }
 
-      // let campaignLanguageRespData = await Promise.all(
-      //   language_id.map(async (item) => {
-      //     try {
+      let campaignLanguageRespData = await Promise.all(
+        language_id.map(async (item) => {
+          try {
+            let campaign_language_info = {
+              campaign_id: campaign_id,
+              language_id: language_id,
+            };
 
-      //       let campaign_language_info = {
-      //         campaign_id: campaign_id,
-      //         language_id: item,
-      //       };
+            insertCampaignLanguageInfoQuery =
+              await tableNames.campaignLanguage.create(campaign_language_info);
+            console.log(insertCampaignLanguageInfoQuery);
 
-      //       insertCampaignLanguageInfoQuery = await tableNames.campaign_language.create(campaign_language_info);
+            return insertCampaignLanguageInfoQuery;
+          } catch (error) {
+            return { ...item, error };
+          }
+        })
+      );
 
-      //       return insertCampaignLanguageInfoQuery;
-      //     } catch (error) {
-      //       return { ...item, error };
-      //     }
-      //   })
-      // );
-
-      // if (
-      //   (campaignLanguageRespData == "") |
-      //   (campaignLanguageRespData == null)
-      // ) {
-      //   res.status(209).send({
-      //     status: 209,
-      //     message: "language Not Inserted",
-      //   });
-      // }
+      if (
+        (campaignLanguageRespData == "") |
+        (campaignLanguageRespData == null)
+      ) {
+        res.status(209).send({
+          status: 209,
+          message: "language Not Inserted",
+        });
+      }
 
       let DeliverablesEdit = {
         post: post,

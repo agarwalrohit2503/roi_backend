@@ -8,7 +8,7 @@ async function imageUpload(base64String, campaign_id) {
   const allData = await base64String.map(async (url) => {
     try {
       const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-      var realFile = Buffer.from(base64String, "base64");
+      var realFile = Buffer.from(url, "base64");
       fs.writeFileSync("./uploads/" + uniqueSuffix + ".png", realFile);
       var imageUrl = baseName.imageUploadPath + uniqueSuffix + ".png";
 
