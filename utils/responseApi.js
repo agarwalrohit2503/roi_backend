@@ -1,15 +1,15 @@
-exports.success = (res, respSuccessMsg, respErrorMsg, Query) => {
+exports.success = (res, respSuccessMsg, respErrorMsg, Query, condition) => {
   return [
     res.status(res.statusCode).send({
       status: res.statusCode,
       message: Query != "" && Query != null ? respSuccessMsg : respErrorMsg,
-      data: Query,
+      ...(condition == 1 ? {} : { data: Query, }),
     }),
   ];
 };
 
 exports.error = (res, Msg, errormsg) => {
-  const codes = [200, 201, 400, 401, 404, 403, 422, 500];
+  const codes = [200, 201, 400, 401, 404, 403, 422, 500,209];
   const findCode = codes.find((code) => code == res.statusCode);
 
   if (!findCode) res.statusCode = 500;

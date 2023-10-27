@@ -140,6 +140,11 @@ db.platform = require("../models/platform.model")(sequelize, DataTypes);
 db.Comments = require("../models/comments.model")(sequelize, DataTypes);
 db.language = require("../models/language.model")(sequelize, DataTypes);
 
+db.influencer_language = require("../models/influencer_language.model")(
+  sequelize,
+  DataTypes
+);
+
 db.campaign_language = require("../models/campaign_language.model")(
   sequelize,
   DataTypes
@@ -358,20 +363,30 @@ db.Comments.belongsTo(db.campaign_application, {
   targetKey: "campaign_applied_id", // primary table
 });
 
-db.language.belongsTo(db.campaign_language, {
+db.campaign_language.belongsTo(db.language, {
   foreignKey: "language_id", // foreign table
   targetKey: "language_id", // primary table
 });
 
-db.campaign.belongsTo(db.campaign_language, {
+db.campaign_language.belongsTo(db.campaign, {
   foreignKey: "campaign_id", // foreign table
   targetKey: "campaign_id", // primary table
+});
+
+db.influencer_language.belongsTo(db.language, {
+  foreignKey: "language_id", // foreign table
+  targetKey: "language_id", // primary table
+});
+
+db.influencer_language.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
 });
 
 /////////////////////////////sync query start////////////////////////////
 // db.sequelize.sync({ force: false }).then(() => {
 //   console.log("yes re-sync done!");
-//});
+// });
 /////////////////////////////sync query  end/////////////////////////////
 
 ///////////////////////////table join query//////////////////////

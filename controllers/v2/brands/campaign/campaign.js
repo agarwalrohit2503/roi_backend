@@ -308,7 +308,7 @@ async function addCampaign(req, res) {
   var youtube = req.body.youtube;
   var finalImgeUrl = await imageUpload(image_link);
 
-  //console.log(finalImgeUrl);
+  
   try {
     const createQuery = await tableNames.Campaign.create({
       campaign_goal_id: campaign_goal_id,
@@ -324,13 +324,10 @@ async function addCampaign(req, res) {
       campaign_end_dt: campaign_end_dt,
       campaign_budget: campaign_budget,
       image_link: finalImgeUrl,
-
-      // platform: platform,
       eligibility: eligibility,
     });
 
-    //console.log(createQuery);
-    //console.log(createQuery.campaign_id);
+   
 
     if (createQuery != "") {
       let campaignContentNicheRespData = await Promise.all(

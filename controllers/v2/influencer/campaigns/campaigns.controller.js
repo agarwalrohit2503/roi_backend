@@ -188,8 +188,8 @@ async function getCampaignDetails(req, res) {
       "Campaign Details Not Found",
       findQuery
     );
-  } catch (error) {
-    error(res, "Internal server error", error);
+  } catch (e) {
+    error(res, "Internal server error", e);
   }
 }
 
