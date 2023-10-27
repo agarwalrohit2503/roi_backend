@@ -145,7 +145,7 @@ async function editCampaign(req, res) {
       campaign_start_dt: campaign_start_dt,
       campaign_end_dt: campaign_end_dt,
       campaign_budget: campaign_budget,
-      
+
       platform: platform,
       eligibility: eligibility,
     };
@@ -334,7 +334,6 @@ async function addCampaign(req, res) {
           message: "Campaign Images Not Uploaded",
         });
       } else {
-      
         let campaignContentNicheRespData = await Promise.all(
           content_niche_id.map(async (item) => {
             try {
@@ -387,7 +386,6 @@ async function addCampaign(req, res) {
         let campaignLanguageRespData = await Promise.all(
           language_id.map(async (item) => {
             try {
-            
               let campaign_language_info = {
                 campaign_id: createQuery.campaign_id,
                 language_id: language_id,
@@ -397,7 +395,6 @@ async function addCampaign(req, res) {
                 await tableNames.campaignLanguage.create(
                   campaign_language_info
                 );
-            
 
               return insertCampaignLanguageInfoQuery;
             } catch (error) {
@@ -649,6 +646,48 @@ async function campaignLanguageDelete(req, res) {
     });
   }
 }
+
+async function campaignImageDelete(req, res) {
+  var campaign_id = req.params.campaign_id;
+  var campaign_images_id = req.body.campaign_images_id;
+
+  const campaignImageDeleteQuery = campaign_images_id.map(async (item) => {
+    var campaign_image_find_query = await tableNames.campaignImages.findAll({
+      where: {
+        campaign_id: campaign_id,
+        campaign_images_id: item,
+      },
+    });
+
+    if (campaign_image_find_query == "") {
+      return res.status(200).send({
+        status: 200,
+        message: "Already deleted",
+      });
+    } else {
+      return (deleteQuery = await tableNames.campaignImages.destroy({
+        where: {
+          campaign_id: campaign_id,
+          campaign_images_id: item,
+        },
+      }));
+    }
+  });
+
+  const respData = await Promise.all(campaignImageDeleteQuery);
+  if (respData != 0) {
+    res.status(200).send({
+      status: 200,
+      message: "Deleted successfully",
+    });
+  } else {
+    res.status(209).send({
+      status: 209,
+      message: "Not removed",
+    });
+  }
+}
+
 module.exports = {
   getAllCampaign,
   deleteCampaign,
@@ -658,4 +697,5 @@ module.exports = {
   contentNicheDelete,
   platformDelete,
   campaignLanguageDelete,
+  campaignImageDelete,
 };

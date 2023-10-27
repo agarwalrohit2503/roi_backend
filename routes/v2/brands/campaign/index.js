@@ -8,7 +8,8 @@ const {
   getCampaignDetails,
   contentNicheDelete,
   platformDelete,
-  campaignLanguageDelete
+  campaignLanguageDelete,
+  campaignImageDelete
 } = require("../../../../controllers/v2/brands/campaign/campaign");
 
 router.get("/get/:brand_id", (req, res) => {
@@ -40,6 +41,10 @@ router.delete("/platform-delete/:campaign_id", (req, res) => {
 });
 router.delete("/campaign-language-delete/:campaign_id", (req, res) => {
   campaignLanguageDelete(req, res);
+});
+
+router.delete("/campaign-image-delete/:campaign_id", (req, res) => {
+  campaignImageDelete(req, res);
 });
 
 module.exports = router;
