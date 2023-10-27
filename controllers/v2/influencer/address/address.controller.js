@@ -168,14 +168,14 @@ async function addPrimaryAddress(req, res) {
     ? success(
         res,
         "Primary address removed successfully",
-        "Primary address not added",
+        "Primary address",
         addPrimaryAddressUpdateQuery,
         1
       )
     : success(
         res,
         "Primary address added successfully",
-        "Primary address not added",
+        "Primary address",
         addPrimaryAddressUpdateQuery,
         1
       );
