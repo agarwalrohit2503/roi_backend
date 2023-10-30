@@ -259,6 +259,7 @@ async function getCampaignApplications(req, res) {
       where: {
         influencer_id: influencer_id,
         application_status_id: status_id,
+        delete_flag:0,
         ...(search_term
           ? { campaign_name: { [operatorsAliases.$like]: `%${search_term}%` } }
           : {}),
@@ -327,10 +328,60 @@ async function applyCampaign(req, res) {
     error(res, "Internal server error", error);
   }
 }
+
+async function campaignApplicationRemove(req, res) {
+  var campaign_id         = req.body.campaign_id;
+  var campaign_applied_id = req.query.campaign_applied_id;
+  var influencer_id       = req.params.influencer_id;
+
+
+  if (campaign_id == "" || campaign_id == null || campaign_id == 0) {
+    return res
+      .status(409)
+      .send({ status: 409, message: "campaign id is empty" });
+  }
+  try {
+   
+      let influencerCampaignApplicationRemovedParameters = {
+        delete_flag: 1,
+      };
+      const influencerCampaignApplicationUpdateQuery =
+        await tableNames.campaignApplication.update(
+          influencerCampaignApplicationRemovedParameters,
+          {
+            where: {
+              influencer_id   : influencer_id,
+              campaign_id     : campaign_id,
+              campaign_applied_id: campaign_applied_id,
+            },
+          }
+        );
+
+      if (influencerCampaignApplicationUpdateQuery[0] != "") {
+        res.status(200).send({
+          status: 200,
+          message: "Influencer Application delete",
+        });
+      } else {
+        res.status(409).send({
+          status: 409,
+          message: "Influencer Application is not updated",
+        });
+      }
+    
+  } catch (err) {
+    res.status(500).send({
+      status: 500,
+      message: err,
+    });
+  }
+}
+
 module.exports = {
   getCampaignDetails,
   getCampaigns,
   getDemoCampaigns,
   getCampaignApplications,
   applyCampaign,
+  campaignApplicationRemove,
 };

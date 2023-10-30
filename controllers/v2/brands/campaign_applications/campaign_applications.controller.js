@@ -83,9 +83,8 @@ async function update(req, res) {
     if (
       application_status == 1 ||
       application_status == 2 ||
-      application_status == 3 ||
-      application_status == 4 ||
-      application_status == 5
+      application_status == 3 
+   
     ) {
       let campaignApplicationParameters = {
         application_status_id: application_status,
