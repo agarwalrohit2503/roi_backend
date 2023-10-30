@@ -1,7 +1,9 @@
 const tableNames = require("../../utils/table_name");
 const { db, sequelize } = require("../../utils/conn");
 const { imageUpload, imageWithPdfUpload } = require("../../utils/image_upload");
+
 async function addComments(req, res) {
+  
   var campaign_applied_id = req.body.campaign_applied_id;
   var influencer_id = req.body.influencer_id;
   var brand_id = req.body.brand_id;

@@ -1,7 +1,10 @@
 const tableNames = require("../../../../utils/table_name");
 const operatorsAliases = require("../../../../utils/operator_aliases");
 const editParameterQuery = require("../../../../utils/edit_query");
-const {imageUpload,imageWithPdfUpload} = require("../../../../utils/image_upload");
+const {
+  imageUpload,
+  imageWithPdfUpload,
+} = require("../../../../utils/image_upload");
 
 async function get(req, res) {
   var campaign_id = req.params.campaign_id;
@@ -48,9 +51,7 @@ async function get(req, res) {
           : {}),
       },
       subQuery: true,
-      order: [
-        ["campaign_applied_id", "DESC"],
-      ],
+      order: [["campaign_applied_id", "DESC"]],
       offset: Number.parseInt(offset ? offset : 0),
       limit: Number.parseInt(limit ? limit : 20),
     });
@@ -79,29 +80,40 @@ async function update(req, res) {
       .send({ status: 409, message: "campaign id is empty" });
   }
   try {
-    let campaignApplicationParameters = {
-      application_status_id: application_status,
-    };
-    const campaignApplicationUpdateQuery =
-      await tableNames.campaignApplication.update(
-        campaignApplicationParameters,
-        {
-          where: {
-            campaign_id: campaign_id,
-            campaign_applied_id: campaign_applied_id,
-          },
-        }
-      );
+    if (
+      application_status == 1 ||
+      application_status == 2 ||
+      application_status == 3
+    ) {
+      let campaignApplicationParameters = {
+        application_status_id: application_status,
+      };
+      const campaignApplicationUpdateQuery =
+        await tableNames.campaignApplication.update(
+          campaignApplicationParameters,
+          {
+            where: {
+              campaign_id: campaign_id,
+              campaign_applied_id: campaign_applied_id,
+            },
+          }
+        );
 
-    if (campaignApplicationUpdateQuery[0] != "") {
-      res.status(200).send({
-        status: 200,
-        message: "Application status is updated",
-      });
+      if (campaignApplicationUpdateQuery[0] != "") {
+        res.status(200).send({
+          status: 200,
+          message: "Application status is updated",
+        });
+      } else {
+        res.status(409).send({
+          status: 409,
+          message: "Application status is not updated",
+        });
+      }
     } else {
       res.status(409).send({
         status: 409,
-        message: "Application status is not updated",
+        message: "Application status id invalid",
       });
     }
   } catch (err) {

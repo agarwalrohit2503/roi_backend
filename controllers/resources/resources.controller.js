@@ -191,10 +191,11 @@ async function getLanguageList(req, res) {
   );
 }
 module.exports = {
-  getCity,
-  getState,
   getContentNiche,
+  getState,
+  getCity,
   getBusinessList,
+  
   getBrandType,
   getCampaignPaymentType,
   getPlatform,

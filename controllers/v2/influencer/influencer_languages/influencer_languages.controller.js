@@ -2,6 +2,7 @@ const tableNames = require("../../../../utils/table_name");
 const operatorsAliases = require("../../../../utils/operator_aliases");
 const { success, error } = require("../../../../utils/responseApi");
 
+
 async function addInfluencerLanguage(req, res) {
   var influencer_id = req.params.influencer_id;
   var language_id = req.body.language_id;

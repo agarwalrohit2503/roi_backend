@@ -338,6 +338,7 @@ async function influencerProfileUpdate(req, res) {
     });
   }
 }
+
 module.exports = {
   getProfile,
   updateProfile,
