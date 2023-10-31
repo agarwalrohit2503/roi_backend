@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       language: {
         type: DataTypes.STRING,
-        allowNull: false,
+        defaultValue: null,
       },
     
       campaign_start_dt: {
