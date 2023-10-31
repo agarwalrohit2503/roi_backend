@@ -327,7 +327,7 @@ async function addCampaign(req, res) {
       location: location,
       campaign_about: campaign_about,
       about_product: about_product,
-      language: language,
+     // language: language,
       campaign_start_dt: campaign_start_dt,
       campaign_end_dt: campaign_end_dt,
       campaign_budget: campaign_budget,
