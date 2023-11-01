@@ -295,7 +295,7 @@ async function addCampaign(req, res) {
   var campaign_name = req.body.campaign_name;
   var location = req.body.location;
   var campaign_about = req.body.campaign_about;
-  var language = req.body.language;
+
   var campaign_start_dt = req.body.campaign_start_dt;
   var campaign_end_dt = req.body.campaign_end_dt;
   var campaign_budget = req.body.campaign_budget;
@@ -391,7 +391,7 @@ async function addCampaign(req, res) {
             try {
               let campaign_language_info = {
                 campaign_id: createQuery.campaign_id,
-                language_id: language_id,
+                language_id: item,
               };
 
               insertCampaignLanguageInfoQuery =
