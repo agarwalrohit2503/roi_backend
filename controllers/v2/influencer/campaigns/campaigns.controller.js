@@ -188,6 +188,9 @@ async function getCampaignDetails(req, res) {
             },
           ],
         },
+        {
+          model: tableNames.campaignImages,
+        },
       ],
 
       where: {

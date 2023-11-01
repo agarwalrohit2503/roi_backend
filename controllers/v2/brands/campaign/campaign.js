@@ -59,13 +59,7 @@ async function getAllCampaign(req, res) {
         ],
       },
       {
-        // attributes: ["campaign_language_id"],
         model: tableNames.campaignImages,
-        // include: [
-        //   {
-        //     model: tableNames.language,
-        //   },
-        // ],
       },
     ],
     offset: Number.parseInt(offset ? offset : 0),
@@ -532,6 +526,9 @@ async function getCampaignDetails(req, res) {
               model: tableNames.language,
             },
           ],
+        },
+        {
+          model: tableNames.campaignImages,
         },
       ],
 
