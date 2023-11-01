@@ -327,7 +327,7 @@ async function addCampaign(req, res) {
       location: location,
       campaign_about: campaign_about,
       about_product: about_product,
-     // language: language,
+      // language: language,
       campaign_start_dt: campaign_start_dt,
       campaign_end_dt: campaign_end_dt,
       campaign_budget: campaign_budget,
@@ -523,6 +523,15 @@ async function getCampaignDetails(req, res) {
           where: {
             application_status_id: 2,
           },
+        },
+        {
+          attributes: ["campaign_language_id"],
+          model: tableNames.campaignLanguage,
+          include: [
+            {
+              model: tableNames.language,
+            },
+          ],
         },
       ],
 
