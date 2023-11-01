@@ -40,10 +40,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      language: {
-        type: DataTypes.STRING,
-        defaultValue: null,
-      },
+      // language: {
+      //   type: DataTypes.STRING,
+      //   defaultValue: null,
+      // },
     
       campaign_start_dt: {
         type: DataTypes.DATE,
