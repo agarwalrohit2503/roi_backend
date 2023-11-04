@@ -8,6 +8,7 @@ async function getCampaignNotes(req, res) {
     where: { influencer_id: influencer_id, note_type: 1 },
     include: [
       {
+        //test
         attributes: ["campaign_applied_id"],
         model: tableNames.campaignApplication,
         include: [
