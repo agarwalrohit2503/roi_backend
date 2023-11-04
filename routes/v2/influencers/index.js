@@ -8,7 +8,7 @@ const campaigns_Demo = require("./campaigns/demo");
 const campaigns = require("./campaigns");
 const comments = require("./comments");
 const influencer_languages = require("./influencer_languages");
-
+const campaign_notes = require("./campaign_notes");
 
 
 
@@ -19,5 +19,5 @@ router.use("/campaigns", authJWT, campaigns);
 router.use("/comments", authJWT, comments);
 router.use("/guest", campaigns_Demo);
 router.use("/influencer_languages", influencer_languages);
-
+router.use("/campaign_notes", campaign_notes);
 module.exports = router;

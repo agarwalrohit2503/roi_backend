@@ -3,7 +3,6 @@ const { db, sequelize } = require("../../utils/conn");
 const { imageUpload, imageWithPdfUpload } = require("../../utils/image_upload");
 
 async function addComments(req, res) {
-  
   var campaign_applied_id = req.body.campaign_applied_id;
   var influencer_id = req.body.influencer_id;
   var brand_id = req.body.brand_id;
@@ -12,17 +11,16 @@ async function addComments(req, res) {
   var comment_text = req.body.comment_text;
   var comment_file = req.body.comment_file;
   var file_type = req.body.file_type;
+  var note_type  =req.body.note_type;
+  var emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/g;
+  var phoneRegex =
+    /(\+\d{1,2}\s?)?(\(\d{1}\)\s?|\d{1}[-.\s]?)\d{1}[-.\s]?\d{1,3}/g;
 
+  const sanitizedText = comment_text
+    .replace(emailRegex, "REMOVED_EMAIL")
+    .replace(phoneRegex, "REMOVED_PHONE");
 
-var emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/g;
-var phoneRegex = /(\+\d{1,2}\s?)?(\(\d{1}\)\s?|\d{1}[-.\s]?)\d{1}[-.\s]?\d{1,3}/g;
-
-const sanitizedText = comment_text
-.replace(emailRegex, "REMOVED_EMAIL")
-.replace(phoneRegex, "REMOVED_PHONE");
-
-console.log(sanitizedText);
-
+  console.log(sanitizedText);
 
   if (comment_file != "") {
     var finalImgeUrl = await imageWithPdfUpload(comment_file, file_type);
@@ -36,6 +34,7 @@ console.log(sanitizedText);
     comment_text: sanitizedText,
     comment_file: finalImgeUrl ?? "",
     file_type: file_type != "" ? file_type : "image",
+    note_type: note_type,
   };
 
   var commentAddQuery = await tableNames.Comments.create(commentAddParameter);

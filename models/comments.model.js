@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         defaultValue: null,
       },
+      note_type: {
+        type: DataTypes.TINYINT,
+        defaultValue: null,
+      },
       file_type: {
         type: DataTypes.STRING(20),
         defaultValue: null,

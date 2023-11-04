@@ -404,6 +404,9 @@ db.campaign_images.belongsTo(db.campaign, {
 db.influencer.hasMany(db.influencer_language, {
   foreignKey: "influencer_id",
 });
+db.Comments.hasMany(db.campaign_application, {
+  foreignKey: "campaign_applied_id",
+});
 
 db.campaign.hasMany(db.campaign_images, {
   foreignKey: "campaign_id",

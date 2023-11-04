@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         defaultValue: null
       },
+     
 
       delete_flag: {
         type: DataTypes.TINYINT,
