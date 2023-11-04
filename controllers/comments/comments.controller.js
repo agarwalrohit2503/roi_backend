@@ -8,27 +8,21 @@ async function addComments(req, res) {
   var influencer_id = req.body.influencer_id;
   var brand_id = req.body.brand_id;
   var sender_type = req.body.sender_type;
-  console.log(sender_type);
+  // console.log(sender_type);
   var comment_text = req.body.comment_text;
   var comment_file = req.body.comment_file;
   var file_type = req.body.file_type;
 
-  // if (
-  //   campaign_applied_id == "" ||
-  //   campaign_applied_id == null ||
-  //   campaign_applied_id == 0 ||
-  //   influencer_id == "" ||
-  //   influencer_id == null ||
-  //   influencer_id == 0 ||
-  //   brand_id == "" ||
-  //   brand_id == null ||
-  //   brand_id == 0
-  // ) {
-  //   return res.status(409).send({
-  //     status: 409,
-  //     message: "campaign applied id & influencer id is not match",
-  //   });
-  // }
+
+var emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/g;
+var phoneRegex = /(\+\d{1,2}\s?)?(\(\d{1}\)\s?|\d{1}[-.\s]?)\d{1}[-.\s]?\d{1,3}/g;
+
+const sanitizedText = comment_text
+.replace(emailRegex, "REMOVED_EMAIL")
+.replace(phoneRegex, "REMOVED_PHONE");
+
+console.log(sanitizedText);
+
 
   if (comment_file != "") {
     var finalImgeUrl = await imageWithPdfUpload(comment_file, file_type);
@@ -39,7 +33,7 @@ async function addComments(req, res) {
     influencer_id: influencer_id,
     brand_id: brand_id,
     sender_type: sender_type,
-    comment_text: comment_text,
+    comment_text: sanitizedText,
     comment_file: finalImgeUrl ?? "",
     file_type: file_type != "" ? file_type : "image",
   };
