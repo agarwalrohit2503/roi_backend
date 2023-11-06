@@ -58,10 +58,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         defaultValue: 0,
       },
-      image_link: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
+      // image_link: {
+      //   type: DataTypes.STRING,
+      //   allowNull: true,
+      // },
 
       eligibility: {
         type: DataTypes.TINYINT,
