@@ -1,6 +1,9 @@
 const tableNames = require("../../../../utils/table_name");
 const editParameterQuery = require("../../../../utils/edit_query");
-const {imageUpload,imageWithPdfUpload} = require("../../../../utils/image_upload");
+const {
+  imageUpload,
+  imageWithPdfUpload,
+} = require("../../../../utils/image_upload");
 async function getProfile(req, res) {
   const brands_id = req.params.brand_id;
 
