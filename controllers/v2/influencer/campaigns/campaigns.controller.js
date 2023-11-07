@@ -73,6 +73,7 @@ async function getCampaigns(req, res) {
                 required: false,
                 where: {
                   influencer_id: influencer_id,
+                  delete_flag:0
                 },
               },
             ]
