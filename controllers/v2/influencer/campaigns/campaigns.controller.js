@@ -73,7 +73,7 @@ async function getCampaigns(req, res) {
                 required: false,
                 where: {
                   influencer_id: influencer_id,
-                  delete_flag:0
+                  delete_flag: 0,
                 },
               },
             ]
@@ -255,7 +255,6 @@ async function getCampaignApplications(req, res) {
                 required: false,
               },
             ],
-         
           },
           {
             attributes: ["campaign_language_id"],
@@ -280,7 +279,6 @@ async function getCampaignApplications(req, res) {
         model: tableNames.campaignStatus,
         required: false,
       },
-      
     ],
 
     where: {
