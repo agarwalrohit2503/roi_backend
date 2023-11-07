@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/kreativ5/public_html/
+    - export DEPLOYPATH=/home/kreativ5/roi.kreativemachinez.in/
     - /bin/cp -R * $DEPLOYPATH
