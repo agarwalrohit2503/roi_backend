@@ -21,34 +21,35 @@ async function addInfluencerSocialMediaDetails(req, res) {
 
   facebook.setAccessToken(process.env.fbAccessToken);
 
-  facebook
-    .get(
-      // "/me?fields=id,name,birthday,age_range,posts{full_picture,permalink_url}"
-      "/me?fields=id,name,birthday,age_range,link,about,gender,location,posts.limit(5){link,created_time},photos{link,images,created_time}"
-    )
-    .then(async (response) => {
+  var facebookUserDetails = await facebook.get(
+    // "/me?fields=id,name,birthday,age_range,posts{full_picture,permalink_url}"
+    "/me?fields=id,name,birthday,age_range,link,about,gender,location,posts.limit(5){link,created_time},photos{link,images,created_time}"
+  );
+
+  if (facebookUserDetails.data != null || facebookUserDetails.data != "") {
+    try {
       // var name = response.data.name;
       // res.send(name);
 
-      console.log(response.data.id);
-      console.log(response.data.name);
-      console.log(response.data.birthday);
-      console.log(response.data.age_range.min);
-      console.log(response.data.link);
-      console.log(response.data.gender);
-      console.log(response.data.location.name);
+      console.log(facebookUserDetails.data.id);
+      console.log(facebookUserDetails.data.name);
+      console.log(facebookUserDetails.data.birthday);
+      console.log(facebookUserDetails.data.age_range.min);
+      console.log(facebookUserDetails.data.link);
+      console.log(facebookUserDetails.data.gender);
+      console.log(facebookUserDetails.data.location.name);
 
       //JSON RESP BODY
 
       fbInfluencerDetails = {
         influencer_id: influencer_id,
-        fb_user_id: response.data.id,
-        name: response.data.name,
-        birthday: response.data.birthday,
-        age_range: response.data.age_range.min,
-        profile_link: response.data.link,
-        gender: response.data.gender,
-        location: response.data.location.name,
+        fb_user_id: facebookUserDetails.data.id,
+        name: facebookUserDetails.data.name,
+        birthday: facebookUserDetails.data.birthday,
+        age_range: facebookUserDetails.data.age_range.min,
+        profile_link: facebookUserDetails.data.link,
+        gender: facebookUserDetails.data.gender,
+        location: facebookUserDetails.data.location.name,
       };
 
       const fbinfluencerinsertQuery =
@@ -60,10 +61,12 @@ async function addInfluencerSocialMediaDetails(req, res) {
         "Influencer facebook details not inserted, please try again",
         fbinfluencerinsertQuery
       );
-    })
-    .catch((error) => {
-      res.send("not found");
-    });
+    } catch (err) {
+      error(res, "INERNAL SERVER ERROR", 404);
+    }
+  } else {
+    error(res, "Facebook Details Not Found", 404);
+  }
 }
 
 module.exports = {
