@@ -3,6 +3,8 @@ const operatorsAliases = require("../../../../utils/operator_aliases");
 const editParameterQuery = require("../../../../utils/edit_query");
 const { success, error } = require("../../../../utils/responseApi");
 const { literal } = require("sequelize");
+
+const { db, sequelize } = require("../../../../utils/conn");
 const {
   imageUpload,
   imageWithPdfUpload,
@@ -13,36 +15,42 @@ async function campaignBudgeting(req, res) {
   var offset = req.query.offset;
   var search_term = req.query.search_term;
 
-  var totalNumberOfInfluencer = req.body.total_influencer;
-  var reels_cost = req.body.reels_cost;
-  var video_cost = req.body.video_cost;
-  var story_cost = req.body.story_cost;
+  // var totalNumberOfInfluencer = req.body.total_influencer;
+  // var reels_cost = req.body.reels_cost;
+  // var video_cost = req.body.video_cost;
+  // var story_cost = req.body.story_cost;
   // var post_cost_low = req.body.post_cost_low;
   // var post_cost_high = req.body.post_cost_high;
 
   //Post cost low & high
   var post_cost_low = 10;
-  var post_cost_high = 800;
+  var post_cost_high = 2000;
 
   //reels cost low & high
   var reels_cost_low = 10;
-  var reels_cost_high = 50;
+  var reels_cost_high = 500;
 
   //Selected Influencers
-  var selectedInfluencers = [1, 2, 3];
+  //var selectedInfluencers = [1, 3];
 
   const findinfluencer = await tableNames.influencerPrice.findAll({
     include: [
       {
+        // attributes: [
+        //   [
+        //     sequelize.fn("COUNT", sequelize.col("influencer.influencer_id")),
+        //     "incluencer",
+        //   ],
+        // ],
         model: tableNames.influencer,
         required: true,
         where: {
-          influencer_id: selectedInfluencers,
+          // influencer_id: selectedInfluencers,
+          account_delete: 0,
         },
       },
     ],
     where: {
-      // account_delete: 0,
       where: {
         [operatorsAliases.$and]: [
           {
@@ -100,8 +108,8 @@ async function campaignBudgeting(req, res) {
   // ],
   success(
     res,
-    "Influencer  successfully found",
-    "Influencer Not found",
+    "campaign Budgeting successfully found",
+    "campaign Budgeting Not found",
     findinfluencer,
     0
   );
