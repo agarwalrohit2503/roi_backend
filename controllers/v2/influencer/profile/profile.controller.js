@@ -6,7 +6,6 @@ async function getProfile(req, res) {
   const influencer_id = req.params.influencer_id;
 
   const influencer = await tableNames.influencer.findOne({
-    where: { influencer_id: influencer_id },
     include: [
       {
         attributes: ["profile_complete_status"],
@@ -35,7 +34,7 @@ async function getProfile(req, res) {
         model: tableNames.influencerYoutube,
       },
       {
-        attributes:['influencer_language_id'],
+        attributes: ["influencer_language_id"],
         model: tableNames.influencerLanguage,
         include: [{ model: tableNames.language }],
       },
@@ -88,8 +87,12 @@ async function getProfile(req, res) {
 
       {
         model: tableNames.influencerPrice,
+        where: {
+          influencer_id: influencer_id,
+        },
       },
     ],
+    where: { influencer_id: influencer_id },
   });
 
   res.status(200).send({
