@@ -568,7 +568,7 @@ db.campaign.hasMany(db.campaign_payment_type, {
 //////////////APPLICATION CAMPAIGING RELATION SECTION END///////////////////////////
 
 //////////////////////////brands influencer demo start//////////////////
-db.influencer.hasMany(db.influencer_price, {
+db.influencer.hasOne(db.influencer_price, {
   foreignKey: "influencer_id",
   // as: "influencer_state",
 });

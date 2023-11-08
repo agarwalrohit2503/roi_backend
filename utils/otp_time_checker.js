@@ -4,7 +4,7 @@ async function otpTimeValidation(value) {
   const currentTimestamp = Date.now();
   const isExpired =
     currentTimestamp - otpDate.getTime() > otpExpirationDuration;
-  console.log(isExpired);
+ // console.log(isExpired);
 
   return isExpired;
 }
