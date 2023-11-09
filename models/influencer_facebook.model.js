@@ -41,6 +41,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: null,
       },
+      total_follower: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
 
       delete_flag: {
         type: DataTypes.TINYINT,

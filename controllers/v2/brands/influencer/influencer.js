@@ -65,6 +65,12 @@ async function getInfluencerList(req, res) {
         //required: true
       },
       {
+        model: tableNames.influencerFacebook,
+      },
+      {
+        model: tableNames.influencerFacebookPost,
+      },
+      {
         model: tableNames.influencerPrice,
       },
     ],
@@ -126,6 +132,12 @@ async function getInfluencerDetails(req, res) {
             model: tableNames.City,
           },
         ],
+      },
+      {
+        model: tableNames.influencerFacebook,
+      },
+      {
+        model: tableNames.influencerFacebookPost,
       },
       {
         model: tableNames.influencerPrice,

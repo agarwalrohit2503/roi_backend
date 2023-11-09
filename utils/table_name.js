@@ -43,6 +43,8 @@ tableNames = {
 
   influencerFacebook: db.influencer_facebook,
 
+  influencerFacebookPost: db.influencer_facebook_post,
+
   influencerInstagram: db.influencer_instagram,
 
   influencerYoutube: db.influencer_youtube,

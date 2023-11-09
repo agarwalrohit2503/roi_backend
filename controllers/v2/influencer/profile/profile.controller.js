@@ -28,6 +28,9 @@ async function getProfile(req, res) {
         model: tableNames.influencerFacebook,
       },
       {
+        model: tableNames.influencerFacebookPost,
+      },
+      {
         model: tableNames.influencerInstagram,
       },
       {
