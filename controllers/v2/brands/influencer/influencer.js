@@ -71,6 +71,12 @@ async function getInfluencerList(req, res) {
         model: tableNames.influencerFacebookPost,
       },
       {
+        model: tableNames.influencerInstagram,
+      },
+      {
+        model: tableNames.influencerInstagramPost,
+      },
+      {
         model: tableNames.influencerPrice,
       },
     ],
@@ -78,7 +84,7 @@ async function getInfluencerList(req, res) {
     limit: Number.parseInt(limit ? limit : 20),
   });
 
-  console.log(findQuery);
+ // console.log(findQuery);
   if (findQuery != "") {
     res.status(200).send({
       status: 200,
@@ -138,6 +144,12 @@ async function getInfluencerDetails(req, res) {
       },
       {
         model: tableNames.influencerFacebookPost,
+      },
+      {
+        model: tableNames.influencerInstagram,
+      },
+      {
+        model: tableNames.influencerInstagramPost,
       },
       {
         model: tableNames.influencerPrice,
@@ -290,7 +302,13 @@ async function getFavouriteInfluencers(req, res) {
             model: tableNames.influencerFacebook,
           },
           {
+            model: tableNames.influencerFacebookPost,
+          },
+          {
             model: tableNames.influencerInstagram,
+          },
+          {
+            model: tableNames.influencerInstagramPost,
           },
           {
             model: tableNames.influencerYoutube,

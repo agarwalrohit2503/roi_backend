@@ -34,6 +34,9 @@ async function getProfile(req, res) {
         model: tableNames.influencerInstagram,
       },
       {
+        model: tableNames.influencerInstagramPost,
+      },
+      {
         model: tableNames.influencerYoutube,
       },
       {
