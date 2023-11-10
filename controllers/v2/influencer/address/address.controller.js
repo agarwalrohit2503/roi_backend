@@ -7,34 +7,90 @@ async function addAddress(req, res) {
   const state_id = req.body.state_id;
   const pin = req.body.pin;
   const country = req.body.country;
+  var primanytype = req.body.primanytype;
 
-  try {
-    let addressInfo = {
-      influencer_id: influencer_id,
-      address: address,
-      city_id: city_id,
-      state_id: state_id,
-      pin: pin,
-      country: country,
-    };
+  if (primanytype == 1) {
+    try {
+      const addressupdateQuery = await tableNames.influencerAddress.update(
+        { primary_address: 0 },
+        { where: { influencer_id: influencer_id } }
+      );
 
-    const insertQuery = await tableNames.influencerAddress.create(addressInfo);
-    if (insertQuery != "") {
-      res.status(200).send({
-        status: 200,
-        message: "address inserted",
-      });
-    } else {
-      res.status(404).send({
-        status: 404,
-        message: "address not inserted",
+      if (addressupdateQuery[0] == 0) {
+        res.status(409).send({
+          status: 409,
+          message: "address not updated",
+        });
+      } else {
+        let addressInfo = {
+          influencer_id: influencer_id,
+          address: address,
+          city_id: city_id,
+          state_id: state_id,
+          pin: pin,
+          country: country,
+          primary_address: 1,
+        };
+
+        const insertQuery = await tableNames.influencerAddress.create(
+          addressInfo
+        );
+        if (insertQuery != "") {
+          res.status(200).send({
+            status: 200,
+            message: "address inserted",
+          });
+        } else {
+          res.status(404).send({
+            status: 404,
+            message: "address not inserted",
+          });
+        }
+      }
+    } catch (err) {
+      res.status(400).send({
+        status: 500,
+        message: "Server Internal Error",
       });
     }
-  } catch (error) {
-    res.status(400).send({
-      status: 500,
-      message: "Server Internal Error",
-    });
+  } else {
+    try {
+      const influencerfindAddressQuery =
+        await tableNames.influencerAddress.findOne({
+          where: { influencer_id: influencer_id },
+        });
+
+        console.log(influencerfindAddressQuery);
+
+      // let addressInfo = {
+      //   influencer_id: influencer_id,
+      //   address: address,
+      //   city_id: city_id,
+      //   state_id: state_id,
+      //   pin: pin,
+      //   country: country,
+      // };
+
+      // const insertQuery = await tableNames.influencerAddress.create(
+      //   addressInfo
+      // );
+      // if (insertQuery != "") {
+      //   res.status(200).send({
+      //     status: 200,
+      //     message: "address inserted",
+      //   });
+      // } else {
+      //   res.status(404).send({
+      //     status: 404,
+      //     message: "address not inserted",
+      //   });
+      // }
+    } catch (error) {
+      res.status(400).send({
+        status: 500,
+        message: "Server Internal Error",
+      });
+    }
   }
 }
 
@@ -158,11 +214,13 @@ async function addPrimaryAddress(req, res) {
     },
   });
   var addPrimaryAddressUpdateQuery = await tableNames.influencerAddress.update(
-    {primary_address: findPrimaryAddress.primary_address == 1 ? 0 : 1},
-    {where: {
+    { primary_address: findPrimaryAddress.primary_address == 1 ? 0 : 1 },
+    {
+      where: {
         influencer_id: influencer_id,
         influencer_address_id: influencer_address_id,
-      },}
+      },
+    }
   );
   findPrimaryAddress.primary_address == 1
     ? success(
