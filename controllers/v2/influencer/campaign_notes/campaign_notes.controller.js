@@ -9,7 +9,7 @@ async function getCampaignNotes(req, res) {
     include: [
       {
         //test
-        attributes: ["campaign_applied_id"],
+        attributes: ["campaign_applied_id", "campaign_id"],
         model: tableNames.campaignApplication,
         include: [
           {
@@ -25,8 +25,7 @@ async function getCampaignNotes(req, res) {
     res,
     "Campaign notes found",
     "Campaign notes Not found",
-    getCampaingNotes,
-    
+    getCampaingNotes
   );
 }
 
