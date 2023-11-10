@@ -2,7 +2,7 @@ const baseName = require("./constant");
 const fs = require("fs");
 const tableNames = require("../utils/table_name");
 
-async function imageUpload(base64String, campaign_id ="") {
+async function imageUpload(base64String, campaign_id = "") {
   if (campaign_id != "") {
     const allData = await base64String.map(async (url) => {
       try {
@@ -36,7 +36,7 @@ async function imageUpload(base64String, campaign_id ="") {
   }
 }
 async function imageWithPdfUpload(base64String, file_type) {
-  if (file_type != "") {
+  if (file_type == "pdf") {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     var realFile = Buffer.from(base64String, "base64");
     fs.writeFileSync("./uploads/" + uniqueSuffix + ".pdf", realFile);
