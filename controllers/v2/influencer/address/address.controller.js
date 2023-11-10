@@ -54,37 +54,33 @@ async function addAddress(req, res) {
       });
     }
   } else {
-    try {
-      const influencerfindAddressQuery =
-        await tableNames.influencerAddress.findOne({
-          where: { influencer_id: influencer_id },
-        });
+     try {
+    const influencerfindAddressQuery =
+      await tableNames.influencerAddress.findOne({
+        where: { influencer_id: influencer_id },
+      });
+    let addressInfo = {
+      influencer_id: influencer_id,
+      address: address,
+      city_id: city_id,
+      state_id: state_id,
+      pin: pin,
+      country: country,
+      primary_address: influencerfindAddressQuery == null ? 1 : 0,
+    };
 
-        console.log(influencerfindAddressQuery);
-
-      // let addressInfo = {
-      //   influencer_id: influencer_id,
-      //   address: address,
-      //   city_id: city_id,
-      //   state_id: state_id,
-      //   pin: pin,
-      //   country: country,
-      // };
-
-      // const insertQuery = await tableNames.influencerAddress.create(
-      //   addressInfo
-      // );
-      // if (insertQuery != "") {
-      //   res.status(200).send({
-      //     status: 200,
-      //     message: "address inserted",
-      //   });
-      // } else {
-      //   res.status(404).send({
-      //     status: 404,
-      //     message: "address not inserted",
-      //   });
-      // }
+    const insertQuery = await tableNames.influencerAddress.create(addressInfo);
+    if (insertQuery != "") {
+      res.status(200).send({
+        status: 200,
+        message: "address inserted",
+      });
+    } else {
+      res.status(404).send({
+        status: 404,
+        message: "address not inserted",
+      });
+    }
     } catch (error) {
       res.status(400).send({
         status: 500,

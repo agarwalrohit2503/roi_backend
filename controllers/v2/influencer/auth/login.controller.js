@@ -96,6 +96,7 @@ async function otpverify(req, res) {
  
   var otp = req.body.otp;
   var verification_code = req.body.verification_code;
+  
   let otpquery = await tableNames.otp.findOne({
     where: {
       otp_code: otp,
