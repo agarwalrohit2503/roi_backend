@@ -41,6 +41,10 @@ db.influencer = require("../models/influencer_users.model")(
 );
 db.otp = require("../models/otp.model")(sequelize, DataTypes);
 db.City = require("../models/city.model")(sequelize, DataTypes);
+db.campaign_budget = require("../models/campaign_budget.model.js")(
+  sequelize,
+  DataTypes
+);
 
 // db.City.belongsTo(db.influencer, { foreignKey: "id_city_influencer" });
 
@@ -153,11 +157,9 @@ db.influencer_language = require("../models/influencer_language.model")(
 db.influencer_facebook_post =
   require("../models/influencer_facebook_post.model")(sequelize, DataTypes);
 
-  
 db.influencer_instagram_post =
-require("../models/influencer_instagram_post.model")(sequelize, DataTypes);
+  require("../models/influencer_instagram_post.model")(sequelize, DataTypes);
 
-  
 db.campaign_language = require("../models/campaign_language.model")(
   sequelize,
   DataTypes
@@ -409,7 +411,6 @@ db.influencer_instagram_post.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
-
 
 db.influencer_instagram.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table

@@ -12,7 +12,8 @@ const {
   getCampaignPaymentType,
   getPlatform,
   getCampaignGoal,
-  getLanguageList
+  getLanguageList,
+  getCampaignBudgetList
 } = require("../../controllers/resources/resources.controller");
 
 router.get("/get-content-niche", (req, res) => {
@@ -46,6 +47,11 @@ router.get("/get-campaign-goal", (req, res) => {
 
 router.get("/get-languages", (req, res) => {
   getLanguageList(req, res);
+});
+
+
+router.get("/get-campaign-budget", (req, res) => {
+  getCampaignBudgetList(req, res);
 });
 
 

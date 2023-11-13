@@ -190,6 +190,42 @@ async function getLanguageList(req, res) {
     getLanguageListFindQuery
   );
 }
+
+async function getLanguageList(req, res) {
+  var limit = req.query.limit;
+  var offset = req.query.offset;
+  var search_term = req.query.search_term;
+
+  const getLanguageListFindQuery = await tableNames.language.findAll({
+    where: { delete_flag: 0 },
+  });
+
+  success(
+    res,
+    "Language Details Found",
+    "Language Details Not Found",
+    getLanguageListFindQuery
+  );
+}
+
+async function getCampaignBudgetList(req, res) {
+  var limit = req.query.limit;
+  var offset = req.query.offset;
+  var search_term = req.query.search_term;
+
+  const getCampaignBudgetFindQuery = await tableNames.campaignBudget.findAll({
+    where: { delete_flag: 0 },
+  });
+
+  success(
+    res,
+    "campaign budget list Details Found",
+    "CAmpaign budget list Details Not Found",
+    getCampaignBudgetFindQuery
+  );
+}
+
+
 module.exports = {
   getContentNiche,
   getState,
@@ -201,4 +237,5 @@ module.exports = {
   getPlatform,
   getCampaignGoal,
   getLanguageList,
+  getCampaignBudgetList
 };

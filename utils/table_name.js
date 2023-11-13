@@ -2,6 +2,7 @@ const { db, sequelize } = require("../utils/conn");
 
 tableNames = {
   influencer: db.influencer,
+  campaignBudget:db.campaign_budget,
 
   brands: db.brands,
 
