@@ -1,5 +1,6 @@
 const tableNames = require("../../../../utils/table_name");
 const operatorsAliases = require("../../../../utils/operator_aliases");
+const { success, error } = require("../../../../utils/responseApi");
 const editParameterQuery = require("../../../../utils/edit_query");
 const {
   imageUpload,
@@ -136,149 +137,143 @@ async function editCampaign(req, res) {
   }
 
   //try {
-    let campaingEditParameters = {
-      campaign_status_id: campaign_status_id,
-      payment_status_id: payment_status_id,
-      campaign_goal_id: campaign_goal_id,
-      campaign_name: campaign_name,
-      location: location,
-      campaign_about: campaign_about,
-      about_product: about_product,
-      language: language,
-      campaign_start_dt: campaign_start_dt,
-      campaign_end_dt: campaign_end_dt,
-      campaign_budget: campaign_budget,
+  let campaingEditParameters = {
+    campaign_status_id: campaign_status_id,
+    payment_status_id: payment_status_id,
+    campaign_goal_id: campaign_goal_id,
+    campaign_name: campaign_name,
+    location: location,
+    campaign_about: campaign_about,
+    about_product: about_product,
+    language: language,
+    campaign_start_dt: campaign_start_dt,
+    campaign_end_dt: campaign_end_dt,
+    campaign_budget: campaign_budget,
 
-      // platform: platform,
-      eligibility: eligibility,
-    };
-    var campaignEditedValue = await editParameterQuery(campaingEditParameters);
+    // platform: platform,
+    eligibility: eligibility,
+  };
+  var campaignEditedValue = await editParameterQuery(campaingEditParameters);
 
-    const updateQuery = await tableNames.Campaign.update(campaignEditedValue, {
-      debug: true,
-      where: {
-        campaign_id: campaign_id,
-        brand_id: brand_id,
-        campaign_delete: 0,
-      },
-    });
+  const updateQuery = await tableNames.Campaign.update(campaignEditedValue, {
+    debug: true,
+    where: {
+      campaign_id: campaign_id,
+      brand_id: brand_id,
+      campaign_delete: 0,
+    },
+  });
 
-    console.log(updateQuery);
+  console.log(updateQuery);
 
-    if (updateQuery[0] != "") {
-      let campaignContentNicheRespData = await Promise.all(
-        content_niche_id.map(async (item) => {
-          try {
-            let content_niche_info = {
-              campaign_id: campaign_id,
-              content_niche_id: item,
-            };
-            insertContentNicheQuery =
-              await tableNames.campaignContentNiche.create(content_niche_info);
-
-            return insertContentNicheQuery;
-          } catch (error) {
-            return { ...item, error };
-          }
-        })
-      );
-
-      //console.log(campaignContentNicheRespData);
-      if (
-        campaignContentNicheRespData == "" ||
-        campaignContentNicheRespData == null
-      ) {
-        res.status(209).send({
-          status: 209,
-          message: "Campaing Content Niche not inserted",
-        });
-      }
-
-      let campaignPlatformRespData = await Promise.all(
-        platform_id.map(async (item) => {
-          try {
-            let campaign_campaignPlatform_info = {
-              campaign_id: campaign_id,
-              platform_id: item,
-            };
-            insertcampaignPlatformQuery =
-              await tableNames.campaignPlatform.create(
-                campaign_campaignPlatform_info
-              );
-
-            return insertcampaignPlatformQuery;
-          } catch (error) {
-            return { ...item, error };
-          }
-        })
-      );
-      if (
-        (campaignPlatformRespData == "") |
-        (campaignPlatformRespData == null)
-      ) {
-        res.status(209).send({
-          status: 209,
-          message: "Platform Not Inserted",
-        });
-      }
-
-      let campaignLanguageRespData = await Promise.all(
-        language_id.map(async (item) => {
-          try {
-            let campaign_language_info = {
-              campaign_id: campaign_id,
-              language_id: language_id,
-            };
-
-            insertCampaignLanguageInfoQuery =
-              await tableNames.campaignLanguage.create(campaign_language_info);
-            console.log(insertCampaignLanguageInfoQuery);
-
-            return insertCampaignLanguageInfoQuery;
-          } catch (error) {
-            return { ...item, error };
-          }
-        })
-      );
-
-      if (
-        (campaignLanguageRespData == "") |
-        (campaignLanguageRespData == null)
-      ) {
-        res.status(209).send({
-          status: 209,
-          message: "language Not Inserted",
-        });
-      }
-
-      let DeliverablesEdit = {
-        post: post,
-        story: story,
-        real: real,
-        youtube: youtube,
-      };
-      var DeliverablesEditedData = await editParameterQuery(DeliverablesEdit);
-
-      const updateQuery = await tableNames.campaignDeliverables.update(
-        DeliverablesEditedData,
-        {
-          where: {
+  if (updateQuery[0] != "") {
+    let campaignContentNicheRespData = await Promise.all(
+      content_niche_id.map(async (item) => {
+        try {
+          let content_niche_info = {
             campaign_id: campaign_id,
-          },
-        }
-      );
+            content_niche_id: item,
+          };
+          insertContentNicheQuery =
+            await tableNames.campaignContentNiche.create(content_niche_info);
 
-      //console.log(updateQuery);
-      res.status(200).send({
-        status: 200,
-        message: "Campaign edited",
-      });
-    } else {
-      res.status(409).send({
-        status: 409,
-        message: "Campaign not edited",
+          return insertContentNicheQuery;
+        } catch (error) {
+          return { ...item, error };
+        }
+      })
+    );
+
+    //console.log(campaignContentNicheRespData);
+    if (
+      campaignContentNicheRespData == "" ||
+      campaignContentNicheRespData == null
+    ) {
+      res.status(209).send({
+        status: 209,
+        message: "Campaing Content Niche not inserted",
       });
     }
+
+    let campaignPlatformRespData = await Promise.all(
+      platform_id.map(async (item) => {
+        try {
+          let campaign_campaignPlatform_info = {
+            campaign_id: campaign_id,
+            platform_id: item,
+          };
+          insertcampaignPlatformQuery =
+            await tableNames.campaignPlatform.create(
+              campaign_campaignPlatform_info
+            );
+
+          return insertcampaignPlatformQuery;
+        } catch (error) {
+          return { ...item, error };
+        }
+      })
+    );
+    if ((campaignPlatformRespData == "") | (campaignPlatformRespData == null)) {
+      res.status(209).send({
+        status: 209,
+        message: "Platform Not Inserted",
+      });
+    }
+
+    let campaignLanguageRespData = await Promise.all(
+      language_id.map(async (item) => {
+        try {
+          let campaign_language_info = {
+            campaign_id: campaign_id,
+            language_id: language_id,
+          };
+
+          insertCampaignLanguageInfoQuery =
+            await tableNames.campaignLanguage.create(campaign_language_info);
+          console.log(insertCampaignLanguageInfoQuery);
+
+          return insertCampaignLanguageInfoQuery;
+        } catch (error) {
+          return { ...item, error };
+        }
+      })
+    );
+
+    if ((campaignLanguageRespData == "") | (campaignLanguageRespData == null)) {
+      res.status(209).send({
+        status: 209,
+        message: "language Not Inserted",
+      });
+    }
+
+    let DeliverablesEdit = {
+      post: post,
+      story: story,
+      real: real,
+      youtube: youtube,
+    };
+    var DeliverablesEditedData = await editParameterQuery(DeliverablesEdit);
+
+    const updateQuery = await tableNames.campaignDeliverables.update(
+      DeliverablesEditedData,
+      {
+        where: {
+          campaign_id: campaign_id,
+        },
+      }
+    );
+
+    //console.log(updateQuery);
+    res.status(200).send({
+      status: 200,
+      message: "Campaign edited",
+    });
+  } else {
+    res.status(409).send({
+      status: 409,
+      message: "Campaign not edited",
+    });
+  }
   // } catch (err) {
   //   res.status(500).send({
   //     status: 500,
@@ -706,6 +701,22 @@ async function campaignImageDelete(req, res) {
   }
 }
 
+async function getCampaignImages(req, res) {
+  var limit = req.query.limit;
+  var offset = req.query.offset;
+  var search_term = req.query.search_term;
+  var campaign_id = req.params.campaign_id;
+
+  const findQuery = await tableNames.campaignImages.findAll({
+    where: {
+      campaign_id: campaign_id,
+    },
+
+    offset: Number.parseInt(offset ? offset : 0),
+    limit: Number.parseInt(limit ? limit : 20),
+  });
+  success(res, "Campaign Images Found", "Campaign images Not Found", findQuery);
+}
 module.exports = {
   getAllCampaign,
   deleteCampaign,
@@ -716,4 +727,5 @@ module.exports = {
   platformDelete,
   campaignLanguageDelete,
   campaignImageDelete,
+  getCampaignImages,
 };
