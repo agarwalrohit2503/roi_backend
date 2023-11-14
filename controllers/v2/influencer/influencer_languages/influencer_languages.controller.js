@@ -2,7 +2,6 @@ const tableNames = require("../../../../utils/table_name");
 const operatorsAliases = require("../../../../utils/operator_aliases");
 const { success, error } = require("../../../../utils/responseApi");
 
-
 async function addInfluencerLanguage(req, res) {
   var influencer_id = req.params.influencer_id;
   var language_id = req.body.language_id;
@@ -12,7 +11,7 @@ async function addInfluencerLanguage(req, res) {
       try {
         let influencer_language_info = {
           influencer_id: influencer_id,
-          language_id: language_id,
+          language_id: item,
         };
 
         var insertInfluencerLanguageInfoQuery =

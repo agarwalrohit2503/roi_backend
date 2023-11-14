@@ -13,7 +13,7 @@ async function addComments(req, res) {
   var file_type = req.body.file_type;
 
   console.log(file_type);
-  var note_type  =req.body.note_type;
+  var note_type = req.body.note_type;
   var emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/g;
   var phoneRegex =
     /(\+\d{1,2}\s?)?(\(\d{1}\)\s?|\d{1}[-.\s]?)\d{1}[-.\s]?\d{1,3}/g;

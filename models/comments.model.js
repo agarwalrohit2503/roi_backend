@@ -41,6 +41,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(20),
         defaultValue: null,
       },
+      content_approval_status: {
+        type: DataTypes.TINYINT,
+        defaultValue: null,
+      },
+
       delete_flag: {
         type: DataTypes.TINYINT,
         defaultValue: 0,

@@ -135,7 +135,7 @@ async function editCampaign(req, res) {
     image_link = await imageUpload(image_link, campaign_id);
   }
 
-  try {
+  //try {
     let campaingEditParameters = {
       campaign_status_id: campaign_status_id,
       payment_status_id: payment_status_id,
@@ -149,18 +149,21 @@ async function editCampaign(req, res) {
       campaign_end_dt: campaign_end_dt,
       campaign_budget: campaign_budget,
 
-      platform: platform,
+      // platform: platform,
       eligibility: eligibility,
     };
     var campaignEditedValue = await editParameterQuery(campaingEditParameters);
 
     const updateQuery = await tableNames.Campaign.update(campaignEditedValue, {
+      debug: true,
       where: {
         campaign_id: campaign_id,
         brand_id: brand_id,
         campaign_delete: 0,
       },
     });
+
+    console.log(updateQuery);
 
     if (updateQuery[0] != "") {
       let campaignContentNicheRespData = await Promise.all(
@@ -276,12 +279,12 @@ async function editCampaign(req, res) {
         message: "Campaign not edited",
       });
     }
-  } catch (err) {
-    res.status(500).send({
-      status: 500,
-      message: err,
-    });
-  }
+  // } catch (err) {
+  //   res.status(500).send({
+  //     status: 500,
+  //     message: err,
+  //   });
+  // }
 }
 
 async function addCampaign(req, res) {
@@ -321,7 +324,7 @@ async function addCampaign(req, res) {
       location: location,
       campaign_about: campaign_about,
       about_product: about_product,
-  
+
       campaign_start_dt: campaign_start_dt,
       campaign_end_dt: campaign_end_dt,
       campaign_budget: campaign_budget,
