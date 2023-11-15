@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const {
     getProfile,
-    updateBrandprofile
+    updateBrandprofile,
 } = require('../../../../controllers/v2/brands/profile/brand_user.controller');
 
 router.get("/details/:brand_id",(req, res)=> {

@@ -8,7 +8,7 @@ const otpTimeValidation = require("../../../../utils/otp_time_checker");
 async function influencerLogin(req, res) {
 
   const mobile_number = req.body.mobile_number;
-  const email_id = req.body.email_id;
+  
   const vcode = uuidv4();
 
   let SqlQuery = await tableNames.influencer.findOne({
@@ -273,10 +273,13 @@ async function otpverify(req, res) {
   }
 }
 
-async function influencerSocialLogin(req, res) {}
+async function influencerSocialLogin(req, res) {
+  const email_id = req.body.email_id;
+
+}
 module.exports = {
   influencerLogin,
-  //brandLogin,
+  
   otpverify,
   influencerSocialLogin,
 };

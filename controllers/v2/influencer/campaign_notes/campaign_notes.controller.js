@@ -35,7 +35,7 @@ async function getCampaignNotes(req, res) {
       },
 
       {
-        attributes: ["name"],
+        attributes: ["name", "brand_logo"],
         model: tableNames.brands,
         required: false,
       },

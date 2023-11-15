@@ -12,7 +12,8 @@ const {
   updateProfile,
   updateInfluencerPrice,
   addContentNiche,
-  influencerProfileUpdate
+  influencerProfileUpdate,
+  influencerProfileDelete,
 } = require("../../../../controllers/v2/influencer/profile/profile.controller");
 
 router.post("/add-content-niche/:influencer_id", (req, res) => {
@@ -28,8 +29,12 @@ router.get("/details/:influencer_id", (req, res) => {
 
 router.patch("/update-details/:influencer_id", (req, res) => {
   updateProfile(req, res);
-}); 
+});
 router.patch("/update-profile-status/:influencer_id", (req, res) => {
   influencerProfileUpdate(req, res);
+});
+
+router.delete("/delete-profile/:influencer_id", (req, res) => {
+  influencerProfileDelete(req, res);
 });
 module.exports = router;

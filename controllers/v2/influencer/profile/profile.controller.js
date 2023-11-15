@@ -348,10 +348,62 @@ async function influencerProfileUpdate(req, res) {
   }
 }
 
+async function influencerProfileDelete(req, res) {
+  try {
+    var influencer_id = req.params.influencer_id;
+    // var profile_status = req.body.profile_status;
+
+    const findQuery = await tableNames.influencer.findOne({
+      where: {
+        influencer_id: influencer_id,
+      },
+    });
+
+    var data = findQuery.toJSON();
+    console.log(data["account_delete"]);
+    if (data["account_delete"] == 1) {
+      res.status(200).send({
+        status: 200,
+        message: "Influencer profile already deleted",
+      });
+    } else {
+      const result = await tableNames.influencer.update(
+        {
+          account_delete: 1,
+        },
+        {
+          where: {
+            influencer_id: influencer_id,
+          },
+        }
+      );
+      console.log(result[0]);
+      if (result == 1) {
+        res.status(200).send({
+          status: 200,
+          message: "Influencer profile delete",
+        });
+      } else {
+        res.status(209).send({
+          status: 209,
+          message: "Influencer profile not delete",
+        });
+      }
+    }
+  } catch (err) {
+    res.status(500).send({
+      status: 500,
+      message: err,
+    });
+  }
+}
+
+
 module.exports = {
   getProfile,
   updateProfile,
   updateInfluencerPrice,
   addContentNiche,
   influencerProfileUpdate,
+  influencerProfileDelete
 };
