@@ -4,11 +4,9 @@ var jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const otpTimeValidation = require("../../../../utils/otp_time_checker");
 
-
 async function influencerLogin(req, res) {
+  const email_id = req.body.mobile_number;
 
-  const mobile_number = req.body.mobile_number;
-  
   const vcode = uuidv4();
 
   let SqlQuery = await tableNames.influencer.findOne({
@@ -276,10 +274,93 @@ async function otpverify(req, res) {
 async function influencerSocialLogin(req, res) {
   const email_id = req.body.email_id;
 
+  const vcode = uuidv4();
+
+  let SqlQuery = await tableNames.influencer.findOne({
+    where: { email: email_id },
+  });
+
+  if (!SqlQuery) {
+    const UserOtp = await tableNames.otp.create({
+      verification_code: vcode,
+      otp_code: 1111,
+      influencer_id: null,
+      email: email_id,
+    });
+
+    if (UserOtp === 0) {
+      res.status(404).send({
+        status: 404,
+        message: "Otp not send",
+      });
+    } else {
+      res.status(200).send({
+        status: 200,
+        message: "successfully login",
+        verification_code: UserOtp["verification_code"],
+      });
+    }
+  } else {
+    //try {
+
+    var data = SqlQuery.toJSON();
+
+    if (data["account_delete"] == 1) {
+      res.status(404).send({
+        status: 404,
+        message: "you account has been deactivated",
+      });
+    } else {
+      const UserOtp = await tableNames.otp.create({
+        verification_code: vcode,
+        otp_code: 1111,
+        influencer_id: data["influencer_id"],
+        email: email_id,
+      });
+
+      if (UserOtp === 0) {
+        res.status(404).send({
+          status: 404,
+          message: "Otp not send",
+        });
+      } else {
+        const findall = await tableNames.influencerProfileStatus.findAll({
+          where: {
+            influencer_id: data["influencer_id"],
+          },
+        });
+        if (findall == "") {
+          const ProfileStatusFind =
+            await tableNames.influencerProfileStatus.create({
+              influencer_id: data["influencer_id"],
+            });
+
+          if (!ProfileStatusFind) {
+            res.status(404).send({
+              status: 404,
+              message: "try again to login",
+            });
+          } else {
+            res.status(200).send({
+              status: 200,
+              message: "successfully login",
+              verification_code: UserOtp["verification_code"],
+            });
+          }
+        } else {
+          res.status(200).send({
+            status: 200,
+            message: "successfully login",
+            verification_code: UserOtp["verification_code"],
+          });
+        }
+      }
+    }
+  }
 }
 module.exports = {
   influencerLogin,
-  
+
   otpverify,
   influencerSocialLogin,
 };

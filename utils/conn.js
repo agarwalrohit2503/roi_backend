@@ -39,6 +39,10 @@ db.influencer = require("../models/influencer_users.model")(
   sequelize,
   DataTypes
 );
+db.fb_access_tokens = require("../models/influencer_social_token.model.js")(
+  sequelize,
+  DataTypes
+);
 db.otp = require("../models/otp.model")(sequelize, DataTypes);
 db.City = require("../models/city.model")(sequelize, DataTypes);
 db.campaign_budget = require("../models/campaign_budget.model.js")(
@@ -57,6 +61,12 @@ db.influencer_address = require("../models/influencer_address.model")(
   sequelize,
   DataTypes
 );
+db.campaign_application_content =
+  require("../models/campaign_application_content.model.js")(
+    sequelize,
+    DataTypes
+  );
+
 db.influencer_file = require("../models/influencer_file.model")(
   sequelize,
   DataTypes
@@ -416,11 +426,14 @@ db.influencer_instagram.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
-/////////////////////////////sync query start////////////////////////////
+
+
+// ///////////////////////////sync query start////////////////////////////
 // db.sequelize.sync({ force: false }).then(() => {
 //   console.log("yes re-sync done!");
 // });
-/////////////////////////////sync query  end/////////////////////////////
+// ///////////////////////////sync query  end/////////////////////////////
+
 
 ///////////////////////////table join query//////////////////////
 db.influencer.hasMany(db.influencer_instagram, {
