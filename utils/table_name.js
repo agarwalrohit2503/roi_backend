@@ -69,6 +69,7 @@ tableNames = {
   influencerLanguage: db.influencer_language,
 
   campaignImages: db.campaign_images,
+  campaignApplicationContent:  db.campaign_application_content,
 
   //resource start
   Industry: db.industry,
