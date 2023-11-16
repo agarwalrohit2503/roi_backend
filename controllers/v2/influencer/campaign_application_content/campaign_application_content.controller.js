@@ -12,21 +12,29 @@ async function campaignApplicationInfluencerContent(req, res) {
 
   var content_link = req.body.content_link;
 
-  var files = req.body.files ?? "";
+  var files = req.body.files;
 
   var file_type = req.body.file_type;
 
   let filesLinks = [];
 
-  if (files.length !== 0) {
-    await Promise.all(
+  if (files.length != 0) {
+    var addInfluencerApplicationcontentRespData = await Promise.all(
       files.map(async (item) => {
+        console.log(item);
+
         try {
-          var finalImageUrl = await imageWithPdfUpload(item, file_type);
+          var finalImageUrl = await imageWithPdfUpload(
+            item["file_base64"],
+            item["file_type"]
+          );
           //  console.log({ finalImageUrl });
           filesLinks.push(finalImageUrl);
         } catch (error) {
-          console.error(`Error processing image for ${item}:`, error);
+          res.status(500).send({
+            status: 500,
+            message: "Internal server error1",
+          });
         }
       })
     );
@@ -36,13 +44,13 @@ async function campaignApplicationInfluencerContent(req, res) {
 
   console.log(combinedArray);
 
-  if (combinedArray.length !== 0) {
+  if (combinedArray.length != 0) {
     await Promise.all(
       combinedArray.map(async (item) => {
         try {
           var influencerContentInfo = {
             campaign_applied_id: campaign_applied_id,
-            link: item ??"",
+            link: item,
           };
 
           const influencerContentUploadCreateQuery =
@@ -51,7 +59,10 @@ async function campaignApplicationInfluencerContent(req, res) {
             );
           return influencerContentUploadCreateQuery;
         } catch (error) {
-          console.error(`Error processing image for ${item}:`, error);
+          res.status(500).send({
+            status: 500,
+            message: "Internal server error1",
+          });
         }
       })
     );
@@ -132,13 +143,13 @@ async function campaignApplicationInfluencerContent(req, res) {
   //   })
   // );
 
-  // success(
-  //   res,
-  //   "Campaign Content uploaded",
-  //   "Campaign Content Not uploaded",
-  //   addInfluencerApplicationcontentRespData,
-  //   1
-  // );
+  success(
+    res,
+    "Campaign Content uploaded",
+    "Campaign Content Not uploaded",
+    addInfluencerApplicationcontentRespData,
+    1
+  );
 }
 
 module.exports = {

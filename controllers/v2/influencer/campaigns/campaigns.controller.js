@@ -230,7 +230,6 @@ async function getCampaignApplications(req, res) {
           "campaign_id",
           "campaign_name",
           "location",
-
           "image_link",
           "campaign_budget",
           "campaign_about",
@@ -238,7 +237,25 @@ async function getCampaignApplications(req, res) {
           "campaign_end_dt",
         ],
         model: tableNames.Campaign,
+        required: false,
         include: [
+          {
+            attributes: ["campaign_payment_type_id", "name"],
+            model: tableNames.campaignPaymentType,
+            required: false,
+          },
+          {
+            model: tableNames.campaignContentNiche,
+
+            include: [
+              {
+                attributes: ["content_niche_id", "content_niche_name"],
+                model: tableNames.contentNiche,
+                required: false,
+                // as: "cc",
+              },
+            ],
+          },
           {
             attributes: ["brands_id", "brand_logo", "name"],
             model: tableNames.brands,
@@ -259,14 +276,17 @@ async function getCampaignApplications(req, res) {
           {
             attributes: ["campaign_language_id"],
             model: tableNames.campaignLanguage,
+            required: false,
             include: [
               {
                 model: tableNames.language,
+                required: false,
               },
             ],
           },
           {
             model: tableNames.campaignImages,
+            required: false,
           },
         ],
         // as: "brand",
