@@ -427,13 +427,16 @@ db.influencer_instagram.belongsTo(db.influencer, {
   targetKey: "influencer_id", // primary table
 });
 
+db.campaign_application_content.belongsTo(db.campaign_application, {
+  foreignKey: "campaign_applied_id", // foreign table
+  targetKey: "campaign_applied_id", // primary table
+});
 
 // ///////////////////////////sync query start////////////////////////////
-// db.sequelize.sync({ force: false }).then(() => {
-//   console.log("yes re-sync done!");
-// });
+db.sequelize.sync({ force: false }).then(() => {
+  console.log("yes re-sync done!");
+});
 // ///////////////////////////sync query  end/////////////////////////////
-
 
 ///////////////////////////table join query//////////////////////
 db.influencer.hasMany(db.influencer_instagram, {

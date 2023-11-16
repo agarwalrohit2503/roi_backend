@@ -1,57 +1,144 @@
 const tableNames = require("../../../../utils/table_name");
-
+const {
+  imageUpload,
+  imageWithPdfUpload,
+} = require("../../../../utils/image_upload");
 const { success, error } = require("../../../../utils/responseApi");
 
 async function campaignApplicationInfluencerContent(req, res) {
-  
-  var influencer_id       = req.params.influencer_id;
+  // var influencer_id = req.params.influencer_id;
 
-  var campaign_applied_id = req.body.campaign_applied_id;
-  var content_link        = req.body.content_link;
-  var image_link          = req.body.image_link;
+  var campaign_applied_id = req.params.campaign_applied_id;
 
+  var content_link = req.body.content_link;
 
-  let addInfluencerApplicationcontentRespData = await Promise.all(
-    image_link.map(async (item) => {
-      var influencerContentInfo = {
-        influencer_id: influencer_id,
-        campaign_applied_id: campaign_applied_id,
-        image_link: item,
-      };
+  var files = req.body.files ?? "";
 
-      const influencerContentUploadCreateQuery =
-        await tableNames.campaignApplicationContent.create(
-          influencerContentInfo
-        );
+  var file_type = req.body.file_type;
 
-      return influencerContentUploadCreateQuery;
-    })
-  );
+  let filesLinks = [];
 
-  let addInfluencerContentRespData = await Promise.all(
-    content_link.map(async (item) => {
-      var influencerContentInfo = {
-        influencer_id: influencer_id,
-        campaign_applied_id: campaign_applied_id,
-        content_link: item,
-      };
+  if (files.length !== 0) {
+    await Promise.all(
+      files.map(async (item) => {
+        try {
+          var finalImageUrl = await imageWithPdfUpload(item, file_type);
+          //  console.log({ finalImageUrl });
+          filesLinks.push(finalImageUrl);
+        } catch (error) {
+          console.error(`Error processing image for ${item}:`, error);
+        }
+      })
+    );
+  }
 
-      const influencerContentUploadCreateQuery =
-        await tableNames.campaignApplicationContent.create(
-          influencerContentInfo
-        );
+  let combinedArray = filesLinks.concat(content_link);
 
-      return influencerContentUploadCreateQuery;
-    })
-  );
+  console.log(combinedArray);
 
-  success(
-    res,
-    "Campaign Content uploaded",
-    "Campaign Content Not uploaded",
-    addInfluencerApplicationcontentRespData,
-    1
-  );
+  if (combinedArray.length !== 0) {
+    await Promise.all(
+      combinedArray.map(async (item) => {
+        try {
+          var influencerContentInfo = {
+            campaign_applied_id: campaign_applied_id,
+            link: item ??"",
+          };
+
+          const influencerContentUploadCreateQuery =
+            await tableNames.campaignApplicationContent.create(
+              influencerContentInfo
+            );
+          return influencerContentUploadCreateQuery;
+        } catch (error) {
+          console.error(`Error processing image for ${item}:`, error);
+        }
+      })
+    );
+  }
+
+  // console.log(filesLinks + content_link);
+
+  // let filesLinks = {};
+
+  // if (files.lenght != 0) {
+  //   files.map(async (item) => {
+  //     try {
+  //       var finalImgeUrl = await imageWithPdfUpload(item, file_type);
+
+  //       filesLinks.push({image:{finalImgeUrl}});
+  //     } catch (error) {
+  //       console.error(`Error processing image for ${item}:`, error);
+  //     }
+  //   });
+  // }
+  // console.log(filesLinks);
+
+  //console.log(filesLinks);
+
+  // var addInfluencerApplicationcontentRespData = "";
+  // if (image_file != "") {
+  //    addInfluencerApplicationcontentRespData = await Promise.all(
+  //     image_file.map(async (item) => {
+  //       if (item) {
+  //         var finalImgeUrl = await imageWithPdfUpload(item, file_type);
+
+  //         if (finalImgeUrl == "" || finalImgeUrl == null) {
+  //           res.status(209).send({
+  //             status: 209,
+  //             message: "influencer content Not Uploaded",
+  //           });
+  //         }
+  //         console.log(finalImgeUrl);
+
+  //         var influencerContentInfo = {
+  //           influencer_id: influencer_id,
+  //           campaign_applied_id: campaign_applied_id,
+  //           image_file: finalImgeUrl,
+  //         };
+
+  //         const influencerContentUploadCreateQuery =
+  //           await tableNames.campaignApplicationContent.create(
+  //             influencerContentInfo
+  //           );
+
+  //         return influencerContentUploadCreateQuery;
+  //       } else {
+  //         console.log("dfdf");
+  //       }
+  //     })
+  //   );
+
+  //   console.log("dsa");
+  //   return addInfluencerApplicationcontentRespData;
+  // }
+
+  // // );
+
+  // let addInfluencerContentRespData = await Promise.all(
+  //   content_link.map(async (item) => {
+  //     var influencerContentInfo = {
+  //       influencer_id: influencer_id,
+  //       campaign_applied_id: campaign_applied_id,
+  //       content_link: item,
+  //     };
+
+  //     const influencerContentUploadCreateQuery =
+  //       await tableNames.campaignApplicationContent.create(
+  //         influencerContentInfo
+  //       );
+
+  //     return influencerContentUploadCreateQuery;
+  //   })
+  // );
+
+  // success(
+  //   res,
+  //   "Campaign Content uploaded",
+  //   "Campaign Content Not uploaded",
+  //   addInfluencerApplicationcontentRespData,
+  //   1
+  // );
 }
 
 module.exports = {

@@ -8,20 +8,13 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-   
-      influencer_id: {
-        type: DataTypes.INTEGER,
-        defaultValue: null,
-      },
-     
+
       campaign_applied_id: {
         type: DataTypes.INTEGER,
         defaultValue: null,
       },
-      content_link: {
-        type: DataTypes.STRING,
-      },
-      image_link: {
+
+      link: {
         type: DataTypes.STRING,
       },
       delete_flag: {
