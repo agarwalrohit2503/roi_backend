@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require("uuid");
 const otpTimeValidation = require("../../../../utils/otp_time_checker");
 
 async function influencerLogin(req, res) {
-  const email_id = req.body.mobile_number;
+  const mobile_number = req.body.mobile_number;
 
   const vcode = uuidv4();
 

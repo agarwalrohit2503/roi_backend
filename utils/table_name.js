@@ -70,6 +70,7 @@ tableNames = {
 
   campaignImages: db.campaign_images,
   campaignApplicationContent:  db.campaign_application_content,
+  campaignApplicationLink:  db.campaign_application_link,
 
   //resource start
   Industry: db.industry,

@@ -11,9 +11,7 @@ const influencer_languages = require("./influencer_languages");
 const campaign_notes = require("./campaign_notes");
 const influencer_social_media = require("./influencer_social_media");
 const campaign_application_content = require("./campaign_application_content");
-
-
-
+const campaign_application_link = require("./campaign_application_link");
 
 router.use("/auth", auth);
 router.use("/profile", authJWT, profile);
@@ -25,4 +23,5 @@ router.use("/influencer_languages", influencer_languages);
 router.use("/campaign_notes", campaign_notes);
 router.use("/influencer_social_media", influencer_social_media);
 router.use("/campaign-application-content", campaign_application_content);
+router.use("/campaign-application-link", campaign_application_link);
 module.exports = router;

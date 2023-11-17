@@ -17,7 +17,7 @@ async function campaignApplicationInfluencerContent(req, res) {
   var file_type = req.body.file_type;
 
   let filesLinks = [];
-
+  console.log(`${campaign_applied_id} - ${content_link} - ${files} `);
   if (files.length != 0) {
     var addInfluencerApplicationcontentRespData = await Promise.all(
       files.map(async (item) => {
