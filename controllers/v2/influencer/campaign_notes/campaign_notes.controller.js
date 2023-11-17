@@ -3,7 +3,8 @@ const tableNames = require("../../../../utils/table_name");
 const { success, error } = require("../../../../utils/responseApi");
 async function getCampaignNotes(req, res) {
   const influencer_id = req.params.influencer_id;
-
+  var offset = req.query.offset;
+  var limit = req.query.limit;
   const getCampaingNotes = await tableNames.Comments.findAll({
     include: [
       {
@@ -43,6 +44,8 @@ async function getCampaignNotes(req, res) {
 
     order: [["comment_id", "DESC"]],
     where: { influencer_id: influencer_id, note_type: 1 },
+    offset: Number.parseInt(offset ? offset : 0),
+    limit: Number.parseInt(limit ? limit : 20),
   });
 
   success(

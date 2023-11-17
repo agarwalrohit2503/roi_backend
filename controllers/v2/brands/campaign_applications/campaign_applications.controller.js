@@ -6,6 +6,7 @@ const {
   imageWithPdfUpload,
 } = require("../../../../utils/image_upload");
 
+const { success, error } = require("../../../../utils/responseApi");
 async function get(req, res) {
   var campaign_id = req.params.campaign_id;
   var limit = req.query.limit;
@@ -20,7 +21,11 @@ async function get(req, res) {
   }
   try {
     const findQuery = await tableNames.campaignApplication.findAll({
-      attributes: ["campaign_applied_id", "campaign_id"],
+      attributes: [
+        "campaign_applied_id",
+        "campaign_id",
+        "campaign_application_content_status",
+      ],
       include: [
         {
           model: tableNames.influencer,
@@ -83,8 +88,7 @@ async function update(req, res) {
     if (
       application_status == 1 ||
       application_status == 2 ||
-      application_status == 3 
-   
+      application_status == 3
     ) {
       let campaignApplicationParameters = {
         application_status_id: application_status,
@@ -125,7 +129,60 @@ async function update(req, res) {
   }
 }
 
+async function campaignApplicationContentApproval(req, res) {
+  var campaign_applied_id = req.params.campaign_applied_id;
+
+  var campaign_application_content_status =
+    req.body.campaign_application_content_status;
+
+  var offset = req.query.offset;
+  var limit = req.query.limit;
+  const campaignApplicationInfluencerFetchQuery =
+    await tableNames.campaignApplication.findOne({
+      where: {
+        campaign_applied_id: campaign_applied_id,
+        application_status_id: 2,
+      },
+
+      offset: Number.parseInt(offset ? offset : 0),
+      limit: Number.parseInt(limit ? limit : 20),
+    });
+
+  if (
+    campaignApplicationInfluencerFetchQuery == null ||
+    campaignApplicationInfluencerFetchQuery == ""
+  ) {
+    error(res, "campaign application id not found");
+  } else {
+    var jsonResp = campaignApplicationInfluencerFetchQuery.toJSON();
+
+    if (jsonResp["campaign_application_content_status"] == null) {
+      error(res, "influencer did not upload their information");
+    }
+
+    const campaignApplicationContentStatusUpdateQuery =
+      await tableNames.campaignApplication.update(
+        {
+          campaign_application_content_status:
+            jsonResp["campaign_application_content_status"] == 1
+              ? campaign_application_content_status
+              : campaign_application_content_status,
+        },
+        { where: { campaign_applied_id: campaign_applied_id } }
+      );
+
+    success(
+      res,
+      "Influencer campaign content approved",
+      "Influencer campaign content Not approval",
+      campaignApplicationContentStatusUpdateQuery,
+      0
+    );
+  }
+}
+
 module.exports = {
   get,
   update,
+  campaignApplicationContentApproval,
 };

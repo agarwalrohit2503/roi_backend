@@ -11,21 +11,24 @@ module.exports = (sequelize, DataTypes) => {
       },
       influencer_id: {
         type: DataTypes.INTEGER,
-        defaultValue: null
+        defaultValue: null,
       },
       campaign_id: {
         type: DataTypes.INTEGER,
-        defaultValue: null
+        defaultValue: null,
       },
       application_status_id: {
         type: DataTypes.INTEGER,
-        defaultValue: null
+        defaultValue: null,
       },
       campaign_status_id: {
         type: DataTypes.INTEGER,
-        defaultValue: null
+        defaultValue: null,
       },
-     
+      campaign_application_content_status: {
+        type: DataTypes.TINYINT,
+        defaultValue: null,
+      },
 
       delete_flag: {
         type: DataTypes.TINYINT,
