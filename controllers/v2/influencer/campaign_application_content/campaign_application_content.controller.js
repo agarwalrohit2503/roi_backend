@@ -19,7 +19,7 @@ async function campaignApplicationInfluencerContent(req, res) {
   let filesLinks = [];
   console.log(`${campaign_applied_id} - ${content_link} - ${files} `);
   if (files.length != 0) {
-    var addInfluencerApplicationcontentRespData = await Promise.all(
+    await Promise.all(
       files.map(async (item) => {
         console.log(item);
 
@@ -42,10 +42,10 @@ async function campaignApplicationInfluencerContent(req, res) {
 
   let combinedArray = filesLinks.concat(content_link);
 
-  console.log(combinedArray);
+  //console.log(combinedArray);
 
   if (combinedArray.length != 0) {
-    await Promise.all(
+    var data = await Promise.all(
       combinedArray.map(async (item) => {
         try {
           var influencerContentInfo = {
@@ -57,6 +57,13 @@ async function campaignApplicationInfluencerContent(req, res) {
             await tableNames.campaignApplicationContent.create(
               influencerContentInfo
             );
+          if (
+            influencerContentUploadCreateQuery == "" ||
+            influencerContentUploadCreateQuery == null
+          ) {
+            error(res, "Campaign Content uploaded");
+          }
+
           return influencerContentUploadCreateQuery;
         } catch (error) {
           res.status(500).send({
@@ -66,90 +73,25 @@ async function campaignApplicationInfluencerContent(req, res) {
         }
       })
     );
+
+    //const testdata = await Promise.all(data);
+
+    const campaignApplicationContentStatusUpdateQuery =
+      await tableNames.campaignApplication.update(
+        {
+          campaign_application_content_status: -1,
+        },
+        { where: { campaign_applied_id: campaign_applied_id } }
+      );
+
+    success(
+      res,
+      "Campaign Content uploaded",
+      "Campaign Content Not uploaded",
+      campaignApplicationContentStatusUpdateQuery,
+      1
+    );
   }
-
-  // console.log(filesLinks + content_link);
-
-  // let filesLinks = {};
-
-  // if (files.lenght != 0) {
-  //   files.map(async (item) => {
-  //     try {
-  //       var finalImgeUrl = await imageWithPdfUpload(item, file_type);
-
-  //       filesLinks.push({image:{finalImgeUrl}});
-  //     } catch (error) {
-  //       console.error(`Error processing image for ${item}:`, error);
-  //     }
-  //   });
-  // }
-  // console.log(filesLinks);
-
-  //console.log(filesLinks);
-
-  // var addInfluencerApplicationcontentRespData = "";
-  // if (image_file != "") {
-  //    addInfluencerApplicationcontentRespData = await Promise.all(
-  //     image_file.map(async (item) => {
-  //       if (item) {
-  //         var finalImgeUrl = await imageWithPdfUpload(item, file_type);
-
-  //         if (finalImgeUrl == "" || finalImgeUrl == null) {
-  //           res.status(209).send({
-  //             status: 209,
-  //             message: "influencer content Not Uploaded",
-  //           });
-  //         }
-  //         console.log(finalImgeUrl);
-
-  //         var influencerContentInfo = {
-  //           influencer_id: influencer_id,
-  //           campaign_applied_id: campaign_applied_id,
-  //           image_file: finalImgeUrl,
-  //         };
-
-  //         const influencerContentUploadCreateQuery =
-  //           await tableNames.campaignApplicationContent.create(
-  //             influencerContentInfo
-  //           );
-
-  //         return influencerContentUploadCreateQuery;
-  //       } else {
-  //         console.log("dfdf");
-  //       }
-  //     })
-  //   );
-
-  //   console.log("dsa");
-  //   return addInfluencerApplicationcontentRespData;
-  // }
-
-  // // );
-
-  // let addInfluencerContentRespData = await Promise.all(
-  //   content_link.map(async (item) => {
-  //     var influencerContentInfo = {
-  //       influencer_id: influencer_id,
-  //       campaign_applied_id: campaign_applied_id,
-  //       content_link: item,
-  //     };
-
-  //     const influencerContentUploadCreateQuery =
-  //       await tableNames.campaignApplicationContent.create(
-  //         influencerContentInfo
-  //       );
-
-  //     return influencerContentUploadCreateQuery;
-  //   })
-  // );
-
-  success(
-    res,
-    "Campaign Content uploaded",
-    "Campaign Content Not uploaded",
-    addInfluencerApplicationcontentRespData,
-    1
-  );
 }
 
 module.exports = {
