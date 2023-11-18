@@ -1,7 +1,7 @@
 const tableNames = require("../../utils/table_name");
 const { db, sequelize } = require("../../utils/conn");
 const { imageUpload, imageWithPdfUpload } = require("../../utils/image_upload");
-
+const { success, error } = require("../../utils/responseApi");
 async function addComments(req, res) {
   var campaign_applied_id = req.body.campaign_applied_id;
   var influencer_id = req.body.influencer_id;
@@ -165,9 +165,72 @@ async function deleteComments(req, res) {
   }
 }
 
+async function addNotes(req, res) {
+  var campaign_applied_id = req.params.campaign_applied_id;
+  var sender_type = req.body.sender_type;
+  var comment_text = req.body.comment_text;
+  var file_type = req.body.file_type;
+  var note_type = req.body.note_type;
+
+  var emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/g;
+  var phoneRegex =
+    /(\+\d{1,2}\s?)?(\(\d{1}\)\s?|\d{1}[-.\s]?)\d{1}[-.\s]?\d{1,3}/g;
+
+  var sanitizedText = comment_text
+    .replace(emailRegex, "REMOVED_EMAIL")
+    .replace(phoneRegex, "REMOVED_PHONE");
+
+  const campaignApplicationFindQuery =
+    await tableNames.campaignApplication.findOne({
+      where: {
+        campaign_applied_id: campaign_applied_id,
+        delete_flag: 0,
+      },
+    });
+  if (
+    campaignApplicationFindQuery == "" ||
+    campaignApplicationFindQuery == null
+  ) {
+    error(res, "Campaign Aplication Not found");
+  }
+
+  var campaignApplicationDetailsResp = campaignApplicationFindQuery.toJSON();
+
+  const CampaignFindQuery = await tableNames.Campaign.findOne({
+    where: {
+      campaign_id: campaignApplicationDetailsResp["campaign_id"],
+      campaign_delete: 0,
+    },
+  });
+
+  if (CampaignFindQuery == "" || CampaignFindQuery == null) {
+    error(res, "Campaign Aplication Not found");
+  }
+
+  var campaignDetailsResp = CampaignFindQuery.toJSON();
+
+  let commentAddParameter = {
+    campaign_applied_id: campaign_applied_id,
+    influencer_id: campaignApplicationDetailsResp["influencer_id"],
+    brand_id: campaignDetailsResp["brand_id"],
+    sender_type: sender_type,
+    comment_text: sanitizedText,
+    file_type: file_type != "" ? file_type : "image",
+    note_type: note_type,
+  };
+
+  var notesAddQuery = await tableNames.Comments.create(commentAddParameter);
+
+  res.status(200).send({
+    status: 200,
+    message: notesAddQuery != "" ? "Note added" : "No note added",
+  });
+}
+
 module.exports = {
   addComments,
   getinfluencerComments,
   getBrandsComments,
   deleteComments,
+  addNotes,
 };
