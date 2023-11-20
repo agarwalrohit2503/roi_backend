@@ -118,12 +118,21 @@ const {
 async function campaignBudgeting(req, res) {
   var campaign_id = req.params.campaign_id;
 
-  const findquery = await tableNames.campaignApplication.findAll({
-    where: {
-      delete_flag: 0,
-      campaign_id: campaign_id,
-    },
-  });
+  const campaignApplicationFindQuery =
+    await tableNames.campaignApplication.findAll({
+      where: {
+        delete_flag: 0,
+        campaign_id: campaign_id,
+        application_status_id: 2,
+      },
+    });
+
+  if (
+    campaignApplicationFindQuery == null ||
+    campaignApplicationFindQuery == ""
+  ) {
+    error(res, "campaign not found ");
+  }
 
   console.log(findquery);
 
