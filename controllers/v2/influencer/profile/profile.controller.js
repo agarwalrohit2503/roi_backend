@@ -4,16 +4,19 @@ const { addAddress } = require("../address/address.controller");
 
 async function getProfile(req, res) {
   const influencer_id = req.params.influencer_id;
+  console.log("harsh");
 
   const influencer = await tableNames.influencer.findOne({
     include: [
       {
         attributes: ["profile_complete_status"],
         model: tableNames.influencerProfileStatus,
+        required:false,
       },
       {
         //attributes: ["content_niche_id", "content_niche_name"],
         model: tableNames.influencerContentNiche,
+        required:false,
         //  as: "inf_content",
         include: [
           {
@@ -26,22 +29,28 @@ async function getProfile(req, res) {
 
       {
         model: tableNames.influencerFacebook,
+        required:false,
       },
       {
         model: tableNames.influencerFacebookPost,
+        required:false,
       },
       {
         model: tableNames.influencerInstagram,
+        required:false
       },
       {
         model: tableNames.influencerInstagramPost,
+        required:false,
       },
       {
         model: tableNames.influencerYoutube,
+        required:false,
       },
       {
         attributes: ["influencer_language_id"],
         model: tableNames.influencerLanguage,
+        required:false,
         include: [{ model: tableNames.language }],
       },
       // {
@@ -93,12 +102,13 @@ async function getProfile(req, res) {
 
       {
         model: tableNames.influencerPrice,
+        required:false,
         where: {
           influencer_id: influencer_id,
         },
       },
     ],
-    where: { influencer_id: influencer_id },
+    where: { influencer_id: influencer_id, account_delete: 0 },
   });
 
   res.status(200).send({
@@ -398,12 +408,11 @@ async function influencerProfileDelete(req, res) {
   }
 }
 
-
 module.exports = {
   getProfile,
   updateProfile,
   updateInfluencerPrice,
   addContentNiche,
   influencerProfileUpdate,
-  influencerProfileDelete
+  influencerProfileDelete,
 };
