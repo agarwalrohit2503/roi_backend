@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         defaultValue: null,
       },
+      barter_note: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       campaign_name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -40,11 +44,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      // language: {
-      //   type: DataTypes.STRING,
-      //   defaultValue: null,
-      // },
-    
       campaign_start_dt: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -53,18 +52,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      content_submission_deadline: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+
+      content_upload_date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
 
       campaign_budget: {
         type: DataTypes.FLOAT,
         defaultValue: 0,
       },
-      // image_link: {
-      //   type: DataTypes.STRING,
-      //   allowNull: true,
-      // },
-
       eligibility: {
         type: DataTypes.TINYINT,
+        defaultValue: null,
+      },
+      additional_notes: {
+        type: DataTypes.STRING,
         defaultValue: null,
       },
       campaign_delete: {

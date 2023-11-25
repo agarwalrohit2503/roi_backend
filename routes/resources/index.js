@@ -13,7 +13,10 @@ const {
   getPlatform,
   getCampaignGoal,
   getLanguageList,
-  getCampaignBudgetList
+  getCampaignBudgetList,
+  targetAdienceAgeGroupLists,
+  targetAudienceGenderLists,
+  influencerTypeLists,
 } = require("../../controllers/resources/resources.controller");
 
 router.get("/get-content-niche", (req, res) => {
@@ -49,13 +52,23 @@ router.get("/get-languages", (req, res) => {
   getLanguageList(req, res);
 });
 
-
 router.get("/get-campaign-budget", (req, res) => {
   getCampaignBudgetList(req, res);
 });
 
+router.get("/target-adience-age-group", (req, res) => {
+  targetAdienceAgeGroupLists(req, res);
+});
+
+
+router.get("/target-audience-gender", (req, res) => {
+  targetAudienceGenderLists(req, res);
+});
 
 
 
+router.get("/influencer-type-list", (req, res) => {
+  influencerTypeLists(req, res);
+});
 
 module.exports = router;

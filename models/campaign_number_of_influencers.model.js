@@ -1,51 +1,37 @@
+const tableNames = require("../utils/table_name");
 module.exports = (sequelize, DataTypes) => {
-  const Comments = sequelize.define(
-    "comments",
+  const campaign_number_of_influencers = sequelize.define(
+    "campaign_number_of_influencers",
     {
-      comment_id: {
+      campaign_number_of_influencers_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-
-      campaign_applied_id: {
+      campaign_id: {
         type: DataTypes.INTEGER,
         defaultValue: null,
       },
-      influencer_id: {
+      nano: {
         type: DataTypes.INTEGER,
         defaultValue: null,
       },
-      brand_id: {
+      micro: {
         type: DataTypes.INTEGER,
         defaultValue: null,
       },
-      sender_type: {
-        type: DataTypes.STRING(5),
+      macro: {
+        type: DataTypes.INTEGER,
         defaultValue: null,
       },
-
-      comment_text: {
-        type: DataTypes.STRING,
+      mega: {
+        type: DataTypes.INTEGER,
         defaultValue: null,
       },
-      comment_file: {
-        type: DataTypes.TEXT,
+      celeb: {
+        type: DataTypes.INTEGER,
         defaultValue: null,
       },
-      note_type: {
-        type: DataTypes.TINYINT,
-        defaultValue: 0,
-      },
-      file_type: {
-        type: DataTypes.STRING(20),
-        defaultValue: null,
-      },
-      // content_approval_status: {
-      //   type: DataTypes.TINYINT,
-      //   defaultValue: null,
-      // },
-
       delete_flag: {
         type: DataTypes.TINYINT,
         defaultValue: 0,
@@ -56,5 +42,5 @@ module.exports = (sequelize, DataTypes) => {
       updatedAt: false,
     }
   );
-  return Comments;
+  return campaign_number_of_influencers;
 };

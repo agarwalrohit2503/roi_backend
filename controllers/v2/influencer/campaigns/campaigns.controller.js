@@ -106,8 +106,8 @@ async function getCampaigns(req, res) {
     });
 
     success(res, "Campaign Data found", "Campaign Data Not Found", findQuery);
-  } catch (error) {
-    error(res, "Internal server error", error);
+  } catch (err) {
+    error(res, "Internal server error", err);
   }
 }
 
@@ -226,16 +226,16 @@ async function getCampaignApplications(req, res) {
     attributes: ["campaign_applied_id"],
     include: [
       {
-        attributes: [
-          "campaign_id",
-          "campaign_name",
-          "location",
-          "image_link",
-          "campaign_budget",
-          "campaign_about",
-          "campaign_start_dt",
-          "campaign_end_dt",
-        ],
+        // attributes: [
+        //   "campaign_id",
+        //   "campaign_name",
+        //   "location",
+        //   "image_link",
+        //   "campaign_budget",
+        //   "campaign_about",
+        //   "campaign_start_dt",
+        //   "campaign_end_dt",
+        // ],
         model: tableNames.Campaign,
         required: false,
         include: [

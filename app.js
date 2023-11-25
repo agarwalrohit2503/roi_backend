@@ -13,7 +13,7 @@ const dotenv = require("dotenv").config({
 
 // /api/v1 ==> Routes Folder
 
-let port = process.env.PORT || 8000;
+let port = process.env.PORT || 8000; 
 const app = express();
 //console.log(process.env.HOST);
 

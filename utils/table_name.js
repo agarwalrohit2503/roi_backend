@@ -2,7 +2,15 @@ const { db, sequelize } = require("../utils/conn");
 
 tableNames = {
   influencer: db.influencer,
-  campaignBudget:db.campaign_budget,
+  campaignBudget: db.campaign_budget,
+
+  targetAudienceGender: db.target_audience_gender,
+
+  targetAdienceAgeGroup: db.target_adience_age_group,
+
+  campaignNumberOfInfluencers: db.campaign_number_of_influencers,
+
+  influencerType:db.influencer_type,
 
   brands: db.brands,
 
@@ -69,8 +77,8 @@ tableNames = {
   influencerLanguage: db.influencer_language,
 
   campaignImages: db.campaign_images,
-  campaignApplicationContent:  db.campaign_application_content,
-  campaignApplicationLink:  db.campaign_application_link,
+  campaignApplicationContent: db.campaign_application_content,
+  campaignApplicationLink: db.campaign_application_link,
 
   //resource start
   Industry: db.industry,
