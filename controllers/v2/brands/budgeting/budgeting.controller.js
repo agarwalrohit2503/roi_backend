@@ -134,15 +134,83 @@ async function campaignBudgeting(req, res) {
     error(res, "campaign not found ");
   }
 
-  console.log(findquery);
+  //console.log(campaignApplicationFindQuery["influencer_id"]);
 
-  success(
-    res,
-    "campaign Budgeting successfully found",
-    "campaign Budgeting Not found",
-    findquery,
-    0
+  // const content_niche_delete = content_niche_id.map(async (item) => {
+  //   return (deleteQuery = await tableNames.campaignContentNiche.destroy({
+  //     where: {
+  //       campaign_id: campaign_id,
+  //       content_niche_id: item,
+  //     },
+  //   }));
+  // });
+
+  // const data = campaignApplicationFindQuery.map(async (item) => {
+  //   //console.log(item["influencer_id"]);
+  //   // return (
+  //   await tableNames.influencer.findAll({
+  //     where: {
+  //       influencer_id: item["influencer_id"],
+  //       account_delete: 0,
+  //     },
+  //   });
+
+  //  // console.log(influencerFindQuery);
+
+  //   return influencerFindQuery;
+
+  //   // )
+  // });
+
+  // const respData = await Promise.all(data);
+
+  // console.log(respData);
+
+  // const reviewPromises = campaignApplicationFindQuery.map(async (result) => {
+  //   const user = await tableNames.influencer.findAll({
+  //     where: {
+  //       influencer_id: result["influencer_id"],
+  //       account_delete: 0,
+  //     },
+  //   });
+  //   return user;
+  // });
+  // const reviewData = await Promise.all(reviewPromises);
+
+  // console.log(reviewData);
+
+  let userData = [];
+
+  await Promise.all(
+    campaignApplicationFindQuery.map(async (item) => {
+  
+    try {
+      var user = await tableNames.influencer.findAll({
+        where: {
+          influencer_id: item["influencer_id"],
+          account_delete: 0,
+        },
+      });
+
+      userData.push(user);
+      } catch (error) {
+      res.status(500).send({
+        status: 500,
+        message: "Internal server error1",
+      });
+      }
+    })
   );
+
+  console.log(userData);
+
+  // success(
+  //   res,
+  //   "campaign Budgeting successfully found",
+  //   "campaign Budgeting Not found",
+  //   userData,
+  //   0
+  // );
 }
 
 module.exports = {

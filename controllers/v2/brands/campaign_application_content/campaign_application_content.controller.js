@@ -7,6 +7,8 @@ const { success, error } = require("../../../../utils/responseApi");
 
 async function getApplicationInfluencerContent(req, res) {
   var campaign_applied_id = req.params.campaign_applied_id;
+  var limit = req.query.limit;
+  var offset = req.query.offset;
 
   const fetchInfluencerContentData =
     await tableNames.campaignApplicationContent.findAll({
@@ -18,8 +20,6 @@ async function getApplicationInfluencerContent(req, res) {
       offset: Number.parseInt(offset ? offset : 0),
       limit: Number.parseInt(limit ? limit : 20),
     });
-
-    
 
   success(
     res,

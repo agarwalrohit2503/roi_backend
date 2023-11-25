@@ -132,11 +132,19 @@ async function update(req, res) {
 async function campaignApplicationContentApproval(req, res) {
   var campaign_applied_id = req.params.campaign_applied_id;
 
+  var offset = req.query.offset;
+  var limit = req.query.limit;
+
   var campaign_application_content_status =
     req.body.campaign_application_content_status;
 
-  var offset = req.query.offset;
-  var limit = req.query.limit;
+  if (
+    campaign_application_content_status == "" ||
+    campaign_application_content_status == null
+  ) {
+    error(res, "campaign application content status id not found");
+  }
+
   const campaignApplicationInfluencerFetchQuery =
     await tableNames.campaignApplication.findOne({
       where: {

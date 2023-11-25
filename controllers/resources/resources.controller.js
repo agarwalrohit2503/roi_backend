@@ -225,17 +225,73 @@ async function getCampaignBudgetList(req, res) {
   );
 }
 
+async function targetAdienceAgeGroupLists(req, res) {
+  var limit = req.query.limit;
+  var offset = req.query.offset;
+  var search_term = req.query.search_term;
+
+  const getLanguageListFindQuery =
+    await tableNames.targetAdienceAgeGroup.findAll({
+      where: { delete_flag: 0 },
+    });
+
+  success(
+    res,
+    "target  AudienceGenderLts Details Found",
+    "target  AudienceGenderLts Details Not Found",
+    getLanguageListFindQuery
+  );
+}
+
+async function targetAudienceGenderLists(req, res) {
+  var limit = req.query.limit;
+  var offset = req.query.offset;
+  var search_term = req.query.search_term;
+
+  const targetAudienceGenderFindquery =
+    await tableNames.targetAudienceGender.findAll({
+      where: { delete_flag: 0 },
+    });
+
+  success(
+    res,
+    "target Gender list Details Found",
+    "target Gender list Details Not Found",
+    targetAudienceGenderFindquery
+  );
+}
+
+
+async function influencerTypeLists(req, res) {
+  var limit = req.query.limit;
+  var offset = req.query.offset;
+  var search_term = req.query.search_term;
+
+  const getinfluencerTypeListFindQuery =
+    await tableNames.influencerType.findAll({
+   //where: { delete_flag: 0 },
+    });
+
+  success(
+    res,
+    "influencer Type list Details Found",
+    "influencer Type list Details Not Found",
+    getinfluencerTypeListFindQuery
+  );
+}
 
 module.exports = {
   getContentNiche,
   getState,
   getCity,
   getBusinessList,
-  
+  targetAdienceAgeGroupLists,
+  targetAudienceGenderLists,
+  influencerTypeLists,
   getBrandType,
   getCampaignPaymentType,
   getPlatform,
   getCampaignGoal,
   getLanguageList,
-  getCampaignBudgetList
+  getCampaignBudgetList,
 };

@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         defaultValue: null,
       },
+
+      influencer_type_id: {
+        type: DataTypes.INTEGER,
+        defaultValue: null,
+      },
       post: {
         type: DataTypes.BIGINT,
         defaultValue: 0,

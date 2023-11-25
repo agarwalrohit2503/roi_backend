@@ -122,7 +122,7 @@ async function editCampaign(req, res) {
   var campaign_end_dt = req.body.campaign_end_dt;
   var campaign_budget = req.body.campaign_budget;
   var image_link = req.body.image_link;
-  var platform = req.body.platform;
+
   var language_id = req.body.language_id;
 
   var eligibility = req.body.eligibility;
@@ -131,6 +131,11 @@ async function editCampaign(req, res) {
   var story = req.body.story;
   var real = req.body.real;
   var youtube = req.body.youtube;
+
+  var barter_note = req.body.barter_note;
+  var content_submission_deadline = req.body.content_submission_deadline;
+  var content_upload_date = req.body.content_upload_date;
+  var additional_notes = req.body.additional_notes;
 
   if (image_link != "") {
     image_link = await imageUpload(image_link, campaign_id);
@@ -149,6 +154,10 @@ async function editCampaign(req, res) {
     campaign_start_dt: campaign_start_dt,
     campaign_end_dt: campaign_end_dt,
     campaign_budget: campaign_budget,
+    barter_note: barter_note,
+    content_submission_deadline: content_submission_deadline,
+    content_upload_date: content_upload_date,
+    additional_notes: additional_notes,
 
     // platform: platform,
     eligibility: eligibility,
@@ -309,21 +318,38 @@ async function addCampaign(req, res) {
   var real = req.body.real;
   var youtube = req.body.youtube;
 
+  var barter_note = req.body.barter_note;
+  var content_submission_deadline = req.body.content_submission_deadline;
+  var content_upload_date = req.body.content_upload_date;
+  var additional_notes = req.body.additional_notes;
+
+  //
+  var nano = req.body.nano;
+  var micro = req.body.micro;
+  var macro = req.body.macro;
+  var mega = req.body.mega;
+  var celeb = req.body.celeb;
+
+  var influencer_type_id = req.body.influencer_type_id;
+
   try {
     const createQuery = await tableNames.Campaign.create({
       campaign_goal_id: campaign_goal_id,
       brand_id: brand_id,
       campaign_status_id: campaign_status_id,
       payment_status_id: payment_status_id,
+      barter_note: barter_note,
       campaign_name: campaign_name,
       location: location,
       campaign_about: campaign_about,
       about_product: about_product,
-
       campaign_start_dt: campaign_start_dt,
       campaign_end_dt: campaign_end_dt,
+      content_submission_deadline: content_submission_deadline,
+      content_upload_date: content_upload_date,
       campaign_budget: campaign_budget,
       eligibility: eligibility,
+      additional_notes: additional_notes,
     });
 
     if (createQuery != "") {
@@ -416,6 +442,7 @@ async function addCampaign(req, res) {
 
         let campaign_deliverables_info = {
           campaign_id: createQuery.campaign_id,
+          influencer_type_id: influencer_type_id,
           post: post,
           story: story,
           real: real,
@@ -429,6 +456,28 @@ async function addCampaign(req, res) {
           res.status(209).send({
             status: 209,
             message: "Campaign  Deliverables Not Inserted",
+          });
+        }
+
+        let campaign_number_of_influencers_info = {
+          campaign_id: createQuery.campaign_id,
+          nano: nano ?? "",
+          micro: micro ?? "",
+          macro: macro ?? "",
+          mega: mega ?? "",
+          celeb: celeb ?? "",
+        };
+        const insertcampaignNumberOfInfluencers =
+          await tableNames.campaignNumberOfInfluencers.create(
+            campaign_number_of_influencers_info
+          );
+        if (
+          insertcampaignNumberOfInfluencers == "" ||
+          insertcampaignNumberOfInfluencers == null
+        ) {
+          res.status(209).send({
+            status: 209,
+            message: "Campaign Number of influencers info Not Inserted",
           });
         }
 

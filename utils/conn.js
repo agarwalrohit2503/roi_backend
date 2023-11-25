@@ -1,6 +1,6 @@
 const dbConfig = require("../config/dbConfig");
 const { Sequelize, DataTypes } = require("sequelize");
-//const sequelize = require("sequelize");
+// const sequelize = require("sequelize");
 // const dbtest = require("./relationships");
 const Op = Sequelize.Op;
 
@@ -49,6 +49,23 @@ db.campaign_budget = require("../models/campaign_budget.model.js")(
   sequelize,
   DataTypes
 );
+
+db.influencer_type = require("../models/influencer_type.model.js")(
+  sequelize,
+  DataTypes
+);
+
+db.target_adience_age_group =
+  require("../models/target_adience_age_group.model.js")(sequelize, DataTypes);
+
+db.target_audience_gender =
+  require("../models/target_audience_gender.model.js")(sequelize, DataTypes);
+
+db.campaign_number_of_influencers =
+  require("../models/campaign_number_of_influencers.model.js")(
+    sequelize,
+    DataTypes
+  );
 
 // db.City.belongsTo(db.influencer, { foreignKey: "id_city_influencer" });
 
@@ -181,6 +198,16 @@ db.campaign_language = require("../models/campaign_language.model")(
 db.campaign_platform.belongsTo(db.campaign, {
   foreignKey: "campaign_id", // foreign table
   targetKey: "campaign_id", // primary table
+});
+
+db.campaign_number_of_influencers.belongsTo(db.campaign, {
+  foreignKey: "campaign_id", // foreign table
+  targetKey: "campaign_id", // primary table
+});
+
+db.campaign_deliverables.belongsTo(db.influencer_type, {
+  foreignKey: "influencer_type_id", // foreign table
+  targetKey: "influencer_type_id", // primary table
 });
 
 db.campaign_platform.belongsTo(db.platform, {
