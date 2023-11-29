@@ -2,7 +2,7 @@ const tableNames = require("../../../../utils/table_name");
 const operatorsAliases = require("../../../../utils/operator_aliases");
 const editParameterQuery = require("../../../../utils/edit_query");
 const { success, error } = require("../../../../utils/responseApi");
-const { literal } = require("sequelize");
+const { literal, Model } = require("sequelize");
 
 const { db, sequelize } = require("../../../../utils/conn");
 const {
@@ -10,210 +10,136 @@ const {
   imageWithPdfUpload,
 } = require("../../../../utils/image_upload");
 
-// async function campaignBudgeting(req, res) {
-//   var limit = req.query.limit;
-//   var offset = req.query.offset;
-//   var search_term = req.query.search_term;
-
-//   // var totalNumberOfInfluencer = req.body.total_influencer;
-//   // var reels_cost = req.body.reels_cost;
-//   // var video_cost = req.body.video_cost;
-//   // var story_cost = req.body.story_cost;
-//   // var post_cost_low = req.body.post_cost_low;
-//   // var post_cost_high = req.body.post_cost_high;
-
-//   //Post cost low & high
-//   var post_cost_low = 10;
-//   var post_cost_high = 2000;
-
-//   //reels cost low & high
-//   var reels_cost_low = 10;
-//   var reels_cost_high = 500;
-
-//   //Selected Influencers
-//   //var selectedInfluencers = [1, 3];
-
-//   const findinfluencer = await tableNames.influencerPrice.findAll({
-//     include: [
-//       {
-//         // attributes: [
-//         //   [
-//         //     sequelize.fn("COUNT", sequelize.col("influencer.influencer_id")),
-//         //     "incluencer",
-//         //   ],
-//         // ],
-//         model: tableNames.influencer,
-//         required: true,
-//         where: {
-//           // influencer_id: selectedInfluencers,
-//           account_delete: 0,
-//         },
-//       },
-//     ],
-//     where: {
-//       where: {
-//         [operatorsAliases.$and]: [
-//           {
-//             ...(post_cost_high || post_cost_low
-//               ? {
-//                   [operatorsAliases.$and]: [
-//                     literal(
-//                       `post_cost BETWEEN  ${post_cost_low} AND ${post_cost_high} `
-//                     ),
-//                   ],
-//                 }
-//               : {}),
-//           },
-//           {
-//             ...(reels_cost_high || reels_cost_low
-//               ? {
-//                   [operatorsAliases.$and]: [
-//                     literal(
-//                       `reels_cost BETWEEN  ${reels_cost_low} AND ${reels_cost_high} `
-//                     ),
-//                   ],
-//                 }
-//               : {}),
-//           },
-//         ],
-
-//         // ...(post_cost_high || post_cost_low
-//         //   ? {
-//         //       [operatorsAliases.$and]: [
-//         //         {
-//         //           post_cost: {
-//         //             [operatorsAliases.$between]: [
-//         //               post_cost_low,
-//         //               post_cost_high,
-//         //             ],
-//         //           },
-//         //         },
-//         //       ],
-//         //     }
-//         //   : {}),
-//       },
-//     },
-//   });
-//   // [operatorsAliases.$and]: [
-//   //   {
-//   //     ...(post_cost_high || post_cost_low
-//   //       ? {
-//   //           [operatorsAliases.$and]: [
-//   //             literal(`post_cost >= ${post_cost_high}`),
-//   //             literal(`post_cost <= ${post_cost_low}`),
-//   //           ],
-//   //         }
-//   //       : {}),
-//   //   },
-//   // ],
-//   success(
-//     res,
-//     "campaign Budgeting successfully found",
-//     "campaign Budgeting Not found",
-//     findinfluencer,
-//     0
-//   );
-// }
-
 async function campaignBudgeting(req, res) {
-  var campaign_id = req.params.campaign_id;
+  const campaign_id = req.params.campaign_id;
 
-  const campaignApplicationFindQuery =
-    await tableNames.campaignApplication.findAll({
-      where: {
-        delete_flag: 0,
-        campaign_id: campaign_id,
-        application_status_id: 2,
-      },
-    });
-
-  if (
-    campaignApplicationFindQuery == null ||
-    campaignApplicationFindQuery == ""
-  ) {
-    error(res, "campaign not found ");
-  }
-
-  //console.log(campaignApplicationFindQuery["influencer_id"]);
-
-  // const content_niche_delete = content_niche_id.map(async (item) => {
-  //   return (deleteQuery = await tableNames.campaignContentNiche.destroy({
-  //     where: {
-  //       campaign_id: campaign_id,
-  //       content_niche_id: item,
-  //     },
-  //   }));
-  // });
-
-  // const data = campaignApplicationFindQuery.map(async (item) => {
-  //   //console.log(item["influencer_id"]);
-  //   // return (
-  //   await tableNames.influencer.findAll({
-  //     where: {
-  //       influencer_id: item["influencer_id"],
-  //       account_delete: 0,
-  //     },
-  //   });
-
-  //  // console.log(influencerFindQuery);
-
-  //   return influencerFindQuery;
-
-  //   // )
-  // });
-
-  // const respData = await Promise.all(data);
-
-  // console.log(respData);
-
-  // const reviewPromises = campaignApplicationFindQuery.map(async (result) => {
-  //   const user = await tableNames.influencer.findAll({
-  //     where: {
-  //       influencer_id: result["influencer_id"],
-  //       account_delete: 0,
-  //     },
-  //   });
-  //   return user;
-  // });
-  // const reviewData = await Promise.all(reviewPromises);
-
-  // console.log(reviewData);
-
-  let userData = [];
-
-  await Promise.all(
-    campaignApplicationFindQuery.map(async (item) => {
-  
-    try {
-      var user = await tableNames.influencer.findAll({
+  try {
+    const campaignApplicationFindquery =
+      await tableNames.campaignApplication.findAll({
+        include: [
+          {
+            attributes: ["influencer_id", "influencer_type_id"],
+            model: tableNames.influencer,
+            required: false,
+            include: [
+              {
+                model: tableNames.influencerPrice,
+                required: false,
+              },
+            ],
+          },
+        ],
         where: {
-          influencer_id: item["influencer_id"],
-          account_delete: 0,
+          delete_flag: 0,
+          campaign_id: campaign_id,
+          application_status_id: 2,
         },
       });
 
-      userData.push(user);
-      } catch (error) {
-      res.status(500).send({
-        status: 500,
-        message: "Internal server error1",
+    let campaignDeliverablesLists = [];
+
+    if (campaignApplicationFindquery.length !== 0) {
+      var returnrespData = await tableNames.campaignDeliverables.findAll({
+        where: {
+          campaign_id: campaign_id,
+        },
       });
+
+      campaignDeliverablesLists.push(returnrespData);
+      var cost = 0;
+      for (var i = 0; i < campaignApplicationFindquery.length; i++) {
+        //  console.log(campaignApplicationFindquery.length);
+        cost = cost++;
+        // console.log(cost);
+
+        var itemDetails = campaignApplicationFindquery[i];
+        //  console.log(itemDetails); // Log the entire object
+        //console.log(itemDetails["influencer"]["influencer_type_id"]);
+        var infPostPrice =
+          itemDetails["influencer"]["influencer_price"]["post_cost"];
+        var infPostReelsCost =
+          itemDetails["influencer"]["influencer_price"]["reels_cost"];
+        var infPostVideoCost =
+          itemDetails["influencer"]["influencer_price"]["video_cost"];
+        var infPostStoryCost =
+          itemDetails["influencer"]["influencer_price"]["story_cost"];
+
+        var campaignDeliverablesPost = campaignDeliverablesLists[cost][
+            itemDetails["influencer"]["influencer_type_id"] - 1
+          ]?.["post"];
+
+        
+
+        // console.log("---------------------------------------------------------------");
+        // console.log(campaignDeliverablesPost);
+
+        // console.log(campaignDeliverablesLists[0][cost]["post"]);
+        // console.log(`${campaignDeliverablesPost} ---------------harsh`);
+        // var campaignDeliverablesPost = campaignDeliverablesLists[cost][itemDetails["influencer"]["influencer_type_id"]] ["post"];
+        // var campaignDeliverablesStory = campaignDeliverablesLists[cost][itemDetails["influencer"]["influencer_type_id"]]["story"];
+        // var campaignDeliverablesReel =
+        //   campaignDeliverablesLists[cost][
+        //     itemDetails["influencer"]["influencer_type_id"]
+        //   ]["reels"];
+        // var campaignDeliverablesVideo =
+        //   campaignDeliverablesLists[cost][
+        //     itemDetails["influencer"]["influencer_type_id"]
+        //   ]["youtube"];
+        // console.log("influencer_type_id type 1");
+        // console.log(itemDetails["influencer"]["influencer_type_id"]);
+
+        //Post Cost
+        var camDelPostTotal = campaignDeliverablesPost * infPostPrice;
+
+        console.log("---------------------------------------------------------------");
+
+        console.log(camDelPostTotal);
+
+        // //Story Cost
+        // var camDelStoryTotal = campaignDeliverablesStory * infPostStoryCost;
+        // //Reel Cost
+        // var camDelReelsTotal = campaignDeliverablesReel * infPostReelsCost;
+        // //Video Cost
+        // var camDelVideoTotal = campaignDeliverablesVideo * infPostVideoCost;
       }
-    })
-  );
 
-  console.log(userData);
+      //  console.log(campaignDeliverablesLists[0][0]["influencer_type_id"]);
+      // var influencerDeatils = await Promise.all(
+      //   returnrespData.map(async (item) => {
+      //     console.log(item["influencer_type_id"]);
+      //     const result1 = await tableNames.influencer.findAll({
+      //       include: [
+      //         {
+      //           model: tableNames.influencerPrice,
+      //           required: false,
+      //         },
+      //       ],
+      //       where: {
+      //         influencer_type_id: item["influencer_type_id"],
+      //         account_delete: 0,
+      //       },
+      //     });
+      //     return result1[0];
+      //   })
+      // );
 
-  // success(
-  //   res,
-  //   "campaign Budgeting successfully found",
-  //   "campaign Budgeting Not found",
-  //   userData,
-  //   0
-  // );
+      res.status(200).send({
+        status: 200,
+        // post: campaignDeliverablesLists[0][0]["post"],
+        // story: campaignDeliverablesLists[0][0]["story"],
+        // campaignDeliverablesLists: campaignDeliverablesLists[0][1]["influencer_type_id"],
+        // influencer_type_id: influencerDeatils,
+        influencerDeatils: campaignApplicationFindquery,
+        campaignDeliverablesLists: campaignDeliverablesLists[0],
+      });
+    } else {
+      console.log("No results found.");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
 module.exports = {
   campaignBudgeting,
-  //cambudgetingtest,
 };

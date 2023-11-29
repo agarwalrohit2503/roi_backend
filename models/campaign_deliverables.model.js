@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         defaultValue: 0,
       },
-      real: {
+      reels: {
         type: DataTypes.BIGINT,
         defaultValue: 0,
       },

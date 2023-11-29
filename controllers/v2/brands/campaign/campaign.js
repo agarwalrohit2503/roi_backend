@@ -310,7 +310,6 @@ async function addCampaign(req, res) {
   var about_product = req.body.about_product;
 
   var eligibility = req.body.eligibility;
-
   var language_id = req.body.language_id;
 
   var post = req.body.post;
@@ -332,6 +331,9 @@ async function addCampaign(req, res) {
 
   var influencer_type_id = req.body.influencer_type_id;
 
+  var target_audience_gender_id = req.body.target_audience_gender_id;
+
+  var target_adience_age_group_id = req.body.target_adience_age_group_id;
   try {
     const createQuery = await tableNames.Campaign.create({
       campaign_goal_id: campaign_goal_id,
@@ -478,6 +480,66 @@ async function addCampaign(req, res) {
           res.status(209).send({
             status: 209,
             message: "Campaign Number of influencers info Not Inserted",
+          });
+        }
+
+        let campaignTargetAudienceGenderInsertQuery = await Promise.all(
+          target_audience_gender_id.map(async (item) => {
+            try {
+              let target_audience_gender_Info = {
+                campaign_id: createQuery.campaign_id,
+                target_audience_gender_id: item,
+              };
+
+          var    campaignTargetAudienceGender =
+                await tableNames.campaignTargetAudienceGender.create(
+                  target_audience_gender_Info
+                );
+
+              return campaignTargetAudienceGender;
+            } catch (error) {
+              return { ...item, error };
+            }
+          })
+        );
+
+        if (
+          campaignTargetAudienceGenderInsertQuery == "" ||
+          campaignTargetAudienceGenderInsertQuery == null
+        ) {
+          res.status(209).send({
+            status: 209,
+            message: "Campaign Target Audience Gender Not Inserted",
+          });
+        }
+
+        let campaignTargetAdienceAgeGroupInsertQuery = await Promise.all(
+          target_adience_age_group_id.map(async (item) => {
+            try {
+              let campaignTargetAdienceAgeGroupInfo = {
+                campaign_id: createQuery.campaign_id,
+                target_adience_age_group_id: item,
+              };
+
+            var  campaignTargetAgeGroupInfo =
+                await tableNames.campaignTargetAdienceAgeGroup.create(
+                  campaignTargetAdienceAgeGroupInfo
+                );
+
+              return campaignTargetAgeGroupInfo;
+            } catch (error) {
+              return { ...item, error };
+            }
+          })
+        );
+
+        if (
+          (campaignTargetAdienceAgeGroupInsertQuery == "") ||
+          (campaignTargetAdienceAgeGroupInsertQuery == null)
+        ) {
+          res.status(209).send({
+            status: 209,
+            message: "Campaign Target Audience Age Group Not Inserted",
           });
         }
 

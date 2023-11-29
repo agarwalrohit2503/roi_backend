@@ -80,6 +80,10 @@ tableNames = {
   campaignApplicationContent: db.campaign_application_content,
   campaignApplicationLink: db.campaign_application_link,
 
+  campaignTargetAudienceGender: db.campaign_target_audience_gender,
+
+  campaignTargetAdienceAgeGroup: db.campaign_target_adience_age_group,
+
   //resource start
   Industry: db.industry,
   //resource end

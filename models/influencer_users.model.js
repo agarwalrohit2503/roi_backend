@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
+      influencer_type_id: {
+        type: DataTypes.INTEGER,
+        defaultValue: null,
+      },
       name: {
         type: DataTypes.STRING,
         defaultValue: null,

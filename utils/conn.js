@@ -55,6 +55,18 @@ db.influencer_type = require("../models/influencer_type.model.js")(
   DataTypes
 );
 
+db.campaign_target_audience_gender =
+  require("../models/campaign_target_adience_gender.model.js")(
+    sequelize,
+    DataTypes
+  );
+
+db.campaign_target_adience_age_group =
+  require("../models/campaign_target_adience_age_group.model.js")(
+    sequelize,
+    DataTypes
+  );
+
 db.target_adience_age_group =
   require("../models/target_adience_age_group.model.js")(sequelize, DataTypes);
 
@@ -198,6 +210,26 @@ db.campaign_language = require("../models/campaign_language.model")(
 db.campaign_platform.belongsTo(db.campaign, {
   foreignKey: "campaign_id", // foreign table
   targetKey: "campaign_id", // primary table
+});
+
+db.campaign_target_audience_gender.belongsTo(db.campaign, {
+  foreignKey: "campaign_id", // foreign table
+  targetKey: "campaign_id", // primary table
+});
+
+db.campaign_target_adience_age_group.belongsTo(db.campaign, {
+  foreignKey: "campaign_id", // foreign table
+  targetKey: "campaign_id", // primary table
+});
+
+db.campaign_target_audience_gender.belongsTo(db.target_audience_gender, {
+  foreignKey: "target_audience_gender_id", // foreign table
+  targetKey: "target_audience_gender_id", // primary table
+});
+
+db.campaign_target_adience_age_group.belongsTo(db.target_adience_age_group, {
+  foreignKey: "target_adience_age_group_id", // foreign table
+  targetKey: "target_adience_age_group_id", // primary table
 });
 
 db.campaign_number_of_influencers.belongsTo(db.campaign, {
