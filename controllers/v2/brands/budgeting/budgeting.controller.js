@@ -94,6 +94,7 @@ async function campaignBudgeting(req, res) {
         console.log("---------------------------------------------------------------");
 
         console.log(camDelPostTotal);
+        
 
         // //Story Cost
         // var camDelStoryTotal = campaignDeliverablesStory * infPostStoryCost;
