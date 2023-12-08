@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/theharshguptaflutter/Roi-Backend#readme",
   "dependencies": {
-    "body-parser": "^1.20.2"
-   
+    "body-parser": "^1.20.2",
+    "core-js": "^3.34.0",
+ 
   }
 }
