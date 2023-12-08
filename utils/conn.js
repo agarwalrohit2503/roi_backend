@@ -500,9 +500,9 @@ db.campaign_application_link.belongsTo(db.campaign_application, {
 });
 
 // ///////////////////////////sync query start////////////////////////////
-db.sequelize.sync({ force: false }).then(() => {
-  console.log("yes re-sync done!");
-});
+// db.sequelize.sync({ force: false }).then(() => {
+//   console.log("yes re-sync done!");
+// });
 // ///////////////////////////sync query  end/////////////////////////////
 
 ///////////////////////////table join query//////////////////////
