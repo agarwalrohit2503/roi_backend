@@ -314,7 +314,7 @@ async function addCampaign(req, res) {
 
   var post = req.body.post;
   var story = req.body.story;
-  var real = req.body.real;
+  var reels = req.body.reels;
   var youtube = req.body.youtube;
 
   var barter_note = req.body.barter_note;
@@ -334,226 +334,254 @@ async function addCampaign(req, res) {
   var target_audience_gender_id = req.body.target_audience_gender_id;
 
   var target_adience_age_group_id = req.body.target_adience_age_group_id;
-  try {
-    const createQuery = await tableNames.Campaign.create({
-      campaign_goal_id: campaign_goal_id,
-      brand_id: brand_id,
-      campaign_status_id: campaign_status_id,
-      payment_status_id: payment_status_id,
-      barter_note: barter_note,
-      campaign_name: campaign_name,
-      location: location,
-      campaign_about: campaign_about,
-      about_product: about_product,
-      campaign_start_dt: campaign_start_dt,
-      campaign_end_dt: campaign_end_dt,
-      content_submission_deadline: content_submission_deadline,
-      content_upload_date: content_upload_date,
-      campaign_budget: campaign_budget,
-      eligibility: eligibility,
-      additional_notes: additional_notes,
-    });
 
-    if (createQuery != "") {
-      var finalImgeUrl = await imageUpload(image_link, createQuery.campaign_id);
+  var campaign_deliverables_info = req.body.campaign_deliverables_info;
 
-      if (finalImgeUrl == "" || finalImgeUrl == null) {
+
+   try {
+  const createQuery = await tableNames.Campaign.create({
+    campaign_goal_id: campaign_goal_id,
+    brand_id: brand_id,
+    campaign_status_id: campaign_status_id,
+    payment_status_id: payment_status_id,
+    barter_note: barter_note,
+    campaign_name: campaign_name,
+    location: location,
+    campaign_about: campaign_about,
+    about_product: about_product,
+    campaign_start_dt: campaign_start_dt,
+    campaign_end_dt: campaign_end_dt,
+    content_submission_deadline: content_submission_deadline,
+    content_upload_date: content_upload_date,
+    campaign_budget: campaign_budget,
+    eligibility: eligibility,
+    additional_notes: additional_notes,
+  });
+
+  if (createQuery != "") {
+    var finalImgeUrl = await imageUpload(image_link, createQuery.campaign_id);
+
+    if (finalImgeUrl == "" || finalImgeUrl == null) {
+      res.status(209).send({
+        status: 209,
+        message: "Campaign Images Not Uploaded",
+      });
+    } else {
+      var campaignContentNicheRespData = await Promise.all(
+        content_niche_id.map(async (item) => {
+          try {
+            let content_niche_info = {
+              campaign_id: createQuery.campaign_id,
+              content_niche_id: item,
+            };
+            insertContentNicheQuery =
+              await tableNames.campaignContentNiche.create(
+                content_niche_info
+              );
+
+            return insertContentNicheQuery;
+          } catch (error) {
+            return { ...item, error };
+          }
+        })
+      );
+      if (campaignContentNicheRespData == "") {
         res.status(209).send({
           status: 209,
-          message: "Campaign Images Not Uploaded",
+          message: "Campaing Content Niche not inserted",
         });
-      } else {
-        let campaignContentNicheRespData = await Promise.all(
-          content_niche_id.map(async (item) => {
-            try {
-              let content_niche_info = {
-                campaign_id: createQuery.campaign_id,
-                content_niche_id: item,
-              };
-              insertContentNicheQuery =
-                await tableNames.campaignContentNiche.create(
-                  content_niche_info
-                );
+      }
+      let campaignPlatformRespData = await Promise.all(
+        platform_id.map(async (item) => {
+          try {
+            let campaign_campaignPlatform_info = {
+              campaign_id: createQuery.campaign_id,
+              platform_id: item,
+            };
+            insertcampaignPlatformQuery =
+              await tableNames.campaignPlatform.create(
+                campaign_campaignPlatform_info
+              );
 
-              return insertContentNicheQuery;
-            } catch (error) {
-              return { ...item, error };
-            }
-          })
-        );
-        if (campaignContentNicheRespData == "") {
-          res.status(209).send({
-            status: 209,
-            message: "Campaing Content Niche not inserted",
-          });
-        }
-        let campaignPlatformRespData = await Promise.all(
-          platform_id.map(async (item) => {
-            try {
-              let campaign_campaignPlatform_info = {
-                campaign_id: createQuery.campaign_id,
-                platform_id: item,
-              };
-              insertcampaignPlatformQuery =
-                await tableNames.campaignPlatform.create(
-                  campaign_campaignPlatform_info
-                );
+            return insertcampaignPlatformQuery;
+          } catch (error) {
+            return { ...item, error };
+          }
+        })
+      );
+      if (campaignPlatformRespData == "") {
+        res.status(209).send({
+          status: 209,
+          message: "Platform Not Inserted",
+        });
+      }
 
-              return insertcampaignPlatformQuery;
-            } catch (error) {
-              return { ...item, error };
-            }
-          })
-        );
-        if (campaignPlatformRespData == "") {
-          res.status(209).send({
-            status: 209,
-            message: "Platform Not Inserted",
-          });
-        }
+      let campaignLanguageRespData = await Promise.all(
+        language_id.map(async (item) => {
+          try {
+            let campaign_language_info = {
+              campaign_id: createQuery.campaign_id,
+              language_id: item,
+            };
 
-        let campaignLanguageRespData = await Promise.all(
-          language_id.map(async (item) => {
-            try {
-              let campaign_language_info = {
-                campaign_id: createQuery.campaign_id,
-                language_id: item,
-              };
+            insertCampaignLanguageInfoQuery =
+              await tableNames.campaignLanguage.create(
+                campaign_language_info
+              );
 
-              insertCampaignLanguageInfoQuery =
-                await tableNames.campaignLanguage.create(
-                  campaign_language_info
-                );
+            return insertCampaignLanguageInfoQuery;
+          } catch (error) {
+            return { ...item, error };
+          }
+        })
+      );
 
-              return insertCampaignLanguageInfoQuery;
-            } catch (error) {
-              return { ...item, error };
-            }
-          })
-        );
+      if (
+        (campaignLanguageRespData == "") |
+        (campaignLanguageRespData == null)
+      ) {
+        res.status(209).send({
+          status: 209,
+          message: "language Not Inserted",
+        });
+      }
 
-        if (
-          (campaignLanguageRespData == "") |
-          (campaignLanguageRespData == null)
-        ) {
-          res.status(209).send({
-            status: 209,
-            message: "language Not Inserted",
-          });
-        }
+  // let campaign_deliverables_info = [
+  //   {
+  //     influencer_type_id: 1,
+  //     post: 1,
+  //     story: 1,
+  //     reels: 1,
+  //     youtube: 1,
+  //   },
+  //   {
+  //     influencer_type_id: 2,
+  //     post: 21,
+  //     story: 21,
+  //     reels: 21,
+  //     youtube: 21,
+  //   },
+  // ];
 
-        let campaign_deliverables_info = {
-          campaign_id: createQuery.campaign_id,
-          influencer_type_id: influencer_type_id,
-          post: post,
-          story: story,
-          real: real,
-          youtube: youtube,
-        };
+  let campaignDeliverablesRespData = await Promise.all(
+    campaign_deliverables_info.map(async (item) => {
+      try {
         insertcampaignDeliverablesQuery =
-          await tableNames.campaignDeliverables.create(
-            campaign_deliverables_info
-          );
-        if (insertcampaignDeliverablesQuery == "") {
+
+          await tableNames.campaignDeliverables.create({
+            ...item,
+            campaign_id: createQuery.campaign_id,
+          });
+
+        if (insertcampaignDeliverablesQuery == ""||insertcampaignDeliverablesQuery == null) {
           res.status(209).send({
             status: 209,
             message: "Campaign  Deliverables Not Inserted",
           });
         }
 
-        let campaign_number_of_influencers_info = {
-          campaign_id: createQuery.campaign_id,
-          nano: nano ?? "",
-          micro: micro ?? "",
-          macro: macro ?? "",
-          mega: mega ?? "",
-          celeb: celeb ?? "",
-        };
-        const insertcampaignNumberOfInfluencers =
-          await tableNames.campaignNumberOfInfluencers.create(
-            campaign_number_of_influencers_info
-          );
-        if (
-          insertcampaignNumberOfInfluencers == "" ||
-          insertcampaignNumberOfInfluencers == null
-        ) {
-          res.status(209).send({
-            status: 209,
-            message: "Campaign Number of influencers info Not Inserted",
-          });
-        }
-
-        let campaignTargetAudienceGenderInsertQuery = await Promise.all(
-          target_audience_gender_id.map(async (item) => {
-            try {
-              let target_audience_gender_Info = {
-                campaign_id: createQuery.campaign_id,
-                target_audience_gender_id: item,
-              };
-
-          var    campaignTargetAudienceGender =
-                await tableNames.campaignTargetAudienceGender.create(
-                  target_audience_gender_Info
-                );
-
-              return campaignTargetAudienceGender;
-            } catch (error) {
-              return { ...item, error };
-            }
-          })
-        );
-
-        if (
-          campaignTargetAudienceGenderInsertQuery == "" ||
-          campaignTargetAudienceGenderInsertQuery == null
-        ) {
-          res.status(209).send({
-            status: 209,
-            message: "Campaign Target Audience Gender Not Inserted",
-          });
-        }
-
-        let campaignTargetAdienceAgeGroupInsertQuery = await Promise.all(
-          target_adience_age_group_id.map(async (item) => {
-            try {
-              let campaignTargetAdienceAgeGroupInfo = {
-                campaign_id: createQuery.campaign_id,
-                target_adience_age_group_id: item,
-              };
-
-            var  campaignTargetAgeGroupInfo =
-                await tableNames.campaignTargetAdienceAgeGroup.create(
-                  campaignTargetAdienceAgeGroupInfo
-                );
-
-              return campaignTargetAgeGroupInfo;
-            } catch (error) {
-              return { ...item, error };
-            }
-          })
-        );
-
-        if (
-          (campaignTargetAdienceAgeGroupInsertQuery == "") ||
-          (campaignTargetAdienceAgeGroupInsertQuery == null)
-        ) {
-          res.status(209).send({
-            status: 209,
-            message: "Campaign Target Audience Age Group Not Inserted",
-          });
-        }
-
-        res.status(200).send({
-          status: 200,
-          message: "Campaign Created",
-        });
+        return insertcampaignDeliverablesQuery;
+      } catch (error) {
+        return { ...item, error };
       }
-    } else {
-      res.status(409).send({
-        status: 409,
-        message: "Campaign Not Created ",
-      });
+    })
+  );
+
+  console.log(campaignDeliverablesRespData);
+
+  let campaign_number_of_influencers_info = {
+    campaign_id: createQuery.campaign_id,
+    nano: nano ?? "",
+    micro: micro ?? "",
+    macro: macro ?? "",
+    mega: mega ?? "",
+    celeb: celeb ?? "",
+  };
+  const insertcampaignNumberOfInfluencers =
+    await tableNames.campaignNumberOfInfluencers.create(
+      campaign_number_of_influencers_info
+    );
+  if (
+    insertcampaignNumberOfInfluencers == "" ||
+    insertcampaignNumberOfInfluencers == null
+  ) {
+    res.status(209).send({
+      status: 209,
+      message: "Campaign Number of influencers info Not Inserted",
+    });
+  }
+
+  let campaignTargetAudienceGenderInsertQuery = await Promise.all(
+    target_audience_gender_id.map(async (item) => {
+      try {
+        let target_audience_gender_Info = {
+          campaign_id: createQuery.campaign_id,
+          target_audience_gender_id: item,
+        };
+
+    var    campaignTargetAudienceGender =
+          await tableNames.campaignTargetAudienceGender.create(
+            target_audience_gender_Info
+          );
+
+        return campaignTargetAudienceGender;
+      } catch (error) {
+        return { ...item, error };
+      }
+    })
+  );
+
+  if (
+    campaignTargetAudienceGenderInsertQuery == "" ||
+    campaignTargetAudienceGenderInsertQuery == null
+  ) {
+    res.status(209).send({
+      status: 209,
+      message: "Campaign Target Audience Gender Not Inserted",
+    });
+  }
+
+  let campaignTargetAdienceAgeGroupInsertQuery = await Promise.all(
+    target_adience_age_group_id.map(async (item) => {
+      try {
+        let campaignTargetAdienceAgeGroupInfo = {
+          campaign_id: createQuery.campaign_id,
+          target_adience_age_group_id: item,
+        };
+
+      var  campaignTargetAgeGroupInfo =
+          await tableNames.campaignTargetAdienceAgeGroup.create(
+            campaignTargetAdienceAgeGroupInfo
+          );
+
+        return campaignTargetAgeGroupInfo;
+      } catch (error) {
+        return { ...item, error };
+      }
+    })
+  );
+
+  if (
+    (campaignTargetAdienceAgeGroupInsertQuery == "") ||
+    (campaignTargetAdienceAgeGroupInsertQuery == null)
+  ) {
+    res.status(209).send({
+      status: 209,
+      message: "Campaign Target Audience Age Group Not Inserted",
+    });
+  }
+
+  res.status(200).send({
+    status: 200,
+    message: "Campaign Created",
+  });
     }
+  } else {
+    res.status(409).send({
+      status: 409,
+      message: "Campaign Not Created ",
+    });
+  }
   } catch (err) {
     res.status(500).send({
       status: 500,
