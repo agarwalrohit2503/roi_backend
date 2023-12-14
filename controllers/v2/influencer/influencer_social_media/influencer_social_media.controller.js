@@ -69,7 +69,6 @@ async function addInfluencerSocialMediaDetails(req, res) {
   }
 }
 
-
 module.exports = {
   addInfluencerSocialMediaDetails,
 };
