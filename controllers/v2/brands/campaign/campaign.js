@@ -35,7 +35,7 @@ async function getAllCampaign(req, res) {
           "campaign_id",
           "post",
           "story",
-          "real",
+          "reels",
           "youtube",
         ],
         model: tableNames.campaignDeliverables,
@@ -258,7 +258,7 @@ async function editCampaign(req, res) {
     let DeliverablesEdit = {
       post: post,
       story: story,
-      real: real,
+      reels: real,
       youtube: youtube,
     };
     var DeliverablesEditedData = await editParameterQuery(DeliverablesEdit);
@@ -620,7 +620,7 @@ async function getCampaignDetails(req, res) {
             "campaign_id",
             "post",
             "story",
-            "real",
+            "reels",
             "youtube",
           ],
           model: tableNames.campaignDeliverables,
