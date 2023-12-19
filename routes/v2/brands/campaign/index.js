@@ -11,6 +11,7 @@ const {
   campaignLanguageDelete,
   campaignImageDelete,
   getCampaignImages,
+  campaignDeliverablesDelete,
 } = require("../../../../controllers/v2/brands/campaign/campaign");
 
 router.get("/get/:brand_id", (req, res) => {
@@ -52,4 +53,10 @@ router.get("/campaign-image/:campaign_id", (req, res) => {
   getCampaignImages(req, res);
 });
 
+router.delete(
+  "/campaign-deliverables-delete/:campaign_deliverables_id",
+  (req, res) => {
+    campaignDeliverablesDelete(req, res);
+  }
+);
 module.exports = router;

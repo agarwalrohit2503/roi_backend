@@ -21,7 +21,6 @@ async function authJWT(req, res, next) {
           res.status(200).send({ message: "not authorized" });
         }
         {
-          
           if (data.brandlog == true) {
             let Sqltoken = await tableNames.access_tokens.findOne({
               where: { access_tokens: token, brand_id: data.brands_id },

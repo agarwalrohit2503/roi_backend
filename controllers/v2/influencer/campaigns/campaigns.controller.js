@@ -32,6 +32,7 @@ async function getCampaigns(req, res) {
         {
           attributes: [
             "campaign_deliverables_id",
+            "influencer_type_id",
             "campaign_id",
             "post",
             "story",
@@ -39,6 +40,15 @@ async function getCampaigns(req, res) {
             "youtube",
           ],
           model: tableNames.campaignDeliverables,
+        },
+        {
+          model: tableNames.campaignNumberOfInfluencers,
+        },
+        {
+          model: tableNames.campaignTargetAdienceAgeGroup,
+        },
+        {
+          model: tableNames.campaignTargetAudienceGender,
         },
         {
           attributes: ["campaign_platform_id"],
@@ -138,6 +148,7 @@ async function getCampaignDetails(req, res) {
         {
           attributes: [
             "campaign_deliverables_id",
+            "influencer_type_id",
             "campaign_id",
             "post",
             "story",
@@ -145,6 +156,15 @@ async function getCampaignDetails(req, res) {
             "youtube",
           ],
           model: tableNames.campaignDeliverables,
+        },
+        {
+          model: tableNames.campaignNumberOfInfluencers,
+        },
+        {
+          model: tableNames.campaignTargetAdienceAgeGroup,
+        },
+        {
+          model: tableNames.campaignTargetAudienceGender,
         },
         {
           attributes: ["campaign_platform_id"],

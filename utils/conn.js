@@ -510,6 +510,18 @@ db.influencer.hasMany(db.influencer_instagram, {
   foreignKey: "influencer_id",
 });
 
+db.campaign.hasMany(db.campaign_target_adience_age_group, {
+  foreignKey: "campaign_id",
+});
+
+db.campaign.hasMany(db.campaign_target_audience_gender, {
+  foreignKey: "campaign_id",
+});
+
+db.campaign.hasMany(db.campaign_number_of_influencers, {
+  foreignKey: "campaign_id",
+});
+
 db.influencer.hasMany(db.influencer_instagram_post, {
   foreignKey: "influencer_id",
 });
