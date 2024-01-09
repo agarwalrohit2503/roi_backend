@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
         // allowNull: false,
         defaultValue: null,
       },
+      inf_email: {
+        type: DataTypes.INTEGER,
+        defaultValue: null,
+      },
       otp_flag: {
         type: DataTypes.TINYINT,
         defaultValue: 0,

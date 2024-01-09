@@ -576,7 +576,7 @@ db.campaign_platform.hasMany(db.platform, {
 db.influencer.hasMany(db.influencer_profile_status, {
   foreignKey: "influencer_id",
 });
-db.campaign.hasOne(db.campaign_deliverables, {
+db.campaign.hasMany(db.campaign_deliverables, {
   foreignKey: "campaign_id",
 });
 

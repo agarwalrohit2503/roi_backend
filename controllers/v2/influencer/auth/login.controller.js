@@ -358,9 +358,104 @@ async function influencerSocialLogin(req, res) {
     }
   }
 }
+
+async function googleWithLogin(req, res) {
+  const email = req.body.email;
+  const google_access_token = req.body.google_access_token;
+
+  const vcode = uuidv4();
+
+  let SqlQuery = await tableNames.influencer.findOne({
+    where: { email: email },
+  });
+
+  if (!SqlQuery) {
+    const infUserCreate = await tableNames.influencer.create({
+      email: email,
+    });
+    console.log(infUserCreate);
+
+    // if (infUserCreate === 0) {
+    //   res.status(404).send({
+    //     status: 404,
+    //     message: "Otp not send",
+    //   });
+    // } else {
+    //   res.status(200).send({
+    //     status: 200,
+    //     message: "successfully login",
+    //     verification_code: UserOtp["verification_code"],
+    //   });
+    // }
+  } else {
+    res.status(200).send({
+      status: 200,
+      message: "successfully login",
+      // verification_code: UserOtp["verification_code"],
+    });
+  }
+  // else {
+  //   //try {
+
+  //   var data = SqlQuery.toJSON();
+
+  //   if (data["account_delete"] == 1) {
+  //     res.status(404).send({
+  //       status: 404,
+  //       message: "you account has been deactivated",
+  //     });
+  //   } else {
+  //     const UserOtp = await tableNames.otp.create({
+  //       verification_code: vcode,
+  //       otp_code: 1111,
+  //       influencer_id: data["influencer_id"],
+  //       inf_email: email,
+  //     });
+
+  //     if (UserOtp === 0) {
+  //       res.status(404).send({
+  //         status: 404,
+  //         message: "Otp not send",
+  //       });
+  //     } else {
+  //       const findall = await tableNames.influencerProfileStatus.findAll({
+  //         where: {
+  //           influencer_id: data["influencer_id"],
+  //         },
+  //       });
+  //       if (findall == "") {
+  //         const ProfileStatusFind =
+  //           await tableNames.influencerProfileStatus.create({
+  //             influencer_id: data["influencer_id"],
+  //           });
+
+  //         if (!ProfileStatusFind) {
+  //           res.status(404).send({
+  //             status: 404,
+  //             message: "try again to login",
+  //           });
+  //         } else {
+  //           res.status(200).send({
+  //             status: 200,
+  //             message: "successfully login",
+  //             verification_code: UserOtp["verification_code"],
+  //           });
+  //         }
+  //       } else {
+  //         res.status(200).send({
+  //           status: 200,
+  //           message: "successfully login",
+  //           verification_code: UserOtp["verification_code"],
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
+}
 module.exports = {
   influencerLogin,
 
   otpverify,
   influencerSocialLogin,
+  googleWithLogin,
 };

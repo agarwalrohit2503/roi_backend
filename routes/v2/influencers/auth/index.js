@@ -4,11 +4,15 @@ const {
   influencerLogin,
   otpverify,
   influencerSocialLogin,
+  googleWithLogin,
 } = require("../../../../controllers/v2/influencer/auth/login.controller");
 
 router.post("/login", (req, res) => {
   influencerLogin(req, res);
-  console.log("okk");
+});
+
+router.post("/google-login", (req, res) => {
+  googleWithLogin(req, res);
 });
 
 router.post("/otp-verify", (req, res) => {
