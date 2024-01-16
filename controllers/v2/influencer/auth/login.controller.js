@@ -3,7 +3,7 @@ const { db, sequelize } = require("../../../../utils/conn");
 var jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const otpTimeValidation = require("../../../../utils/otp_time_checker");
-
+const jwtTokenGen = require("../../../../utils/jwt_token_generation");
 async function influencerLogin(req, res) {
   const mobile_number = req.body.mobile_number;
 
@@ -361,38 +361,123 @@ async function influencerSocialLogin(req, res) {
 
 async function googleWithLogin(req, res) {
   const email = req.body.email;
+
   const google_access_token = req.body.google_access_token;
 
-  const vcode = uuidv4();
+  // const vcode = uuidv4();
 
   let SqlQuery = await tableNames.influencer.findOne({
     where: { email: email },
   });
 
+  // console.log(SqlQuery);
   if (!SqlQuery) {
-    const infUserCreate = await tableNames.influencer.create({
+    const infUserCreateQuery = await tableNames.influencer.create({
       email: email,
     });
-    console.log(infUserCreate);
 
-    // if (infUserCreate === 0) {
-    //   res.status(404).send({
-    //     status: 404,
-    //     message: "Otp not send",
-    //   });
-    // } else {
-    //   res.status(200).send({
-    //     status: 200,
-    //     message: "successfully login",
-    //     verification_code: UserOtp["verification_code"],
-    //   });
-    // }
+    if (infUserCreateQuery === 0) {
+      res.status(404).send({
+        status: 404,
+        message: "Otp not send",
+      });
+    } else {
+      const findSocialTokenQuery = await tableNames.socialAcessToken.findOne({
+        where: {
+          influencer_id: infUserCreateQuery["influencer_id"],
+        },
+      });
+
+      if (
+        findSocialTokenQuery == null ||
+        findSocialTokenQuery == "" ||
+        findSocialTokenQuery == []
+      ) {
+        let socialTokenInfoData = {
+          influencer_id: infUserCreateQuery["influencer_id"],
+          google_token: google_access_token,
+        };
+        const socialTokenAccessCreateQuery =
+          await tableNames.socialAcessToken.create(socialTokenInfoData);
+        var tokenData = await jwtTokenGen(infUserCreateQuery["influencer_id"]);
+        res.status(200).send({
+          status: 200,
+          message: "successfully login update",
+          influencer_id: infUserCreateQuery["influencer_id"],
+          token: tokenData,
+        });
+      } else {
+        let socialTokenInfoData = {
+          influencer_id: infUserCreateQuery["influencer_id"],
+          google_token: google_access_token,
+        };
+        const socialTokenUpdateQuery = await tableNames.socialAcessToken.update(
+          socialTokenInfoData,
+          {
+            where: {
+              influencer_id: infUserCreateQuery["influencer_id"],
+            },
+          }
+        );
+        var tokenData = await jwtTokenGen(infUserCreateQuery["influencer_id"]);
+        res.status(200).send({
+          status: 200,
+          message: "successfully login update",
+          influencer_id: infUserCreateQuery["influencer_id"],
+          token: tokenData,
+        });
+      }
+    }
   } else {
-    res.status(200).send({
-      status: 200,
-      message: "successfully login",
-      // verification_code: UserOtp["verification_code"],
+    const findSocialTokenQuery = await tableNames.socialAcessToken.findOne({
+      where: {
+        influencer_id: SqlQuery["influencer_id"],
+      },
     });
+
+    if (
+      findSocialTokenQuery == null ||
+      findSocialTokenQuery == "" ||
+      findSocialTokenQuery == []
+    ) {
+      let socialTokenInfoData = {
+        influencer_id: SqlQuery["influencer_id"],
+        google_token: google_access_token,
+      };
+      const socialTokenAccessCreateQuery =
+        await tableNames.socialAcessToken.create(socialTokenInfoData);
+
+      var tokenData = await jwtTokenGen(SqlQuery["influencer_id"]);
+      res.status(200).send({
+        status: 200,
+        message: "successfully login update",
+        influencer_id: SqlQuery["influencer_id"],
+        token: tokenData,
+      });
+    } else {
+      let socialTokenInfoData = {
+        influencer_id: SqlQuery["influencer_id"],
+        google_token: google_access_token,
+      };
+      const socialTokenUpdateQuery = await tableNames.socialAcessToken.update(
+        socialTokenInfoData,
+        {
+          where: {
+            influencer_id: SqlQuery["influencer_id"],
+          },
+        }
+      );
+      console.log(SqlQuery["influencer_id"]);
+      var tokenData = await jwtTokenGen(SqlQuery["influencer_id"]);
+
+      res.status(200).send({
+        status: 200,
+        message: "successfully login update",
+        influencer_id: SqlQuery["influencer_id"],
+
+        token: tokenData,
+      });
+    }
   }
   // else {
   //   //try {

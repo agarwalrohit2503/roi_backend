@@ -39,7 +39,7 @@ db.influencer = require("../models/influencer_users.model")(
   sequelize,
   DataTypes
 );
-db.fb_access_tokens = require("../models/influencer_social_token.model.js")(
+db.social_access_tokens = require("../models/social_access_token.model.js")(
   sequelize,
   DataTypes
 );
@@ -123,7 +123,9 @@ db.content_niche = require("../models/content_niche.model")(
 db.influencer_content_niche =
   require("../models/influencer_content_niche.model")(sequelize, DataTypes);
 db.industry = require("../models/industry.model")(sequelize, DataTypes);
+
 db.brand_type = require("../models/brand_type.model")(sequelize, DataTypes);
+
 db.brand_industry = require("../models/brand_industry.model")(
   sequelize,
   DataTypes
@@ -134,35 +136,43 @@ db.configuration = require("../models/configration.model")(
   DataTypes
 );
 db.brands_file = require("../models/brand_file.model")(sequelize, DataTypes);
+
 db.campaign_payment_type = require("../models/campaign_payment_type.model")(
   sequelize,
   DataTypes
 );
+
 db.campaign_status = require("../models/campaign_status.model")(
   sequelize,
   DataTypes
 );
+
 db.campaign_application = require("../models/campaign_application.model")(
   sequelize,
   DataTypes
 );
 db.campaign = require("../models/campaign.model")(sequelize, DataTypes);
+
 // db.favourite_influencer = require("../models/favourite_influencer.model")(
 //   sequelize,
 //   DataTypes
 // );
+
 db.access_tokens = require("../models/access_tokens.model")(
   sequelize,
   DataTypes
 );
+
 db.campaignContentNiche = require("../models/campaign_content_niche.model")(
   sequelize,
   DataTypes
 );
+
 db.application_status = require("../models/application_status.model")(
   sequelize,
   DataTypes
 );
+
 db.influencer_profile_status =
   require("../models/influencer_profile_status.model")(sequelize, DataTypes);
 
@@ -499,6 +509,11 @@ db.campaign_application_link.belongsTo(db.campaign_application, {
   targetKey: "campaign_applied_id", // primary table
 });
 
+db.social_access_tokens.belongsTo(db.influencer, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
 // ///////////////////////////sync query start////////////////////////////
 // db.sequelize.sync({ force: false }).then(() => {
 //   console.log("yes re-sync done!");
@@ -717,4 +732,11 @@ db.influencer.hasMany(db.influencer_instagram, {
 });
 
 //////////////////////////brands influends demo end//////////////////
+
+////////////////////social table link start ///////////////////////////
+db.influencer.hasMany(db.social_access_tokens, {
+  foreignKey: "influencer_id",
+});
+
+////////////////////social table link end ////////////////////////////
 module.exports = { db, sequelize, operatorsAliases };

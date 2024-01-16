@@ -1,21 +1,26 @@
 const tableNames = require("../utils/table_name");
 module.exports = (sequelize, DataTypes) => {
-  const fb_access_tokens = sequelize.define(
-    "fb_access_tokens",
+  const social_access_tokens = sequelize.define(
+    "social_access_tokens",
     {
-      influencer_social_tokens_id: {
+      social_access_tokens_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
-      },
-      fb_tokens: {
-        type: DataTypes.CHAR,
       },
       influencer_id: {
         type: DataTypes.INTEGER,
         defaultValue: null,
       },
-
+      facebook_token: {
+        type: DataTypes.STRING,
+      },
+      instagram_token: {
+        type: DataTypes.STRING,
+      },
+      google_token: {
+        type: DataTypes.STRING,
+      },
       delete_flag: {
         type: DataTypes.TINYINT,
         defaultValue: 0,
@@ -26,5 +31,5 @@ module.exports = (sequelize, DataTypes) => {
       updatedAt: false,
     }
   );
-  return fb_access_tokens;
+  return social_access_tokens;
 };
