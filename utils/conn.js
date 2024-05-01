@@ -20,9 +20,8 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     timestamps: true,
     freezeTableName: true,
   },
-  logging: true,
+  logging: false,
 });
-
 try {
   sequelize.authenticate();
   console.log("Connection has been established successfully.");
