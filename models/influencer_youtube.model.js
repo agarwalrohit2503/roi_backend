@@ -49,6 +49,35 @@ module.exports = (sequelize, DataTypes) => {
         total_video_count: {
             type: DataTypes.BIGINT,
         },
+        ///
+        likes: {
+            type: DataTypes.BIGINT,
+            defaultValue: 0
+        },
+        dislikes: {
+            type: DataTypes.BIGINT,
+            defaultValue: 0
+        },
+        comments: {
+            type: DataTypes.BIGINT,
+            defaultValue: 0
+        },
+        shares: {
+            type: DataTypes.BIGINT,
+            defaultValue: 0
+        },
+        views: {
+            type: DataTypes.BIGINT,
+            defaultValue: 0
+        },
+        averageViewDuration: {
+            type: DataTypes.BIGINT,
+            defaultValue: 0
+        },
+        estimatedMinutesWatched: {
+            type: DataTypes.BIGINT,
+            defaultValue: 0
+        },
        
         delete_flag: {
             type: DataTypes.TINYINT,

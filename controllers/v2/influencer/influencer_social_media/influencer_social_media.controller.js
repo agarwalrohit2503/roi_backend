@@ -75,7 +75,10 @@ async function addInfluencerSocialMediaDetails(req, res) {
 //////////////////////YOUTUBE API START////////////////////////////////
 async function addInfluencerYoutubeChannel(req, res) {
   const { influencer_id } = req.params;
-  const { email, google_token } = req.body;
+  const { email, google_token, channel_id } = req.body;
+
+  console.log(google_token);
+  console.log(channel_id);
 
   try {
     const influencer = await findInfluencer(influencer_id);
@@ -83,30 +86,54 @@ async function addInfluencerYoutubeChannel(req, res) {
       return error(res, "Influencer not found",);
     }
 
+   // const isInfluencerConnected = await checkInfluencerConnection(influencer_id);
+   // console.log(isInfluencerConnected);
+
+  var  isInfluenserAlreadyConnected = await tableNames.influencerYoutube.findOne({
+    where:{
+      influencer_id:influencer_id
+    }
+   });
+   
+    if (isInfluenserAlreadyConnected != null) {
+      return error(res, "Influencer Account Already Connected",);
+    }else{
+       // //FEATCH CHANNEL DETAILS
     const youtubeData = await fetchYoutubeChannelDetails(google_token);
     if (!youtubeData) {
       return error(res, "Failed to fetch YouTube data",);
     }
 
+    //FETCH CHANNEL VIDEO LIST
     const youtubeVideoList = await fetchYoutubeChannelVideoList(google_token);
     if (!youtubeVideoList) {
       return error(res, "Failed to fetch YouTube channel list video",);
     }
 
-    const isInfluencerConnected = await checkInfluencerConnection(influencer_id);
-    if (isInfluencerConnected) {
-      return error(res, "Influencer Account Already Connected",);
+    //FETCH CHANNEL ANALYTICS LIST
+    const youtubeChannelAnalyticsList = await fetchYoutubeChannelAnalyticsList(google_token,channel_id);
+    if (!youtubeChannelAnalyticsList) {
+      return error(res, "Failed to fetch YouTube channel Analytics list",);
     }
+   
 
-    const savedInfluencerData = await saveInfluencerYoutubeData(influencer_id, youtubeData,youtubeVideoList);
+    const youtubeAnalyticsList = await analyticsDataMerge(youtubeChannelAnalyticsList);
+   // console.log(youtubeAnalyticsList);
+   
+    
+
+    const savedInfluencerData = await saveInfluencerYoutubeData(influencer_id, youtubeData, youtubeVideoList, youtubeAnalyticsList);
     if (!savedInfluencerData) {
       return error(res, "Failed to save influencer data",);
     }
 
-    success(res, "Influencer YouTube details inserted", "Influencer YouTube details not inserted, please try again", savedInfluencerData);
+   success(res, "Influencer YouTube details inserted", "Influencer YouTube details not inserted, please try again", savedInfluencerData,1);
+    }
+
+   
   } catch (err) {
    
-    return error(res, "Internal Server Error",);
+    return error(res, "Internal Server Error 1",);
   }
 }
 
@@ -199,16 +226,50 @@ function fetchYoutubeChannelVideoList(google_token) {
   });
 }
 
-async function checkInfluencerConnection(influencer_id) {
-  const isConnected = await tableNames.influencerYoutube.findOne({
-    where: {
-      influencer_id: influencer_id
-    }
+function fetchYoutubeChannelAnalyticsList(google_token,channel_id) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'youtubeanalytics.googleapis.com',
+      port: 443,
+      path: `/v2/reports?endDate=2024-05-17&ids=channel%3D%3DUCAyQ_QJT2b3pDArcCosjUMA&metrics=likes%2Cdislikes%2Ccomments%2Cshares%2Cviews%2CaverageViewDuration%2CestimatedMinutesWatched&startDate=2020-05-17`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${google_token}`
+      }
+    };
+
+    const reqSent = https.request(options, (youtubeRes) => {
+      let data = '';
+
+      youtubeRes.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      youtubeRes.on('end', () => {
+        try {
+          const jsonResponse = JSON.parse(data);
+          //console.log(jsonResponse);
+          resolve(jsonResponse);
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+          reject(null);
+        }
+      });
+    });
+
+    reqSent.on('error', (e) => {
+      console.error(`Problem with request: ${e.message}`);
+      reject(null);
+    });
+
+    reqSent.end();
   });
-  return isConnected !== null;
 }
 
-async function saveInfluencerYoutubeData(influencer_id, data,youtubeVideoList) {
+async function saveInfluencerYoutubeData(influencer_id, data,youtubeVideoList, youtubeAnalyticsList) {
+
+  console.log(youtubeAnalyticsList[0]);
  
   const influencerYoutubeChannelInfoQuery = await tableNames.influencerYoutube.create({
     influencer_id: influencer_id,
@@ -221,7 +282,14 @@ async function saveInfluencerYoutubeData(influencer_id, data,youtubeVideoList) {
     total_view_count: data?.statistics?.viewCount ?? "",
     total_subscriber_count: data?.statistics?.subscriberCount ?? "",
     total_video_count: data?.statistics?.videoCount ?? "",
-    channel_cover_url: data?.brandingSettings?.image?.bannerExternalUrl ?? ""
+    channel_cover_url: data?.brandingSettings?.image?.bannerExternalUrl ?? "",
+    likes: youtubeAnalyticsList[0]?.likes ?? 0,
+    dislikes: youtubeAnalyticsList[0]?.dislikes ?? 0,
+    comments: youtubeAnalyticsList[0]?.comments ?? 0,
+    shares: youtubeAnalyticsList[0]?.shares ?? 0,
+    views: youtubeAnalyticsList[0]?.views ?? 0,
+    averageViewDuration: youtubeAnalyticsList[0]?.averageViewDuration ?? 0,
+    estimatedMinutesWatched: youtubeAnalyticsList[0]?.estimatedMinutesWatched ?? 0
   });
 
 
@@ -243,6 +311,24 @@ async function saveInfluencerYoutubeData(influencer_id, data,youtubeVideoList) {
    return campaignContentNicheRespData;
 
 }
+
+async function analyticsDataMerge(youtubeChannelAnalyticsList) {
+  const columnHeaders = youtubeChannelAnalyticsList.columnHeaders.map(header => header.name);
+
+  // Extract rows
+  const rows = youtubeChannelAnalyticsList.rows;
+
+  // Combine headers and rows into a list of objects
+  const combinedData = rows.map(row => {
+    const dataObj = {};
+    columnHeaders.forEach((header, index) => {
+      dataObj[header] = row[index];
+    });
+    return dataObj;
+  });
+
+  return combinedData;
+}
 //////////////////////YOUTUBE API END////////////////////////////////
 
 //////////////////////FACEBOOK CONNECT API START//////////////////////////////
@@ -260,17 +346,27 @@ try {
   if (!facebookPageDetails) {
     return error(res, "Failed to fetch YouTube data",);
   }
-  const isInfluencerConnected = await checkInfluencerConnection(influencer_id);
-  if (isInfluencerConnected) {
-    return error(res, "Influencer Facebook Account Already Connected",);
-  }
+  //const isInfluencerConnected = await checkInfluencerConnection(influencer_id);
 
-  const savedInfluencerData = await saveInfluencerFacebookData(influencer_id, facebookPageDetails,fb_user_id,fb_access_token);
+  var  isInfluencerConnected = await tableNames.influencerFacebook.findOne({
+    where:{
+      influencer_id:influencer_id
+    }
+   });
+  if (isInfluencerConnected != null) {
+    return error(res, "Influencer Facebook Account Already Connected",);
+  }else{
+
+    const savedInfluencerData = await saveInfluencerFacebookData(influencer_id, facebookPageDetails,fb_user_id,fb_access_token);
     if (!savedInfluencerData) {
       return error(res, "Failed to save influencer data",);
     }
 
     success(res, "Influencer Facebbok details inserted", "Influencer Facebook details not inserted, please try again", savedInfluencerData,1);
+
+
+  }
+
 
 } catch (err) {
   return error(res, "Internal Server Error",);
@@ -337,14 +433,6 @@ async function saveInfluencerFacebookData(influencer_id, facebookPageDetails, fb
 
 }
 
-async function checkInfluencerConnection(influencer_id) {
-  const isConnected = await tableNames.influencerFacebook.findOne({
-    where: {
-      influencer_id: influencer_id
-    }
-  });
-  return isConnected !== null;
-}
 //////////////////////FACEBOOK CONNECT API END//////////////////////////////
 
 //////////////////////INSTAGRAM CONNECT API START//////////////////////////////
