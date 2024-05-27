@@ -42,6 +42,10 @@ db.social_access_tokens = require("../models/social_access_token.model.js")(
   sequelize,
   DataTypes
 );
+db.influencer_youtube_list = require("../models/influencer_youtube_list.model.js")(
+  sequelize,
+  DataTypes
+);
 db.otp = require("../models/otp.model")(sequelize, DataTypes);
 db.City = require("../models/city.model")(sequelize, DataTypes);
 db.campaign_budget = require("../models/campaign_budget.model.js")(
@@ -152,10 +156,10 @@ db.campaign_application = require("../models/campaign_application.model")(
 );
 db.campaign = require("../models/campaign.model")(sequelize, DataTypes);
 
-// db.favourite_influencer = require("../models/favourite_influencer.model")(
-//   sequelize,
-//   DataTypes
-// );
+db.favourite_influencer = require("../models/favourite_influencer.model")(
+  sequelize,
+  DataTypes
+);
 
 db.access_tokens = require("../models/access_tokens.model")(
   sequelize,
@@ -513,14 +517,22 @@ db.social_access_tokens.belongsTo(db.influencer, {
   targetKey: "influencer_id", // primary table
 });
 
+db.influencer_youtube_list.belongsTo(db.influencer_youtube, {
+  foreignKey: "influencer_youtube_id", // foreign table
+  targetKey: "influencer_youtube_id", // primary table
+});
+
 // ///////////////////////////sync query start////////////////////////////
-// db.sequelize.sync({ force: false }).then(() => {
+//  db.sequelize.sync({ force: false }).then(() => {
 //   console.log("yes re-sync done!");
 // });
 // ///////////////////////////sync query  end/////////////////////////////
 
 ///////////////////////////table join query//////////////////////
-db.influencer.hasMany(db.influencer_instagram, {
+db.influencer_youtube.hasMany(db.influencer_youtube_list, {
+  foreignKey: "influencer_youtube_id",
+});
+db.influencer.hasMany(db.influencer_instagram, { 
   foreignKey: "influencer_id",
 });
 

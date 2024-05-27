@@ -13,37 +13,45 @@ module.exports = (sequelize, DataTypes) => {
       },
 
       fb_user_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
+        defaultValue: null,
+      },
+      fb_access_token: {
+        type: DataTypes.STRING,
         defaultValue: null,
       },
       name: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-      birthday: {
+      username: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-      age_range: {
+      phone: {
         type: DataTypes.INTEGER,
         defaultValue: null,
       },
-      profile_link: {
-        type: DataTypes.STRING,
-        defaultValue: null,
-      },
-
-      gender: {
-        type: DataTypes.STRING,
+      followers_count: {
+        type: DataTypes.INTEGER,
         defaultValue: null,
       },
       location: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-      total_follower: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
+
+      website: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+      },
+      picture: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+      },
+      cover: {
+        type: DataTypes.STRING,
+        defaultValue: null,
       },
 
       delete_flag: {

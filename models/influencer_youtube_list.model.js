@@ -1,17 +1,25 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const influencer_youtube = sequelize.define("influencer_youtube", {
-        influencer_youtube_id: {
+    const influencer_youtube_list = sequelize.define("influencer_youtube_list", {
+        influencer_youtube_list_id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        influencer_id: {
+        influencer_youtube_id: {
             type: DataTypes.INTEGER,
             defaultValue: null
         },
 
-        channel_name: {
+        publishedAt: {
+            type: DataTypes.STRING,
+            defaultValue: null,
+        },
+        channelId: {
+            type: DataTypes.STRING,
+            defaultValue: null,
+        },
+        title: {
             type: DataTypes.STRING,
             defaultValue: null,
         },
@@ -19,35 +27,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             defaultValue: null,
         },
-        channel_custom_url: {
+        thumbnails: {
             type: DataTypes.STRING,
             defaultValue: null,
-        },
-        publishedAt: {
-            type: DataTypes.STRING,
-            defaultValue: null,
-        },
-        channel_logo: {
-            type: DataTypes.STRING,
-            defaultValue: null,
-        },
-        country: {
-            type: DataTypes.STRING,
-            defaultValue: null,
-        },
-        channel_cover_url: {
-            type: DataTypes.STRING,
-            defaultValue: null,
-        },
-
-        total_view_count: {
-            type: DataTypes.BIGINT,
-        },
-        total_subscriber_count: {
-            type: DataTypes.BIGINT,
-        },
-        total_video_count: {
-            type: DataTypes.BIGINT,
         },
        
         delete_flag: {
@@ -59,5 +41,5 @@ module.exports = (sequelize, DataTypes) => {
  createdAt: true,
  updatedAt: false
     })
-    return influencer_youtube
+    return influencer_youtube_list
 }

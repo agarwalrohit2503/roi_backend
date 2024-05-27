@@ -46,6 +46,10 @@ async function getProfile(req, res) {
       {
         model: tableNames.influencerYoutube,
         required:false,
+        include:[{
+          model:tableNames.influencerYoutubeList,
+          required:false,
+        }]
       },
       {
         attributes: ["influencer_language_id"],

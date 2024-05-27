@@ -21,7 +21,7 @@ router.use("/comments", authJWT, comments);
 router.use("/guest", campaigns_Demo);
 router.use("/influencer_languages", influencer_languages);
 router.use("/campaign_notes", campaign_notes);
-router.use("/influencer_social_media", influencer_social_media);
+router.use("/influencer_social_media",authJWT, influencer_social_media);
 router.use("/campaign-application-content", campaign_application_content);
 router.use("/campaign-application-link", campaign_application_link);
 module.exports = router;

@@ -7,18 +7,18 @@ async function authJWT(req, res, next) {
     token = authorization.split(" ")[1];
 
     if (token == null) {
-      res.status(404).send({ message: "Token not found" });
+      return res.status(404).send({ message: "Token not found" });
     } else {
       const privatekey = process.env.privateKey;
       jwt.verify(token, privatekey, async (err, decoded) => {
         if (err) {
-          res.status(200).send({ message: "invalid token" });
+          return   res.status(200).send({ message: "invalid token" });
         }
         data = decoded;
         //console.log(data.brandlog);
 
         if (data.brandlog == null) {
-          res.status(200).send({ message: "not authorized" });
+         return res.status(200).send({ message: "not authorized" });
         }
         {
           if (data.brandlog == true) {
@@ -43,13 +43,13 @@ async function authJWT(req, res, next) {
               },
             });
             if (!Sqltoken) {
-              res.status(403).send({ message: "token failed" });
-            } else {
+              return   res.status(403).send({ message: "token failed" });
+            } else { 
               let Sqlquery = await tableNames.influencer.findOne({
                 where: { influencer_id: data.influencer_id },
               });
               if (!Sqlquery) {
-                res.status(403).send({ message: "Influencer not found" });
+                return    res.status(403).send({ message: "Influencer not found" });
               }
             }
           }
@@ -85,7 +85,7 @@ async function authJWT(req, res, next) {
       //    }
     }
   } catch (error) {
-    res.status(404).send({ message: "Token has not been provided" });
+    return  res.status(404).send({ message: "Token has not been provided" });
   }
 }
 module.exports = {

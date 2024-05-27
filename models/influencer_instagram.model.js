@@ -11,38 +11,45 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         defaultValue: null,
       },
-      insta_user_id: {
+      instagram_user_id: {
         type: DataTypes.INTEGER,
         defaultValue: null,
+      },
+      instagram_access_token: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+      },
+      followers_count: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      biography: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+      },
+      follows_count: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      media_count: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
       name: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-      birthday: {
+      profile_picture_url: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-      age_range: {
-        type: DataTypes.INTEGER,
-        defaultValue: null,
-      },
-      profile_link: {
+      username: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-
-      gender: {
+      website: {
         type: DataTypes.STRING,
         defaultValue: null,
-      },
-      location: {
-        type: DataTypes.STRING,
-        defaultValue: null,
-      },
-      total_follower: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
       },
 
       delete_flag: {

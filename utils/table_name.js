@@ -61,6 +61,7 @@ tableNames = {
   influencerInstagramPost: db.influencer_instagram_post,
 
   influencerYoutube: db.influencer_youtube,
+  influencerYoutubeList: db.influencer_youtube_list,
 
   campaignContentNiche: db.campaignContentNiche,
   influencerProfileStatus: db.influencer_profile_status,
