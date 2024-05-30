@@ -64,17 +64,31 @@ async function getInfluencerList(req, res) {
         // },
         //required: true
       },
+      
+      
       {
         model: tableNames.influencerFacebook,
+        required:false,
       },
       {
         model: tableNames.influencerFacebookPost,
+        required:false,
       },
       {
         model: tableNames.influencerInstagram,
+        required:false
       },
       {
         model: tableNames.influencerInstagramPost,
+        required:false,
+      },
+      {
+        model: tableNames.influencerYoutube,
+        required:false,
+        include:[{
+          model:tableNames.influencerYoutubeList,
+          required:false,
+        }]
       },
       {
         model: tableNames.influencerPrice,
@@ -139,18 +153,30 @@ async function getInfluencerDetails(req, res) {
           },
         ],
       },
-      {
-        model: tableNames.influencerFacebook,
-      },
-      {
-        model: tableNames.influencerFacebookPost,
-      },
-      {
-        model: tableNames.influencerInstagram,
-      },
-      {
-        model: tableNames.influencerInstagramPost,
-      },
+      // {
+      //   model: tableNames.influencerFacebook,
+      //   required:false,
+      // },
+      // {
+      //   model: tableNames.influencerFacebookPost,
+      //   required:false,
+      // },
+      // {
+      //   model: tableNames.influencerInstagram,
+      //   required:false
+      // },
+      // {
+      //   model: tableNames.influencerInstagramPost,
+      //   required:false,
+      // },
+      // {
+      //   model: tableNames.influencerYoutube,
+      //   required:false,
+      //   include:[{
+      //     model:tableNames.influencerYoutubeList,
+      //     required:false,
+      //   }]
+      // },
       {
         model: tableNames.influencerPrice,
       },

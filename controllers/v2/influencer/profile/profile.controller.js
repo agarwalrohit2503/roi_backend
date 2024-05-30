@@ -27,30 +27,30 @@ async function getProfile(req, res) {
         ],
       },
 
-      {
-        model: tableNames.influencerFacebook,
-        required:false,
-      },
-      {
-        model: tableNames.influencerFacebookPost,
-        required:false,
-      },
-      {
-        model: tableNames.influencerInstagram,
-        required:false
-      },
-      {
-        model: tableNames.influencerInstagramPost,
-        required:false,
-      },
-      {
-        model: tableNames.influencerYoutube,
-        required:false,
-        include:[{
-          model:tableNames.influencerYoutubeList,
-          required:false,
-        }]
-      },
+      // {
+      //   model: tableNames.influencerFacebook,
+      //   required:false,
+      // },
+      // {
+      //   model: tableNames.influencerFacebookPost,
+      //   required:false,
+      // },
+      // {
+      //   model: tableNames.influencerInstagram,
+      //   required:false
+      // },
+      // {
+      //   model: tableNames.influencerInstagramPost,
+      //   required:false,
+      // },
+      // {
+      //   model: tableNames.influencerYoutube,
+      //   required:false,
+      //   include:[{
+      //     model:tableNames.influencerYoutubeList,
+      //     required:false,
+      //   }]
+      // },
       {
         attributes: ["influencer_language_id"],
         model: tableNames.influencerLanguage,
