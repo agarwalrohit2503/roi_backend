@@ -5,7 +5,7 @@ const path = require("path");
 const dotenv = require("dotenv").config({
   path: path.resolve(process.cwd(), ".env"),
 });
-const { success, error } = require("../../../../utils/responseApi");
+const { success, error,error_simple } = require("../../../../utils/responseApi");
 // const fbTokenAccess = require("../../../../utils/fb_secret_keys");
 const Facebook = require("facebook-js-sdk");
 const { param } = require("../../../../routes/v2/influencers/influencer_social_media");
@@ -76,7 +76,7 @@ async function addInfluencerSocialMediaDetails(req, res) {
 //////////////////////YOUTUBE API START////////////////////////////////
 async function addInfluencerYoutubeChannel(req, res) {
   const { influencer_id } = req.params;
-  const { email, google_token, channel_id } = req.body;
+  const { email, google_token } = req.body;
 
   // console.log(google_token);
   // console.log(channel_id);
@@ -102,21 +102,25 @@ async function addInfluencerYoutubeChannel(req, res) {
       // //FEATCH CHANNEL DETAILS
       const youtubeData = await fetchYoutubeChannelDetails(google_token);
       if (!youtubeData) {
-        return error(res, "Failed to fetch YouTube data",);
+        return error_simple(res, "Failed to fetch YouTube data",209);
       }
+     
 
       //FETCH CHANNEL VIDEO LIST
       const youtubeVideoList = await fetchYoutubeChannelVideoList(google_token);
       //console.log(youtubeVideoList[0].snippet.channelId);
       if (!youtubeVideoList) {
-        return error(res, "Failed to fetch YouTube channel list video",);
+        return error_simple(res, "Failed to fetch YouTube channel list video",209);
       }
+      
 
       //FETCH CHANNEL ANALYTICS LIST
       const youtubeChannelAnalyticsList = await fetchYoutubeChannelAnalyticsList(google_token, youtubeVideoList[0]?.snippet?.channelId);
+      console.log(youtubeChannelAnalyticsList);
       if (!youtubeChannelAnalyticsList) {
-        return error(res, "Failed to fetch YouTube channel Analytics list",);
+        return error_simple(res, "Failed to fetch YouTube channel Analytics list",209);
       }
+     
 
 
       const youtubeAnalyticsList = await analyticsDataMerge(youtubeChannelAnalyticsList);
@@ -148,7 +152,7 @@ async function findInfluencer(influencer_id) {
   });
 }
 
-function fetchYoutubeChannelDetails(google_token) {
+function fetchYoutubeChannelDetails(google_token,res) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'youtube.googleapis.com',
@@ -171,7 +175,14 @@ function fetchYoutubeChannelDetails(google_token) {
       youtubeRes.on('end', () => {
         try {
           const jsonResponse = JSON.parse(data);
-          resolve(jsonResponse?.items[0]);
+        //  console.log(jsonResponse?.items);
+        //  if(jsonResponse.error.code == 401){
+         //   return resolve(false);
+            // error(res, "Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential.",409);
+         // }else{
+            return   resolve(jsonResponse?.items[0]);
+         // }
+         
         } catch (error) {
           console.error('Error parsing JSON:', error);
           reject(null);
@@ -229,11 +240,12 @@ function fetchYoutubeChannelVideoList(google_token) {
 }
 
 function fetchYoutubeChannelAnalyticsList(google_token, channel_id) {
+  console.log(channel_id);
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'youtubeanalytics.googleapis.com',
       port: 443,
-      path: `/v2/reports?endDate=2024-05-17&ids=channel%3D%3DUCAyQ_QJT2b3pDArcCosjUMA&metrics=likes%2Cdislikes%2Ccomments%2Cshares%2Cviews%2CaverageViewDuration%2CestimatedMinutesWatched&startDate=2020-05-17`,
+      path: `/v2/reports?endDate=2024-05-17&ids=channel%3D%3D${channel_id}&metrics=likes%2Cdislikes%2Ccomments%2Cshares%2Cviews%2CaverageViewDuration%2CestimatedMinutesWatched&startDate=2020-05-17`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -243,7 +255,7 @@ function fetchYoutubeChannelAnalyticsList(google_token, channel_id) {
 
     const reqSent = https.request(options, (youtubeRes) => {
       let data = '';
-
+  
       youtubeRes.on('data', (chunk) => {
         data += chunk;
       });

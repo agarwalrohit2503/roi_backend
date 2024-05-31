@@ -23,3 +23,20 @@ exports.error = (res, Msg, errormsg) => {
     }),
   ];
 };
+
+exports.error_simple = (res, Msg,  statusCode) => {
+  const codes = [200, 201, 400, 401, 404, 403, 422, 500, 209];
+  const findCode = codes.find((code) => code == statusCode);
+
+  if (!findCode) statusCode = 500;
+  else statusCode = findCode;
+
+  return [
+    res.status(statusCode).send({
+      status: statusCode,
+      message: Msg,
+     // ...(errormsg ? { data: errormsg } : {}),
+    }),
+  ];
+};
+
