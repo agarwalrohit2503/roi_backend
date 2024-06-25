@@ -563,6 +563,8 @@ async function addCampaign(req, res) {
             message: "Campaign Target Audience Age Group Not Inserted",
           });
         }
+        //Notification Function
+        const result = await sendNotification(user_id, contents, headings);
 
         res.status(200).send({
           status: 200,
