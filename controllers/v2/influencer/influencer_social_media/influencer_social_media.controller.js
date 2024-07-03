@@ -347,8 +347,9 @@ async function analyticsDataMerge(youtubeChannelAnalyticsList) {
 
 //////////////////////FACEBOOK CONNECT API START//////////////////////////////
 async function addInfluencerFacebookDetails(req, res) {
+  
   const { influencer_id } = req.params;
-  const { fb_user_id, fb_access_token } = req.body;
+  const {fb_access_token } = req.body;
 
   try {
     const influencer = await findInfluencer(influencer_id);
@@ -356,11 +357,22 @@ async function addInfluencerFacebookDetails(req, res) {
       return error(res, "Influencer not found",);
     }
 
-    const facebookPageDetails = await fetchFacebookDetails(fb_user_id, fb_access_token);
-    if (!facebookPageDetails) {
+    const facebookDetails = await fetchFacebookPageDetails( fb_access_token);
+    if (!facebookDetails) {
       return error(res, "Failed to fetch YouTube data",);
     }
-    //const isInfluencerConnected = await checkInfluencerConnection(influencer_id);
+
+    // console.log(facebookDetails['data'][0]['access_token']);
+    // console.log(facebookDetails['data'][0]['id']);
+
+
+    const facebookPageDetails = await fetchFacebookDetails(facebookDetails['data'][0]['id'], facebookDetails['data'][0]['access_token']);
+    if (!facebookPageDetails) {
+      return error(res, "Failed to fetch facebook data",);
+    }
+    console.log(facebookPageDetails);
+
+
 
     var isInfluencerConnected = await tableNames.influencerFacebook.findOne({
       where: {
@@ -371,7 +383,7 @@ async function addInfluencerFacebookDetails(req, res) {
       return error(res, "Influencer Facebook Account Already Connected",);
     } else {
 
-      const savedInfluencerData = await saveInfluencerFacebookData(influencer_id, facebookPageDetails, fb_user_id, fb_access_token);
+      const savedInfluencerData = await saveInfluencerFacebookData(influencer_id, facebookPageDetails, facebookDetails['data'][0]['id'], facebookDetails['data'][0]['access_token']);
       if (!savedInfluencerData) {
         return error(res, "Failed to save influencer data",);
       }
@@ -379,7 +391,7 @@ async function addInfluencerFacebookDetails(req, res) {
       success(res, "Influencer Facebbok details inserted", "Influencer Facebook details not inserted, please try again", savedInfluencerData, 1);
 
 
-    }
+  }
 
 
   } catch (err) {
@@ -387,12 +399,52 @@ async function addInfluencerFacebookDetails(req, res) {
   }
 }
 
+function fetchFacebookPageDetails( fb_access_token) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'graph.facebook.com',
+      port: 443,
+      path: `https://graph.facebook.com/v20.0/me/accounts?access_token=${fb_access_token}`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${fb_access_token}`
+      }
+    };
+
+    const reqSent = https.request(options, (youtubeRes) => {
+      let data = '';
+
+      youtubeRes.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      youtubeRes.on('end', () => {
+        try {
+          const jsonResponse = JSON.parse(data);
+          resolve(jsonResponse);
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+          reject(null);
+        }
+      });
+    });
+
+    reqSent.on('error', (e) => {
+      console.error(`Problem with request: ${e.message}`);
+      reject(null);
+    });
+
+    reqSent.end();
+  });
+}
+
 function fetchFacebookDetails(fb_user_id, fb_access_token) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'graph.facebook.com',
       port: 443,
-      path: `/v20.0/${fb_user_id}?fields=phone%2Cfollowers_count%2Clocation%2Cname%2Cpage_token%2Cusername%2Cwebsite%2Cinstagram_business_account%2Cemails%2Cphotos%2Cpicture%2Ccover%2Cfeed%2Cconnected_instagram_account&access_token=EAAZAZBZAMrLIo0BO82kjk9aGmJosQ9uLka4sjrDrR61C4ZBGFx80eAxgwWU491sabsZA8Dkn4jHfYIuKwFwYcSlIi1eZC2jEvqMzlSEZAq09xyGMqotNxB2IpWpGigQMzyqyTtO4FaFis5gA3W9LgyX4QFe7ieZCwzodKfQ1Ai65byH9VbIYwMt94aadW2oWV36ZBnOI9t5cOPH8ZATc0ZD`,
+      path: `/v20.0/${fb_user_id}?fields=phone%2Cfollowers_count%2Clocation%2Cname%2Cpage_token%2Cusername%2Cwebsite%2Cinstagram_business_account%2Cemails%2Cphotos%2Cpicture%2Ccover%2Cfeed%2Cconnected_instagram_account&access_token=${fb_access_token}`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

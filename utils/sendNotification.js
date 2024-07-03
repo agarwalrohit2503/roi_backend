@@ -6,7 +6,7 @@ async function sendNotification(
 ) {
   return new Promise((resolve, reject) => {
     
-    const oneSignalAppId = process.env.ONESIGNAL_APP_ID;
+    const oneSignalAppId = "d909bfa8-2e1b-49ea-9b39-f194dfed3dfb";//process.env.ONESIGNAL_APP_ID;
 
     const message = {
       app_id: oneSignalAppId,
@@ -15,7 +15,7 @@ async function sendNotification(
       // android_channel_id: 'f1397e74-5fe1-4815-9e06-5ea2f82ffd53',
       ios_sound: "alert.wav",
       // channel_for_external_user_ids: 'push',
-      // include_player_ids: [app_id],
+     // include_player_ids: ["03b83d22-0e3a-4298-abe4-fead80b3165e"],
       include_external_user_ids: [user_id],
       // data: {
       //   routes: booking_notification,
@@ -34,7 +34,7 @@ async function sendNotification(
     console.log(message);
     const headers = {
       "Content-Type": "application/json; charset=utf-8",
-      Authorization: `Basic ${process.env.ONESIGNAL_TOKEN}`,
+      Authorization: `Basic ZDYxZGMxMTUtY2U1Mi00MjU4LWI5NWYtMDQyMWI5MGYwZWUx`,//MzBmYTE4NjItY2I3YS00N2EyLWEyNjctMWU5MmQyZmY1YmZj`,//${process.env.ONESIGNAL_TOKEN}`,
     };
     const options = {
       host: "onesignal.com",
