@@ -89,11 +89,11 @@ async function addInfluencerYoutubeChannel(req, res) {
    // const isInfluencerConnected = await checkInfluencerConnection(influencer_id);
    // console.log(isInfluencerConnected);
 
-  var  isInfluenserAlreadyConnected = await tableNames.influencerYoutube.findOne({
-    where:{
-      influencer_id:influencer_id
-    }
-   });
+  // var  isInfluenserAlreadyConnected = await tableNames.influencerYoutube.findOne({
+  //   where:{
+  //     influencer_id:influencer_id
+  //   }
+  //  });
    
     if (isInfluenserAlreadyConnected != null) {
       return error(res, "Influencer Account Already Connected",);
@@ -104,28 +104,28 @@ async function addInfluencerYoutubeChannel(req, res) {
       return error(res, "Failed to fetch YouTube data",);
     }
 
-    //FETCH CHANNEL VIDEO LIST
-    const youtubeVideoList = await fetchYoutubeChannelVideoList(google_token);
-    if (!youtubeVideoList) {
-      return error(res, "Failed to fetch YouTube channel list video",);
-    }
+  //   //FETCH CHANNEL VIDEO LIST
+  //   const youtubeVideoList = await fetchYoutubeChannelVideoList(google_token);
+  //   if (!youtubeVideoList) {
+  //     return error(res, "Failed to fetch YouTube channel list video",);
+  //   }
 
-    //FETCH CHANNEL ANALYTICS LIST
-    const youtubeChannelAnalyticsList = await fetchYoutubeChannelAnalyticsList(google_token,channel_id);
-    if (!youtubeChannelAnalyticsList) {
-      return error(res, "Failed to fetch YouTube channel Analytics list",);
-    }
+  //   //FETCH CHANNEL ANALYTICS LIST
+  //   const youtubeChannelAnalyticsList = await fetchYoutubeChannelAnalyticsList(google_token,channel_id);
+  //   if (!youtubeChannelAnalyticsList) {
+  //     return error(res, "Failed to fetch YouTube channel Analytics list",);
+  //   }
    
 
-    const youtubeAnalyticsList = await analyticsDataMerge(youtubeChannelAnalyticsList);
-   // console.log(youtubeAnalyticsList);
+  //   const youtubeAnalyticsList = await analyticsDataMerge(youtubeChannelAnalyticsList);
+  //  // console.log(youtubeAnalyticsList);
    
     
 
-    const savedInfluencerData = await saveInfluencerYoutubeData(influencer_id, youtubeData, youtubeVideoList, youtubeAnalyticsList);
-    if (!savedInfluencerData) {
-      return error(res, "Failed to save influencer data",);
-    }
+  //   const savedInfluencerData = await saveInfluencerYoutubeData(influencer_id, youtubeData, youtubeVideoList, youtubeAnalyticsList);
+  //   if (!savedInfluencerData) {
+  //     return error(res, "Failed to save influencer data",);
+  //   }
 
    success(res, "Influencer YouTube details inserted", "Influencer YouTube details not inserted, please try again", savedInfluencerData,1);
     }
