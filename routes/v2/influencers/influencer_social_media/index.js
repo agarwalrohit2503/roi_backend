@@ -8,7 +8,8 @@ const {
   addInfluencerInstagramDetails,
   getInfluencerYoutubeChannel,
   getInfluencerFacebookAccount,
-  getInfluencerInstagramAccount
+  getInfluencerInstagramAccount,
+  getInfluencerFacebookAccountPost
 } = require("../../../../controllers/v2/influencer/influencer_social_media/influencer_social_media.controller");
 
 router.post("/add/:influencer_id", (req, res) => {
@@ -37,6 +38,9 @@ router.get("/get_youtube/:influencer_id", (req, res) => {
 
 router.get("/get_facebook/:influencer_id", (req, res) => {
   getInfluencerFacebookAccount(req, res);
+});
+router.get("/get_facebook_post/:influencer_id", (req, res) => {
+  getInfluencerFacebookAccountPost(req, res);
 });
 router.get("/get_instagram/:influencer_id", (req, res) => {
   getInfluencerInstagramAccount(req, res);

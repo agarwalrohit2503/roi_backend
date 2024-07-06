@@ -389,6 +389,11 @@ db.influencer_facebook.belongsTo(db.influencer, {
   targetKey: "influencer_id", // primary table
 });
 
+db.influencer_facebook_post.belongsTo(db.influencer_facebook, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+
 db.influencer_file.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
@@ -525,7 +530,7 @@ db.influencer_youtube_list.belongsTo(db.influencer_youtube, {
 // ///////////////////////////sync query start////////////////////////////
 //  db.sequelize.sync({ force: false }).then(() => {
 //   console.log("yes re-sync done!");
-// });
+// }); 
 // ///////////////////////////sync query  end/////////////////////////////
 
 ///////////////////////////table join query//////////////////////
@@ -554,9 +559,15 @@ db.influencer.hasMany(db.influencer_instagram_post, {
 db.influencer.hasMany(db.influencer_facebook_post, {
   foreignKey: "influencer_id",
 });
+
+db.influencer_facebook.hasMany(db.influencer_facebook_post, {
+  foreignKey: "influencer_id",
+});
+
 db.influencer.hasMany(db.influencer_language, {
   foreignKey: "influencer_id",
 });
+
 db.Comments.hasMany(db.campaign_application, {
   foreignKey: "campaign_applied_id",
 });

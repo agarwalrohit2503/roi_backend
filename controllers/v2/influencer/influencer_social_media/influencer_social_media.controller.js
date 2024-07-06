@@ -9,6 +9,7 @@ const { success, error,error_simple } = require("../../../../utils/responseApi")
 // const fbTokenAccess = require("../../../../utils/fb_secret_keys");
 const Facebook = require("facebook-js-sdk");
 const { param } = require("../../../../routes/v2/influencers/influencer_social_media");
+const { where } = require("sequelize");
 
 const facebook = new Facebook({
   appId: process.env.appId,
@@ -351,28 +352,31 @@ async function addInfluencerFacebookDetails(req, res) {
   const { influencer_id } = req.params;
   const {fb_access_token } = req.body;
 
-  try {
+ // try {
     const influencer = await findInfluencer(influencer_id);
     if (!influencer) {
       return error(res, "Influencer not found",);
     }
 
-    const facebookDetails = await fetchFacebookPageDetails( fb_access_token);
+    const facebookDetails = await fetchFacebookPageTokenDetails(fb_access_token);
     if (!facebookDetails) {
-      return error(res, "Failed to fetch YouTube data",);
+      return error(res, "Failed to fetch facebook data",);
     }
 
+
+  //  console.log(facebookDetails['data'][1]['id']);
+  //  console.log(facebookDetails['data'][1]['access_token']);
+
+     console.log(facebookDetails);
     // console.log(facebookDetails['data'][0]['access_token']);
     // console.log(facebookDetails['data'][0]['id']);
 
 
-    const facebookPageDetails = await fetchFacebookDetails(facebookDetails['data'][0]['id'], facebookDetails['data'][0]['access_token']);
+    const facebookPageDetails = await fetchFacebookDetails(facebookDetails['data'][1]['id'], facebookDetails['data'][1]['access_token']);
     if (!facebookPageDetails) {
       return error(res, "Failed to fetch facebook data",);
     }
-    console.log(facebookPageDetails);
-
-
+   // console.log(facebookPageDetails['posts']['data']);
 
     var isInfluencerConnected = await tableNames.influencerFacebook.findOne({
       where: {
@@ -382,24 +386,28 @@ async function addInfluencerFacebookDetails(req, res) {
     if (isInfluencerConnected != null) {
       return error(res, "Influencer Facebook Account Already Connected",);
     } else {
+     
+     console.log(facebookPageDetails.connected_instagram_account);
 
-      const savedInfluencerData = await saveInfluencerFacebookData(influencer_id, facebookPageDetails, facebookDetails['data'][0]['id'], facebookDetails['data'][0]['access_token']);
+      const savedInfluencerData = await saveInfluencerFacebookData(influencer_id, facebookPageDetails, facebookDetails['data'][1]['id'], facebookDetails['data'][1]['access_token']);
       if (!savedInfluencerData) {
         return error(res, "Failed to save influencer data",);
       }
+      var isUploaded = await facebookPostList(facebookPageDetails['posts']['data'], influencer_id);
+      console.log(isUploaded);
 
-      success(res, "Influencer Facebbok details inserted", "Influencer Facebook details not inserted, please try again", savedInfluencerData, 1);
+    success(res, "Influencer Facebbok details inserted", "Influencer Facebook details not inserted, please try again", savedInfluencerData, 1);
 
 
-  }
-
-
-  } catch (err) {
-    return error(res, "Internal Server Error",);
-  }
 }
 
-function fetchFacebookPageDetails( fb_access_token) {
+
+  // } catch (err) {
+  //   return error(res, "Internal Server Error",);
+  // }
+}
+
+function fetchFacebookPageTokenDetails(fb_access_token) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'graph.facebook.com',
@@ -444,7 +452,7 @@ function fetchFacebookDetails(fb_user_id, fb_access_token) {
     const options = {
       hostname: 'graph.facebook.com',
       port: 443,
-      path: `/v20.0/${fb_user_id}?fields=phone%2Cfollowers_count%2Clocation%2Cname%2Cpage_token%2Cusername%2Cwebsite%2Cinstagram_business_account%2Cemails%2Cphotos%2Cpicture%2Ccover%2Cfeed%2Cconnected_instagram_account&access_token=${fb_access_token}`,
+      path: `/v20.0/${fb_user_id}?fields=phone%2Cfollowers_count%2Clocation%2Cname%2Cpage_token%2Cusername%2Cwebsite%2Cinstagram_business_account%2Cemails%2Cposts{full_picture}%2Cpicture%2Ccover%2Cfeed%2Cconnected_instagram_account&access_token=${fb_access_token}`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -478,13 +486,35 @@ function fetchFacebookDetails(fb_user_id, fb_access_token) {
     reqSent.end();
   });
 }
+async function facebookPostList(posts,influencer_id){
 
+  return await Promise.all(
+    posts.map(async (item) => {
+      console.log(item);
+      try {
+        let fbPost = {
+          influencer_id:influencer_id,
+          link: item.full_picture,
+          facebook_post_id: item.id,
+        };
+         insertContentNicheQuery =
+          await tableNames.influencerFacebookPost.create(fbPost);
+
+        return insertContentNicheQuery;
+      } catch (error) {
+        return { ...item, error };
+      }
+    })
+  );
+
+}
 async function saveInfluencerFacebookData(influencer_id, facebookPageDetails, fb_user_id, fb_access_token) {
 
   const influencerFacebookInsertInfoQuery = await tableNames.influencerFacebook.create({
     influencer_id: influencer_id,
     fb_user_id: fb_user_id,
     fb_access_token: fb_access_token,
+    connected_instagram_account:facebookPageDetails.connected_instagram_account.id ??"",
     name: facebookPageDetails.name ?? "",
     username: facebookPageDetails.username ?? "",
     phone: facebookPageDetails.phone ?? "",
@@ -649,13 +679,30 @@ async function getInfluencerFacebookAccount(req, res) {
     }
 
   var findInfluencerFacebook = await tableNames.influencerFacebook.findOne({
-    where: {
+    where:{
       influencer_id: influencer_id
     }
   });
 
   success(res, "Influencer Facebook details ", "Influencer Facebook details not found", findInfluencerFacebook, 0);
+  
+}
 
+async function getInfluencerFacebookAccountPost(req, res) {
+  const { influencer_id } = req.params;
+
+  const influencer = await findInfluencer(influencer_id);
+    if (!influencer) {
+      return error(res, "Influencer not found",);
+    }
+
+  var findInfluencerFacebook = await tableNames.influencerFacebookPost.findAll({
+   
+    where:{
+      influencer_id: influencer_id
+    }
+  });
+  success(res, "Influencer Facebook details ", "Influencer Facebook details not found", findInfluencerFacebook, 0);
 }
 
 async function getInfluencerInstagramAccount(req, res) {
@@ -682,5 +729,6 @@ module.exports = {
   addInfluencerInstagramDetails,
   getInfluencerYoutubeChannel,
   getInfluencerFacebookAccount,
-  getInfluencerInstagramAccount
+  getInfluencerInstagramAccount,
+  getInfluencerFacebookAccountPost
 };

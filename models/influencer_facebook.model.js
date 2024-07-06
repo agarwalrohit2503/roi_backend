@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: null,
       },
+      connected_instagram_account: {
+        type: DataTypes.STRING,
+       
+      },
       name: {
         type: DataTypes.STRING,
         defaultValue: null,
