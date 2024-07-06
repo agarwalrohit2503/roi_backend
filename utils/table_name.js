@@ -53,6 +53,7 @@ tableNames = {
   favouriteInfluencer: db.favourite_influencer,
 
   influencerFacebook: db.influencer_facebook,
+  influencerFacebookInsights: db.influencer_facebook_insights,
 
   influencerFacebookPost: db.influencer_facebook_post,
 

@@ -192,6 +192,10 @@ db.campaign_platform = require("../models/campaign_platform.model")(
   sequelize,
   DataTypes
 );
+db.influencer_facebook_insights = require("../models/influencer_facebook_insights.model.js")(
+  sequelize,
+  DataTypes
+);
 db.platform = require("../models/platform.model")(sequelize, DataTypes);
 db.Comments = require("../models/comments.model")(sequelize, DataTypes);
 db.language = require("../models/language.model")(sequelize, DataTypes);
@@ -388,6 +392,14 @@ db.influencer_facebook.belongsTo(db.influencer, {
   foreignKey: "influencer_id", // foreign table
   targetKey: "influencer_id", // primary table
 });
+db.influencer_facebook_insights.belongsTo(db.influencer_facebook, {
+  foreignKey: "influencer_id", // foreign table
+  targetKey: "influencer_id", // primary table
+});
+// db.influencer_facebook_insights.belongsTo(db.influencer_facebook, {
+//   foreignKey: "influencer_id", // foreign table
+//   targetKey: "influencer_id", // primary table
+// });
 
 db.influencer_facebook_post.belongsTo(db.influencer_facebook, {
   foreignKey: "influencer_id", // foreign table
@@ -742,6 +754,12 @@ db.favourite_influencer.hasMany(db.influencer, {
 });
 
 db.influencer.hasMany(db.influencer_facebook, {
+  foreignKey: "influencer_id",
+});
+// db.influencer.hasMany(db.influencer_facebook_insights, {
+//   foreignKey: "influencer_id",
+// });
+db.influencer_facebook.hasMany(db.influencer_facebook_insights, {
   foreignKey: "influencer_id",
 });
 
