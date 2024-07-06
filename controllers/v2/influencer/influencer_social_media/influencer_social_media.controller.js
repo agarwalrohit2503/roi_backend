@@ -352,7 +352,7 @@ async function addInfluencerFacebookDetails(req, res) {
   const { influencer_id } = req.params;
   const { fb_access_token } = req.body;
 
-  // try {
+   try {
   const influencer = await findInfluencer(influencer_id);
   if (!influencer) {
     return error(res, "Influencer not found",);
@@ -364,19 +364,19 @@ async function addInfluencerFacebookDetails(req, res) {
   }
 
 
-  console.log(facebookDetails['data'][1]['id']);
-  console.log(facebookDetails['data'][1]['access_token']);
+  // console.log(facebookDetails['data'][1]['id']);
+  // console.log(facebookDetails['data'][1]['access_token']);
 
   //  console.log(facebookDetails);
   // // console.log(facebookDetails['data'][0]['access_token']);
   // // console.log(facebookDetails['data'][0]['id']);
 
 
-  const facebookPageDetails = await fetchFacebookDetails(facebookDetails['data'][1]['id'], facebookDetails['data'][1]['access_token']);
+  const facebookPageDetails = await fetchFacebookDetails(facebookDetails['data'][0]['id'], facebookDetails['data'][0]['access_token']);
   if (!facebookPageDetails) {
     return error(res, "Failed to fetch facebook data",);
   }
-  const facebookInsightsDetails = await fetchFacebookinsightsDetails(facebookDetails['data'][1]['id'], facebookDetails['data'][1]['access_token']);
+  const facebookInsightsDetails = await fetchFacebookinsightsDetails(facebookDetails['data'][0]['id'], facebookDetails['data'][0]['access_token']);
   if (!facebookInsightsDetails) {
     return error(res, "Failed to fetch facebook data",);
   }
@@ -395,7 +395,7 @@ async function addInfluencerFacebookDetails(req, res) {
 
      console.log(facebookPageDetails.connected_instagram_account);
 
-      const savedInfluencerData = await saveInfluencerFacebookData(influencer_id, facebookPageDetails, facebookDetails['data'][1]['id'], facebookDetails['data'][1]['access_token']);
+      const savedInfluencerData = await saveInfluencerFacebookData(influencer_id, facebookPageDetails, facebookDetails['data'][0]['id'], facebookDetails['data'][0]['access_token']);
       if (!savedInfluencerData) {
         return error(res, "Failed to save influencer data",);
       }
@@ -415,9 +415,9 @@ async function addInfluencerFacebookDetails(req, res) {
   }
 
 
-  // } catch (err) {
-  //   return error(res, "Internal Server Error",);
-  // }
+  } catch (err) {
+    return error(res, "token issue",);
+  }
 }
 
 function fetchFacebookPageTokenDetails(fb_access_token) {
